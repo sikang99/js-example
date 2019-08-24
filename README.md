@@ -7,6 +7,7 @@ Javascript programming
 
 
 ### Information
+- [**NavidZ/input-for-workers**](https://github.com/NavidZ/input-for-workers) - Specification for exposing input events to workers
 
 
 ### Open Source
