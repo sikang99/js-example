@@ -1,9 +1,7 @@
 #
 # Makefile for js-example
 #
-#
-#
-.jjPHONY: usage edit build run clean git
+.PHONY: usage edit build run clean git
 #----------------------------------------------------------------------------------
 usage:
 	@echo "usage: make [build|run]"
@@ -13,7 +11,14 @@ edit e:
 build b:
 
 run r:
-	
+
+web w:
+	open http://localhost:8080
+	simplehttpserver
+
+kill k:
+	pkill simplehttpserver
+
 clean:
 #----------------------------------------------------------------------------------
 git g:
