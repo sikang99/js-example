@@ -4,10 +4,13 @@ Javascript programming
 
 
 ### History
+- 2018/09/09 [**Improved Performance with OffscreenCanvas**](https://newinweb.com/2018/09/10/offscreen-canvas/)
 
 
 ### Information
 - [**NavidZ/input-for-workers**](https://github.com/NavidZ/input-for-workers) - Specification for exposing input events to workers
+- [Reducing input latency on the web](https://www.w3.org/2018/12/games-workshop/slides/20-reducing-input-latency.pdf)
+
 
 
 ### Open Source
