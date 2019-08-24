@@ -1,7 +1,9 @@
 #
 # Makefile for js-example
 #
-.PHONY: usage edit build run clean git
+#
+#
+.jjPHONY: usage edit build run clean git
 #----------------------------------------------------------------------------------
 usage:
 	@echo "usage: make [build|run]"
