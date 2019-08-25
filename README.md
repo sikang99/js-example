@@ -16,6 +16,10 @@ Javascript programming
     -  web worker libraries: greenlet, Workerize and [Comlink](https://github.com/GoogleChromeLabs/comlink)
     -  transferable values of type ArrayBuffer, MessagePort, ImageBitmap
 - 2018/04/01 [How to use Web Workers to schedule consistent asynchronous tasks in JavaScript](https://www.freecodecamp.org/news/how-web-workers-can-help-with-consistent-asynchronous-tasks-in-javascript-cd6d728fa4ee/)
+- 2018/02/18 [Easier Web Workers](https://www.loxodrome.io/post/easier-web-workers/)
+    - Greenlet, Comlink, Operative
+    - promise-worker, Workerize, Clooney
+    - Fibrelite based on greenlet
 - 2017/04/30 [JavaScript: From Workers to Shared Memory](https://lucasfcosta.com/2017/04/30/JavaScript-From-Workers-to-Shared-Memory.html)
 
 
@@ -24,9 +28,14 @@ Javascript programming
 - [Reducing input latency on the web](https://www.w3.org/2018/12/games-workshop/slides/20-reducing-input-latency.pdf)
 - [**Web Workers API: Using web workers**](https://code-examples.net/en/docs/dom/web_workers_api/using_web_workers)
 - [Web Workers API](https://code-examples.net/en/docs/dom/web_workers_api)
+- [Using Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
+    - dedicated workers, shared workers, embedded workers
 - [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
 - [**is Service Worker ready?**](https://jakearchibald.github.io/isserviceworkerready/resources.html)
 - [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers/)
+- [A simple demo to show shared worker basics.](https://discourse.threejs.org/t/web-workers-in-3d-web-applications/5674)
+    - [three.js offscreen canvas example](https://threejs.org/examples/webgl_worker_offscreencanvas.html)
+ - [**Low-latency rendering with the desynchronized hint**](https://developers.google.com/web/updates/2019/05/desynchronized)
 
 
 ### Stack Overflow
@@ -36,6 +45,8 @@ Javascript programming
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
+- [jamesmilneruk/fibrelite](https://github.com/jamesmilneruk/fibrelite) - keeping the mainthread free with inline Web Workers
+- [amesMilnerUK/web-worker-comparison](https://github.com/JamesMilnerUK/web-worker-comparison) - Comparing plain Web Workers and various associated libraries
 - [**ampproject/worker-dom**](https://github.com/ampproject/worker-dom) - The same DOM API and Frameworks you know, but in a Web Worker
 - [DannyMcwaves/web-workers](https://github.com/DannyMcwaves/web-workers) - An exemplary introduction to web workers.
 - [lars-t-hansen/parlib-simple](https://github.com/lars-t-hansen/parlib-simple)
@@ -44,6 +55,7 @@ Javascript programming
 - [developit/workerize](https://github.com/developit/workerize)
 - [israelss/simple-web-worker](https://github.com/israelss/simple-web-worker)
 - [mdn/simple-web-worker](https://github.com/mdn/simple-web-worker) - A simple web worker test.
+- [mdn/simple-shared-worker](https://github.com/mdn/simple-shared-worker) - A simple demo to show shared worker basics.
 
 ### Persons
 - [loxodrome.io](https://www.loxodrome.io) - WebAssembly, Web Worker, Web Component, Go, WorkerDOM
