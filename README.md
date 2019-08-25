@@ -10,7 +10,7 @@ Javascript programming
 ### Information
 - [**NavidZ/input-for-workers**](https://github.com/NavidZ/input-for-workers) - Specification for exposing input events to workers
 - [Reducing input latency on the web](https://www.w3.org/2018/12/games-workshop/slides/20-reducing-input-latency.pdf)
-
+- [**Web Workers API: Using web workers**](https://code-examples.net/en/docs/dom/web_workers_api/using_web_workers)
 
 
 ### Open Source
