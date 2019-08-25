@@ -35,3 +35,6 @@ Javascript programming
 - [israelss/simple-web-worker](https://github.com/israelss/simple-web-worker)
 - [mdn/simple-web-worker](https://github.com/mdn/simple-web-worker) - A simple web worker test.
 
+### Persons
+- [loxodrome.io](https://www.loxodrome.io) - WebAssembly, Web Worker, Web Component, Go
+
