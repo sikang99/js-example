@@ -4,8 +4,12 @@ Javascript programming
 
 
 ### History
+- 2019/07/22 [Using WebAssembly with Web Workers](https://www.sitepen.com/blog/using-webassembly-with-web-workers/)
 - 2018/09/09 [**Improved Performance with OffscreenCanvas**](https://newinweb.com/2018/09/10/offscreen-canvas/)
 - 2018/08/28 [50 popular JavaScript open-source projects on GitHub in 2018](https://hackernoon.com/50-popular-javascript-open-source-projects-on-github-in-2018-469c11b48b8d)
+- 2018/05/22 [Examining Web Worker Performance](https://www.loxodrome.io/post/web-worker-performance/)
+    -  web worker libraries: greenlet, Workerize and Comlink
+    -  transferable values of type ArrayBuffer, MessagePort, ImageBitmap
 - 2018/04/01 [How to use Web Workers to schedule consistent asynchronous tasks in JavaScript](https://www.freecodecamp.org/news/how-web-workers-can-help-with-consistent-asynchronous-tasks-in-javascript-cd6d728fa4ee/)
 - 2017/04/30 [JavaScript: From Workers to Shared Memory](https://lucasfcosta.com/2017/04/30/JavaScript-From-Workers-to-Shared-Memory.html)
 
