@@ -28,7 +28,9 @@ Javascript programming
 
 ### Stack Overflow
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
-
+- Tags
+    - [service worker](https://stackoverflow.com/questions/tagged/service-worker)
+    - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
 - [**ampproject/worker-dom**](https://github.com/ampproject/worker-dom) - The same DOM API and Frameworks you know, but in a Web Worker
