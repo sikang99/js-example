@@ -7,6 +7,7 @@ Javascript programming
 
 ### History
 - 2019/07/22 [Using WebAssembly with Web Workers](https://www.sitepen.com/blog/using-webassembly-with-web-workers/)
+- 2018/10/01 [A Quick Look at WorkerDOM](https://www.loxodrome.io/post/worker-dom/)
 - 2018/09/09 [**Improved Performance with OffscreenCanvas**](https://newinweb.com/2018/09/10/offscreen-canvas/)
 - 2018/08/28 [50 popular JavaScript open-source projects on GitHub in 2018](https://hackernoon.com/50-popular-javascript-open-source-projects-on-github-in-2018-469c11b48b8d)
 - 2018/05/22 [Examining Web Worker Performance](https://www.loxodrome.io/post/web-worker-performance/)
@@ -38,5 +39,5 @@ Javascript programming
 - [mdn/simple-web-worker](https://github.com/mdn/simple-web-worker) - A simple web worker test.
 
 ### Persons
-- [loxodrome.io](https://www.loxodrome.io) - WebAssembly, Web Worker, Web Component, Go
+- [loxodrome.io](https://www.loxodrome.io) - WebAssembly, Web Worker, Web Component, Go, WorkerDOM
 
