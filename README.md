@@ -23,6 +23,7 @@ Javascript programming
 - [**Web Workers API: Using web workers**](https://code-examples.net/en/docs/dom/web_workers_api/using_web_workers)
 - [Web Workers API](https://code-examples.net/en/docs/dom/web_workers_api)
 - [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
+- [**is Service Worker ready?**](https://jakearchibald.github.io/isserviceworkerready/resources.html)
 
 
 ### Stack Overflow
