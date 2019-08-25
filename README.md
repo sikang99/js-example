@@ -19,6 +19,9 @@ Javascript programming
 - 2019/02/27 [**Web Workers Demystified**](https://medium.com/clockwork-nl/web-workers-demystified-fb4c84bd566c)
 - 2019/00/00
 - 2018/12/12 [Web workers in action: why they’re helpful, and how you should use them](https://www.freecodecamp.org/news/web-workers-in-action-2c9ff33be266/)
+- 2018/11/20 [Web workers vs Service workers vs Worklets](https://bitsofco.de/web-workers-vs-service-workers-vs-worklets/)
+- 2018/10/31 [Transferable ImageData](https://www.kevinhoyt.com/2018/10/31/transferable-imagedata/)
+- 2018/10/23 [**Image Processing in a Web Worker**](https://www.kevinhoyt.com/2018/10/23/image-processing-in-a-web-worker/)
 - 2018/10/01 [A Quick Look at WorkerDOM](https://www.loxodrome.io/post/worker-dom/)
 - 2018/09/23 [Building an Async React Renderer with Diffing in Web Worker](https://medium.com/@azizhk/building-an-async-react-renderer-with-diffing-in-web-worker-f3be07f16d90)
 - 2018/09/09 [**Improved Performance with OffscreenCanvas**](https://newinweb.com/2018/09/10/offscreen-canvas/)
@@ -59,7 +62,7 @@ Javascript programming
 - [A simple demo to show shared worker basics.](https://discourse.threejs.org/t/web-workers-in-3d-web-applications/5674)
     - [three.js offscreen canvas example](https://threejs.org/examples/webgl_worker_offscreencanvas.html)
 - [**Low-latency rendering with the desynchronized hint**](https://developers.google.com/web/updates/2019/05/desynchronized)
-
+- [The Service Worker Lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle)
 
 ### Stack Overflow
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
@@ -68,6 +71,7 @@ Javascript programming
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
+- [satya164/web-worker-proxy](https://github.com/satya164/web-worker-proxy) - A better way of working with web workers
 - [liron-navon/web-workers-examples](https://github.com/liron-navon/web-workers-examples)
 - [9jaswag/web-performance-with-workers](https://github.com/9jaswag/web-performance-with-workers) - demo app for improving web performance using Web Workers
 - [jamesmilneruk/fibrelite](https://github.com/jamesmilneruk/fibrelite) - keeping the mainthread free with inline Web Workers
