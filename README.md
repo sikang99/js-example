@@ -21,9 +21,10 @@ Javascript programming
 - 2018/05/22 [Examining Web Worker Performance](https://www.loxodrome.io/post/web-worker-performance/)
     -  web worker libraries: greenlet, Workerize and [Comlink](https://github.com/GoogleChromeLabs/comlink)
     -  transferable values of type ArrayBuffer, MessagePort, ImageBitmap
-- 2018/04/01 [Parallel programming in JavaScript using Web Workers](https://itnext.io/achieving-parallelism-in-javascript-using-web-workers-8f921f2d26db)
+- 2018/04/01 [**Parallel programming in JavaScript using Web Workers**](https://itnext.io/achieving-parallelism-in-javascript-using-web-workers-8f921f2d26db)
     - Transferable objects : ArrayBuffer, MessagePort and ImageBitmap
     - `worker.postMessage(payload, transferableObjects)`
+    - Once these objects are transferred, they become neutered or unusable and can not be transferred again.
 - 2018/04/01 [How to use Web Workers to schedule consistent asynchronous tasks in JavaScript](https://www.freecodecamp.org/news/how-web-workers-can-help-with-consistent-asynchronous-tasks-in-javascript-cd6d728fa4ee/)
 - 2018/03/26 [Using web workers for safe, concurrent JavaScript](https://blog.logrocket.com/using-webworkers-for-safe-concurrent-javascript-3f33da4eb0b2/)
     - [Image Filters with Canvas](https://www.html5rocks.com/en/tutorials/canvas/imagefilters/)
