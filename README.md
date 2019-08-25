@@ -24,7 +24,7 @@ Javascript programming
 - [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
 
 
-## Stack Overflow
+### Stack Overflow
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
 
 
