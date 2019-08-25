@@ -30,6 +30,7 @@ Javascript programming
 
 
 ### Open Source
+- [**ampproject/worker-dom**](https://github.com/ampproject/worker-dom) - The same DOM API and Frameworks you know, but in a Web Worker
 - [DannyMcwaves/web-workers](https://github.com/DannyMcwaves/web-workers) - An exemplary introduction to web workers.
 - [lars-t-hansen/parlib-simple](https://github.com/lars-t-hansen/parlib-simple)
 - [https://github.com/greenido/Web-Workers-Examples-](https://github.com/greenido/Web-Workers-Examples-) - Web Workers Example of book
