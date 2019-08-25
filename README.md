@@ -23,6 +23,8 @@ Javascript programming
     - Greenlet, Comlink, Operative
     - promise-worker, Workerize, Clooney
     - Fibrelite based on greenlet
+- 2018/00/00
+- 2017/11/23 [Introduction to Shared Memory in JavaScript](https://www.hongkiat.com/blog/shared-memory-in-javascript/)
 - 2017/04/30 [JavaScript: From Workers to Shared Memory](https://lucasfcosta.com/2017/04/30/JavaScript-From-Workers-to-Shared-Memory.html)
 
 
