@@ -21,6 +21,7 @@ Javascript programming
 - 2019/02/27 [**Web Workers Demystified**](https://medium.com/clockwork-nl/web-workers-demystified-fb4c84bd566c)
 - 2019/02/22 [Service workers and SEO: What developers should know](https://searchengineland.com/service-workers-and-seo-seo-for-developers-311292)
     - The original idea for service workers is to allow programmers the ability to create native-like apps using only Web technology.
+    - PWA, Edge SEO, push notification, dynamic content 
 - 2019/00/00
 - 2018/12/12 [Web workers in action: why they’re helpful, and how you should use them](https://www.freecodecamp.org/news/web-workers-in-action-2c9ff33be266/)
 - 2018/11/20 [Web workers vs Service workers vs Worklets](https://bitsofco.de/web-workers-vs-service-workers-vs-worklets/)
