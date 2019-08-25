@@ -3,6 +3,8 @@
 Javascript programming
 
 ## Web Worker
+- [Web Workers](https://w3c.github.io/workers/), Editor’s Draft, 26 June 2017
+
 
 ### History
 - 2019/07/22 [Using WebAssembly with Web Workers](https://www.sitepen.com/blog/using-webassembly-with-web-workers/)
