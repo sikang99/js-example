@@ -9,9 +9,16 @@ Javascript programming
 ### History
 - 2019/07/22 [Using WebAssembly with Web Workers](https://www.sitepen.com/blog/using-webassembly-with-web-workers/)
 - 2019/06/19 [Real-time processing with Web Workers](https://blog.logrocket.com/real-time-processing-web-workers/)
+- 2019/05/16 [Web Workers](https://flaviocopes.com/web-workers/)
+    - [The Channel Messaging API](https://flaviocopes.com/channel-messaging-api/)
+- 2019/05/13 [Web Workers in the Real World](https://medium.com/samsung-internet-dev/web-workers-in-the-real-world-d61387958a40)
+- 2019/04/29 [Optimizing JavaScript Application Performance with Web Workers](https://www.twilio.com/blog/optimize-javascript-application-performance-web-workers)
 - 2019/04/03 [Faster WebGL/Three.js 3D graphics with OffscreenCanvas and Web Workers](https://dev.to/evilmartians/faster-webgl-three-js-3d-graphics-with-offscreencanvas-and-web-workers-43he)
 - 2019/04/03 [JavaScript Web Workers: A Beginner’s Guide](https://www.sitepoint.com/javascript-web-workers/)
+- 2019/03/07 [Introduction to Web Workers](https://blog.bitsrc.io/introduction-to-web-workers-674d372f1b85)
+- 2019/02/27 [**Web Workers Demystified**](https://medium.com/clockwork-nl/web-workers-demystified-fb4c84bd566c)
 - 2019/00/00
+- 2018/12/12 [Web workers in action: why they’re helpful, and how you should use them](https://www.freecodecamp.org/news/web-workers-in-action-2c9ff33be266/)
 - 2018/10/01 [A Quick Look at WorkerDOM](https://www.loxodrome.io/post/worker-dom/)
 - 2018/09/23 [Building an Async React Renderer with Diffing in Web Worker](https://medium.com/@azizhk/building-an-async-react-renderer-with-diffing-in-web-worker-f3be07f16d90)
 - 2018/09/09 [**Improved Performance with OffscreenCanvas**](https://newinweb.com/2018/09/10/offscreen-canvas/)
@@ -38,6 +45,7 @@ Javascript programming
 
 
 ### Information
+- [Performance comparison among Blocking Code, Async Programming and Web Workers](https://bhushangoel.github.io/webworker-demo-1/)
 - [**NavidZ/input-for-workers**](https://github.com/NavidZ/input-for-workers) - Specification for exposing input events to workers
 - [Reducing input latency on the web](https://www.w3.org/2018/12/games-workshop/slides/20-reducing-input-latency.pdf)
 - [**Web Workers API: Using web workers**](https://code-examples.net/en/docs/dom/web_workers_api/using_web_workers)
@@ -60,6 +68,8 @@ Javascript programming
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
+- [liron-navon/web-workers-examples](https://github.com/liron-navon/web-workers-examples)
+- [9jaswag/web-performance-with-workers](https://github.com/9jaswag/web-performance-with-workers) - demo app for improving web performance using Web Workers
 - [jamesmilneruk/fibrelite](https://github.com/jamesmilneruk/fibrelite) - keeping the mainthread free with inline Web Workers
 - [amesMilnerUK/web-worker-comparison](https://github.com/JamesMilnerUK/web-worker-comparison) - Comparing plain Web Workers and various associated libraries
 - [**ampproject/worker-dom**](https://github.com/ampproject/worker-dom) - The same DOM API and Frameworks you know, but in a Web Worker
