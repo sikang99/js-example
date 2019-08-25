@@ -36,9 +36,10 @@ Javascript programming
 - [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
 - [**is Service Worker ready?**](https://jakearchibald.github.io/isserviceworkerready/resources.html)
 - [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers/)
+- [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas)
 - [A simple demo to show shared worker basics.](https://discourse.threejs.org/t/web-workers-in-3d-web-applications/5674)
     - [three.js offscreen canvas example](https://threejs.org/examples/webgl_worker_offscreencanvas.html)
- - [**Low-latency rendering with the desynchronized hint**](https://developers.google.com/web/updates/2019/05/desynchronized)
+- [**Low-latency rendering with the desynchronized hint**](https://developers.google.com/web/updates/2019/05/desynchronized)
 
 
 ### Stack Overflow
