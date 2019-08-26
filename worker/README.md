@@ -1,4 +1,4 @@
-# sikang99/js-example
+# js-example/worker 
 
 Javascript programming
 

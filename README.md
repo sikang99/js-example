@@ -3,5 +3,5 @@
 Javascript programming
 
 - [Worker](worker/README.md)
-- [Canvas](cavas/README.md)
+- [Canvas](canvas/README.md)
 
