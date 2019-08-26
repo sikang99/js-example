@@ -71,6 +71,8 @@ Javascript programming
     - [three.js offscreen canvas example](https://threejs.org/examples/webgl_worker_offscreencanvas.html)
 - [**Low-latency rendering with the desynchronized hint**](https://developers.google.com/web/updates/2019/05/desynchronized)
 - [The Service Worker Lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle)
+- [Adding a Service Worker and Offline into your Web App](https://developers.google.com/web/fundamentals/codelabs/offline/)
+
 
 ### Stack Overflow
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
@@ -79,6 +81,7 @@ Javascript programming
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
+- [michaeltreat/Web-Worker-Demo](https://github.com/michaeltreat/Web-Worker-Demo)
 - [nolanlawson/promise-worker](https://github.com/nolanlawson/promise-worker) - Promise-based messaging for Web Workers and Service Workers
 - [ColinEberhardt/mandelbrot-threaded-webassembly](https://github.com/ColinEberhardt/mandelbrot-threaded-webassembly) - A simple demonstration of WebAssembly threads
 - [satya164/web-worker-proxy](https://github.com/satya164/web-worker-proxy) - A better way of working with web workers
