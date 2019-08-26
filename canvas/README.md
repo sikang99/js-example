@@ -13,3 +13,5 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 - [OffscreenCanvas Demo](https://devnook.github.io/OffscreenCanvasDemo/index.html)
 
 ### Open Source
+- [Gaia3D/mago3djs](https://github.com/Gaia3D/mago3djs) - 3D Rendering Library
+
