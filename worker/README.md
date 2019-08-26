@@ -79,6 +79,7 @@ Javascript programming
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
+- [nolanlawson/promise-worker](https://github.com/nolanlawson/promise-worker) - Promise-based messaging for Web Workers and Service Workers
 - [ColinEberhardt/mandelbrot-threaded-webassembly](https://github.com/ColinEberhardt/mandelbrot-threaded-webassembly) - A simple demonstration of WebAssembly threads
 - [satya164/web-worker-proxy](https://github.com/satya164/web-worker-proxy) - A better way of working with web workers
 - [liron-navon/web-workers-examples](https://github.com/liron-navon/web-workers-examples)
