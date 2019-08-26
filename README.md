@@ -3,11 +3,14 @@
 Javascript programming
 
 ## Web Worker
-- [Web Workers](https://w3c.github.io/workers/), Editor’s Draft, 26 June 2017
+- [Web Workers](https://w3c.github.io/workers/), Editor’s Draft, 26 June 2017 
+- [HTML Living Standard](https://html.spec.whatwg.org/multipage/) — Last Updated 23 August 2019
+    - [10 Web workers](https://html.spec.whatwg.org/multipage/#toc-workers)
 
 
 ### History
 - 2019/07/22 [Using WebAssembly with Web Workers](https://www.sitepen.com/blog/using-webassembly-with-web-workers/)
+- 2019/07/15 [Faster Fractals with Multi-Threaded WebAssembly](https://blog.scottlogic.com/2019/07/15/multithreaded-webassembly.html)
 - 2019/06/20 [The ImageBitmap rendering context for <offscreenCanvas>](https://www.chromestatus.com/feature/5700221617045504)
 - 2019/06/20 [Understanding Worker Threads in Node.js](https://nodesource.com/blog/worker-threads-nodejs/)
 - 2019/06/19 [Real-time processing with Web Workers](https://blog.logrocket.com/real-time-processing-web-workers/)
@@ -76,6 +79,7 @@ Javascript programming
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
 
 ### Open Source
+- [ColinEberhardt/mandelbrot-threaded-webassembly](https://github.com/ColinEberhardt/mandelbrot-threaded-webassembly) - A simple demonstration of WebAssembly threads
 - [satya164/web-worker-proxy](https://github.com/satya164/web-worker-proxy) - A better way of working with web workers
 - [liron-navon/web-workers-examples](https://github.com/liron-navon/web-workers-examples)
 - [9jaswag/web-performance-with-workers](https://github.com/9jaswag/web-performance-with-workers) - demo app for improving web performance using Web Workers

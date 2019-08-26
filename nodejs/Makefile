@@ -2,7 +2,7 @@
 # Makefile for node.js using worker thread
 #
 usage:
-	@echo "usage: make [edit|run]"
+	@echo "usage: make [edit|run|test]"
 
 edit e:
 	vi test.js
