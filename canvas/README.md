@@ -12,6 +12,7 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 ```
 - [OffscreenCanvas Demo](https://devnook.github.io/OffscreenCanvasDemo/index.html)
 - Code Example: [OffscreenCanvas](https://code-examples.net/en/docs/dom/offscreencanvas)
+- [junov/OffscreenCanvasAnimation](https://github.com/junov/OffscreenCanvasAnimation) - Proposal for driving animations in a Worker for OffscreenCanvas
 
 
 ### Open Source
