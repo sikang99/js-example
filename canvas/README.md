@@ -2,6 +2,7 @@
 
 
 ### History
+- 2018/12/03 [크로미움 엔진과 오프스크린 캔버스 기술](https://brunch.co.kr/@clay1987/102)
 - 2018/08/01 [OffscreenCanvas — Speed up Your Canvas Operations with a Web Worker](https://developers.google.com/web/updates/2018/08/offscreen-canvas)
 
 ### Information
