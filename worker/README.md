@@ -64,6 +64,7 @@ Javascript programming
 - [Using Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
     - dedicated workers, shared workers, embedded workers
 - [SharedArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
+- [Worklet](https://developer.mozilla.org/en-US/docs/Web/API/Worklet)
 - [**is Service Worker ready?**](https://jakearchibald.github.io/isserviceworkerready/resources.html)
 - [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers/)
 - [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas)
@@ -74,12 +75,12 @@ Javascript programming
 - [Adding a Service Worker and Offline into your Web App](https://developers.google.com/web/fundamentals/codelabs/offline/)
 - [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
-
 ### Stack Overflow
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
 - Tags
     - [service worker](https://stackoverflow.com/questions/tagged/service-worker)
     - [web worker](https://stackoverflow.com/questions/tagged/web-worker)
+
 
 ### Open Source
 - [michaeltreat/Web-Worker-Demo](https://github.com/michaeltreat/Web-Worker-Demo)
