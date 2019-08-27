@@ -23,5 +23,7 @@ Web Audio, Audio Worklet
 - [chrisguttandin/standardized-audio-context](https://github.com/chrisguttandin/standardized-audio-context) - A cross-browser implementation of the AudioContext which aims to closely follow the standard
 - [WeAreROLI/JUCE](https://github.com/WeAreROLI/JUCE) - The JUCE cross-platform C++ framework https://juce.com
 - [pioug/audio-worklet](https://github.com/pioug/audio-worklet) - AudioWorklet sample (noise generator)
+- [aatishb/synthesine](https://github.com/aatishb/synthesine) - Synthesine https://aatishb.com/synthesine/
+
 
 
