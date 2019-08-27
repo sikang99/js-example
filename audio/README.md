@@ -22,5 +22,6 @@ Web Audio, Audio Worklet
 - [benji6/virtual-audio-graph](https://github.com/benji6/virtual-audio-graph) - Library for declaratively manipulating the Web Audio API
 - [chrisguttandin/standardized-audio-context](https://github.com/chrisguttandin/standardized-audio-context) - A cross-browser implementation of the AudioContext which aims to closely follow the standard
 - [WeAreROLI/JUCE](https://github.com/WeAreROLI/JUCE) - The JUCE cross-platform C++ framework https://juce.com
+- [pioug/audio-worklet](https://github.com/pioug/audio-worklet) - AudioWorklet sample (noise generator)
 
 
