@@ -11,6 +11,7 @@ Web Audio, Audio Worklet
     - [Convolution Reverb and Web Audio API](https://itnext.io/convolution-reverb-and-web-audio-api-8ee65108f4ae)
 - 2018/06/01 [Audio Worklet Design Pattern](https://developers.google.com/web/updates/2018/06/audio-worklet-design-pattern)
 - 2017/12/01 [Enter Audio Worklet](https://developers.google.com/web/updates/2017/12/audio-worklet) - M64, M66(default)
+- 2016/01/01 [Record Audio and Video with MediaRecorder](https://developers.google.com/web/updates/2016/01/mediarecorder)
 
 
 ### Information
@@ -29,6 +30,7 @@ Web Audio, Audio Worklet
 - 2018 [Web Assembly Audio Worklet (WAAW) Csound](https://arxiv.org/abs/1804.111200)
     - [WAAW Csound](https://www.groundai.com/project/waaw-csound/)
     - [vlazzarini/waaw](https://github.com/vlazzarini/waaw)
+    - [WebAudio Csound Examples](https://vlazzarini.github.io/paw/examples/index.html)
 
 
 ### Open Source
