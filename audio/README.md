@@ -5,8 +5,9 @@ Web Audio, Audio Worklet
 ### History
 - 2019/07/23 [Audio/Video synchronization with the Web Audio API](https://blog.paul.cx/post/audio-video-synchronization-with-the-web-audio-api/)
 - 2019/05/13 [Screen Recorder: recording microphone and the desktop audio at the same time](https://paul.kinlan.me/screen-recorderrecording-microphone-and-the-desktop-audio-at-the-same-time/)
+- 2018/12/27 [Implementing AudioWorklets with React](https://hackernoon.com/implementing-audioworklets-with-react-8a80a470474)
 - 2018/06/01 [Audio Worklet Design Pattern](https://developers.google.com/web/updates/2018/06/audio-worklet-design-pattern)
-- 2017/12/01 [Enter Audio Worklet](https://developers.google.com/web/updates/2017/12/audio-worklet) - enabled in M66
+- 2017/12/01 [Enter Audio Worklet](https://developers.google.com/web/updates/2017/12/audio-worklet) - M64, M66(default)
 
 
 ### Information
@@ -17,6 +18,7 @@ Web Audio, Audio Worklet
 - [Worklet](https://developer.mozilla.org/en-US/docs/Web/API/Worklet)
 - 2018 [AudioWorklet: The future of web audio](https://hoch.io/assets/publications/icmc-2018-choi-audioworklet.pdf)
 - ChromeStatus: [WebAudio: AudioWorklet](https://www.chromestatus.com/feature/4588498229133312)
+- [dsp.audio](https://dsp.audio/) - Workler Editor
 
 
 ### Open Source
