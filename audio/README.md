@@ -25,8 +25,14 @@ Web Audio, Audio Worklet
 - [Web Audio API](https://webaudio.github.io/web-audio-api/), Editor’s Draft, 23 August 2019
 - [Audio DSP Playground](https://arthurcarabott.com/audio-dsp-playground/)
 
+### Papers
+- 2018 [Web Assembly Audio Worklet (WAAW) Csound](https://arxiv.org/abs/1804.111200)
+    - [WAAW Csound](https://www.groundai.com/project/waaw-csound/)
+    - [vlazzarini/waaw](https://github.com/vlazzarini/waaw)
+
 
 ### Open Source
+- [kunstmusik/waaw](https://github.com/kunstmusik/waaw) - Web Audio Audio Worklet demo site for Csound
 - [muaz-khan/WebRTC-Experiment](https://github.com/muaz-khan/WebRTC-Experiment) 
 - [GoogleChromeLabs/audioworklet-polyfill](https://github.com/GoogleChromeLabs/audioworklet-polyfill) - Polyfill AudioWorklet using the legacy ScriptProcessor API
 - [jariseon/audioworklet-polyfill](https://github.com/jariseon/audioworklet-polyfill) - strictly unofficial polyfill for Web Audio API AudioWorklet
