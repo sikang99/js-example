@@ -2,7 +2,8 @@
 
 Javascript programming
 
-- [Worker](worker/README.md)
+- [Audio](audio/README.md)
 - [Canvas](canvas/README.md)
 - [Security](security/README.md)
+- [**Worker**](worker/README.md)
 
