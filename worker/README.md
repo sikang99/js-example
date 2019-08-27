@@ -100,6 +100,8 @@ Javascript programming
 - [israelss/simple-web-worker](https://github.com/israelss/simple-web-worker)
 - [mdn/simple-web-worker](https://github.com/mdn/simple-web-worker) - A simple web worker test.
 - [mdn/simple-shared-worker](https://github.com/mdn/simple-shared-worker) - A simple demo to show shared worker basics.
+- [Rumyra/Talk-Web-Workers](https://github.com/Rumyra/Talk-Web-Workers) - A talk about web workers, the what & how, with a focus on workers in specs, like audio worklet, offline canvas and CSS Paint API among others
+
 
 ### Persons
 - [loxodrome.io](https://www.loxodrome.io) - WebAssembly, Web Worker, Web Component, Go, WorkerDOM

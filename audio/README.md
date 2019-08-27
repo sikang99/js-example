@@ -9,6 +9,7 @@ Web Audio, Audio Worklet
 
 
 ### Information
+- [virtual-audio-graph](https://virtual-audio-graph.netlify.com/)
 - [Audio+Video+Screen Recording using RecordRTC](https://www.webrtc-experiment.com/RecordRTC/)
 - [Audio Worklet](https://googlechromelabs.github.io/web-audio-samples/audio-worklet/)
 - [Worklet](https://developer.mozilla.org/en-US/docs/Web/API/Worklet)
@@ -16,6 +17,10 @@ Web Audio, Audio Worklet
 
 ### Open Source
 - [muaz-khan/WebRTC-Experiment](https://github.com/muaz-khan/WebRTC-Experiment) 
-- [GoogleChromeLabs/audioworklet-polyfill](https://github.com/GoogleChromeLabs/audioworklet-polyfill)
+- [GoogleChromeLabs/audioworklet-polyfill](https://github.com/GoogleChromeLabs/audioworklet-polyfill) - Polyfill AudioWorklet using the legacy ScriptProcessor API
+- [jariseon/audioworklet-polyfill](https://github.com/jariseon/audioworklet-polyfill) - strictly unofficial polyfill for Web Audio API AudioWorklet
+- [benji6/virtual-audio-graph](https://github.com/benji6/virtual-audio-graph) - Library for declaratively manipulating the Web Audio API
+- [chrisguttandin/standardized-audio-context](https://github.com/chrisguttandin/standardized-audio-context) - A cross-browser implementation of the AudioContext which aims to closely follow the standard
+- [WeAreROLI/JUCE](https://github.com/WeAreROLI/JUCE) - The JUCE cross-platform C++ framework https://juce.com
 
 
