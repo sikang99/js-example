@@ -4,8 +4,11 @@ Web Audio, Audio Worklet
 
 ### History
 - 2019/07/23 [Audio/Video synchronization with the Web Audio API](https://blog.paul.cx/post/audio-video-synchronization-with-the-web-audio-api/)
+- 2019/05/16 [**Audio rendering in web**](http://www.secmem.org/blog/2019/05/16/audio-rendering-in-web/)
 - 2019/05/13 [Screen Recorder: recording microphone and the desktop audio at the same time](https://paul.kinlan.me/screen-recorderrecording-microphone-and-the-desktop-audio-at-the-same-time/)
 - 2018/12/27 [Implementing AudioWorklets with React](https://hackernoon.com/implementing-audioworklets-with-react-8a80a470474)
+- 2018/06/12 [Algorithmic Reverb and Web Audio API](https://itnext.io/algorithmic-reverb-and-web-audio-api-e1ccec94621a)
+    - [Convolution Reverb and Web Audio API](https://itnext.io/convolution-reverb-and-web-audio-api-8ee65108f4ae)
 - 2018/06/01 [Audio Worklet Design Pattern](https://developers.google.com/web/updates/2018/06/audio-worklet-design-pattern)
 - 2017/12/01 [Enter Audio Worklet](https://developers.google.com/web/updates/2017/12/audio-worklet) - M64, M66(default)
 
@@ -19,6 +22,8 @@ Web Audio, Audio Worklet
 - 2018 [AudioWorklet: The future of web audio](https://hoch.io/assets/publications/icmc-2018-choi-audioworklet.pdf)
 - ChromeStatus: [WebAudio: AudioWorklet](https://www.chromestatus.com/feature/4588498229133312)
 - [dsp.audio](https://dsp.audio/) - Workler Editor
+- [Web Audio API](https://webaudio.github.io/web-audio-api/), Editor’s Draft, 23 August 2019
+- [Audio DSP Playground](https://arthurcarabott.com/audio-dsp-playground/)
 
 
 ### Open Source
@@ -30,6 +35,6 @@ Web Audio, Audio Worklet
 - [WeAreROLI/JUCE](https://github.com/WeAreROLI/JUCE) - The JUCE cross-platform C++ framework https://juce.com
 - [pioug/audio-worklet](https://github.com/pioug/audio-worklet) - AudioWorklet sample (noise generator)
 - [aatishb/synthesine](https://github.com/aatishb/synthesine) - Synthesine https://aatishb.com/synthesine/
-
+- [bloom510/react-audio-worklet-example](https://github.com/bloom510/react-audio-worklet-example) - 
 
 
