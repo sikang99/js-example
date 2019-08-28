@@ -4,6 +4,8 @@
 ### History
 - 2019/06/19 [Canvas Text-to-Particle Effect](https://developpaper.com/canvas-text-to-particle-effect/)
 - 2019/05/11 [OffscreenCanvas - Render your graphics off the main thread](https://yashints.dev/blog/2019/05/11/offscreen-canvas)
+- 2019/01/06 [How displaying an image on HTML5 canvas works](https://www.nashvail.me/blog/canvas-image/)
+- 2019/00/00
 - 2018/12/03 [크로미움 엔진과 오프스크린 캔버스 기술](https://brunch.co.kr/@clay1987/102)
 - 2018/08/01 [OffscreenCanvas — Speed up Your Canvas Operations with a Web Worker](https://developers.google.com/web/updates/2018/08/offscreen-canvas)
 
@@ -17,6 +19,8 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 - Code Example: [OffscreenCanvas](https://code-examples.net/en/docs/dom/offscreencanvas)
 - [junov/OffscreenCanvasAnimation](https://github.com/junov/OffscreenCanvasAnimation) - Proposal for driving animations in a Worker for OffscreenCanvas
 - [HTML Canvas API Tutorial](https://flaviocopes.com/canvas/)
+- [Learn HTML5 Canvas](https://www.commonlounge.com/discussion/2ea5b6daefec44e8b01a6acd9e601006)
+    - [Optimizing canvas](https://www.commonlounge.com/discussion/f6c17da678d846c88e2c75dfdcd3056d)
 
 
 ### Slides
