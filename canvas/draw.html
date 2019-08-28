@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+  <title>drawImage() test</title>
+  <style type="text/css">
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  #fps {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 15px;
+    background: rgba(255, 0, 255, 0.9);
+    color: #fff;
+    font-family: Courier;
+    font-size: 42px;
+    font-weight: 500;
+  }
+  </style>
+</head>
+<body>
+  <div id="fps"></div>
+  <canvas id="canvas"></canvas>
+
+  <script type="text/javascript">
+  var getTime = window.performance ? window.performance.now.bind(window.performance) : Date.now.bind(Date);
+  var fpsCounter = document.getElementById('fps');
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+  var devicePixelRatio = window.devicePixelRatio;
+  var lastTick;
+
+  canvas.width = width * devicePixelRatio;
+  canvas.height = height * devicePixelRatio;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  var offscreenCanvas = document.createElement('canvas');
+  var offscreenCtx = offscreenCanvas.getContext('2d');
+
+  var img = new Image();
+  img.src = 'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Beagle_puppy_Cadet.jpg/320px-Beagle_puppy_Cadet.jpg';
+  img.onload = function () {
+    offscreenCanvas.width = img.width * devicePixelRatio;
+    offscreenCanvas.height = img.height * devicePixelRatio;
+    offscreenCanvas.style.width = img.width + 'px';
+    offscreenCanvas.style.height = img.height + 'px';
+    offscreenCtx.scale(devicePixelRatio, devicePixelRatio);
+    offscreenCtx.drawImage(img, 0, 0, img.width, img.height);
+    lastTick = getTime();
+    tick();
+  };
+
+  function tick () {
+    var now = getTime();
+    var fps = Math.min(60, Math.round(1000 / (now - lastTick)));
+    fpsCounter.innerHTML = fps + 'fps';
+    ctx.drawImage(offscreenCanvas, 0, 0, img.width, img.height);
+    requestAnimationFrame(tick);
+    lastTick = getTime();
+  }
+  </script>
+</body>
+</html>
+
