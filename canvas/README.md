@@ -8,6 +8,8 @@
 - 2019/00/00
 - 2018/12/03 [크로미움 엔진과 오프스크린 캔버스 기술](https://brunch.co.kr/@clay1987/102)
 - 2018/08/01 [OffscreenCanvas — Speed up Your Canvas Operations with a Web Worker](https://developers.google.com/web/updates/2018/08/offscreen-canvas)
+- 2010/10/20 [video + canvas = magic](http://html5doctor.com/video-canvas-magic/)
+
 
 ### Information
 - [ImageBitmapRenderingContext](https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmapRenderingContext)
