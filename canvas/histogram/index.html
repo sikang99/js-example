@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTML5 demo: Canvas-based color histogram for videos, with a Web 
+      Worker</title>
+    <script type="text/javascript"><!--
+window.addEventListener('load', function () {
+  var worker = new Worker('histogram-worker.js'),
+      histCanvas = document.getElementById('histogram'),
+      histCtx = histCanvas.getContext('2d'),
+      histType = document.getElementById('histType'),
+      accuracy = document.getElementById('accuracy'),
+      runtime = document.getElementById('runtime'),
+      plotStyle = document.getElementById('plotStyle'),
+      plotFill = document.getElementById('plotFill'),
+      plotColors = document.getElementById('plotColors'),
+      vidSelector = document.getElementById('vidSelector'),
+      vid = document.getElementById('myVid'),
+      frameCanvas = document.createElement('canvas'),
+      frameCtx = frameCanvas.getContext('2d'),
+      gradients = {
+        17: null, // red
+        18: null, // green
+        20: null, // blue
+
+        33: null, // cyan
+        34: null, // magenta
+        36: null, // yellow
+        40: null, // kelvin
+
+        65: null, // hue
+        68: null  // val
+      },
+
+      colors = {
+        17: ['#000', '#f00'], // red
+        18: ['#000', '#0f0'], // green
+        20: ['#000', '#00f'], // blue
+
+        33: ['#000', '#0ff'], // cyan
+        34: ['#000', '#f0f'], // magenta
+        36: ['#000', '#ff0'], // yellow
+        40: ['#fff', '#000'], // kelvin
+
+        65: [ // hue
+          '#f00',  // 0, Red,       0°
+          '#ff0',  // 1, Yellow,   60°
+          '#0f0',  // 2, Green,   120°
+          '#0ff',  // 3, Cyan,    180°
+          '#00f',  // 4, Blue,    240°
+          '#f0f',  // 5, Magenta, 300°
+          '#f00'], // 6, Red,     360°
+        68: ['#000', '#fff'] // val
+      },
+
+      discreetWidth = Math.round(histCanvas.width / 255),
+      frameData = null,
+      accuracyStep = 4,
+      MathMin = Math.min,
+      MathMax = Math.max,
+      MathRound = Math.round;
+
+  var initHistogram = function () {
+    // Plot defaults
+    accuracy.value = 1;
+    accuracyStep = 4;
+    plotStyle.value = 1; // continuous
+    plotColors.value = 2; // flat colors
+    plotFill.checked = true;
+    histType.value = 16; // rgb
+    vidSelector.selectedIndex = 0;
+  };
+
+  var vidEnded = function () {
+    histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+    frameData = null;
+  };
+
+  var vidLoadedMetaData = function () {
+    frameCanvas.width = vid.videoWidth;
+    frameCanvas.height = vid.videoHeight;
+
+    var grad, color, i, n, w = frameCanvas.width;
+    for (grad in gradients) {
+      color = colors[grad];
+      gradients[grad] = histCtx.createLinearGradient(0, 0, w, 0);
+      grad = gradients[grad];
+
+      for (i = 0, n = color.length; i < n; i++) {
+        grad.addColorStop(i*1/(n-1), color[i]);
+      }
+    }
+
+    updateHist();
+  };
+
+  var drawHist = function (type, vals, maxCount) {
+    var ctxStyle,
+        histWidth = histCanvas.width,
+        histHeight = histCanvas.height,
+        dW = discreetWidth;
+
+    if (plotFill.checked || plotStyle.value == 2) { // plotStyle discreet
+      ctxStyle = 'fillStyle';
+      histCtx.strokeStyle = '#000';
+    } else {
+      ctxStyle = 'strokeStyle';
+    }
+
+    if (plotColors.value == 1) { // none
+      histCtx[ctxStyle] = '#999';
+
+    } else if (plotColors.value == 2) { // flat
+      if (type == 65) { // hue
+        histCtx[ctxStyle] = gradients[65];
+      } else if (type != 68 && type in colors) { // type != val
+        histCtx[ctxStyle] = colors[type][1];
+      } else {
+        histCtx[ctxStyle] = '#000';
+      }
+
+    } else if (plotColors.value == 3) { // gradients
+      if (type in gradients) {
+        histCtx[ctxStyle] = gradients[type];
+      } else {
+        histCtx[ctxStyle] = '#000';
+      }
+    }
+
+    if (plotStyle.value == 1) { // continuous
+      histCtx.beginPath();
+      histCtx.moveTo(0, histHeight);
+    }
+
+    for (var x, y, i = 0; i <= 255; i++) {
+      if (!(i in vals)) {
+        continue;
+      }
+
+      y = ((vals[i]/maxCount)*histHeight) << 0;
+      x = ((i/255)*histWidth) << 0;
+
+      if (plotStyle.value == 1) { // continuous
+        histCtx.lineTo(x, histHeight - y);
+      } else if (plotFill.checked) {
+        histCtx.fillRect(x, histHeight - y, dW, y);
+      } else {
+        histCtx.fillRect(x, histHeight - y, dW, 2);
+      }
+    }
+
+    if (plotStyle.value == 1) { // continuous
+      histCtx.lineTo(x, histHeight);
+      if (plotFill.checked) {
+        histCtx.fill();
+      }
+      histCtx.stroke();
+      histCtx.closePath();
+    }
+  };
+
+  var updateHist = function (ev) {
+    if (worker.running_) {
+      return;
+    }
+
+    var timeStart = (new Date()).getTime();
+    worker.running_ = true;
+
+    runtime.innerHTML = 'Calculating histogram...';
+
+    if ((ev && ev.type == 'timeupdate') || (!frameData && vid.readyState >= 
+          vid.HAVE_CURRENT_DATA)) {
+      frameCtx.drawImage(vid, 0, 0);
+      frameData = true;
+    }
+
+    worker.postMessage({
+        'type': 'calcHist',
+        'accuracy': accuracyStep,
+        'histType': parseInt(histType.value),
+        'timeStart': timeStart,
+        'frameData': frameCtx.getImageData(0, 0, frameCanvas.width, frameCanvas.height).data
+      });
+  };
+
+  worker.onmessage = function (ev) {
+    if (!ev || !ev.data || ev.data.type != 'drawHist') {
+      return;
+    }
+
+    worker.running_ = false;
+
+    var chans = ev.data.chans,
+        maxCount = ev.data.maxCount,
+        n = chans.length,
+        type = ev.data.histType,
+        subtype = (type == 16 || type == 32) ? 1 : 0; // rgb or cmyk
+
+    if (maxCount == 0) {
+      return;
+    }
+
+    histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+
+    if (plotFill.checked && n > 1) {
+      histCtx.globalCompositeOperation = 'lighter';
+    }
+
+    for (var i = 0; i < n; i++, subtype <<= 1) {
+      drawHist(type | subtype, chans[i], maxCount);
+    }
+
+    if (plotFill.checked && n > 1) {
+      histCtx.globalCompositeOperation = 'source-over';
+    }
+
+    runtime.innerHTML = 'Plot runtime: ' + ((new Date()).getTime() - 
+        ev.data.timeStart) + ' ms.';
+  };
+
+  var thumbClick = function (ev) {
+    ev.preventDefault();
+
+    if (this.className == 'thumb') {
+      this.className = '';
+    } else {
+      this.className = 'thumb';
+    }
+  };
+
+  var initVidEvents = function () {
+    vid.addEventListener('dblclick', thumbClick, false);
+    vid.addEventListener('loadedmetadata', vidLoadedMetaData, false);
+    vid.addEventListener('emptied', vidEnded, false);
+    vid.addEventListener('ended', vidEnded, false);
+    vid.addEventListener('timeupdate', updateHist, false);
+
+    if (vid.readyState >= vid.HAVE_METADATA) {
+      vidLoadedMetaData();
+    }
+  };
+
+  histCanvas.addEventListener('dblclick', thumbClick, false);
+
+  histType.addEventListener('change', updateHist, false);
+  plotStyle.addEventListener('change', updateHist, false);
+  plotFill.addEventListener('change', updateHist, false);
+  plotColors.addEventListener('change', updateHist, false);
+  accuracy.addEventListener('change', function (ev) {
+      accuracyStep = parseInt(this.value) * 4;
+      updateHist(ev);
+  }, false);
+
+  vidSelector.addEventListener('change', function () {
+    // Chaging the video src has no effect...
+    vid.src = this.value;
+
+    vid.parentNode.innerHTML += ' ';
+    vid = document.getElementById('myVid');
+    initVidEvents();
+  }, false);
+
+  initHistogram();
+  initVidEvents();
+}, false);
+    // --></script>
+
+  <style type="text/css"><!--
+#histogram, #myVid {
+  border: 1px solid #000;
+  cursor: pointer;
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+#myVid.thumb {
+  max-width: 300px;
+  max-height: 400px;
+}
+
+#histogram.thumb {
+  max-width: 300px;
+  max-height: 200px;
+}
+  --></style>
+  </head>
+  <body>
+    <h1>HTML5 demo: real-time color histogram from a <code>&lt;video&gt;</code> 
+      with <code>&lt;canvas&gt;</code> and a Web Worker</h1>
+    <p>Author: <a href="http://www.robodesign.ro/mihai">Mihai Șucan</a>. <a href="http://www.robodesign.ro/mihai/blog/html5-demo-video-and-canvas">Read the blog post.</a> <a href="index.html">Switch to the single-threaded version.</a></p>
+    
+    <p><label>Video source: <select id="vidSelector">
+        <option selected value="android-iphone-win7.ogg">French fun: iPhone with Windows 7</option>
+        <option value="sherlock-holmes-trailer-720hd.ogg">720p HD: Sherlock Holmes trailer</option>
+    </select></label></p>
+
+    <p><video id="myVid" class="thumb" controls 
+    src="android-iphone-win7.ogg">Your browser does not support HTML 
+    5 videos.</video></p>
+
+    <p><canvas class="thumb" id="histogram" width="640" height="480">Your 
+    browser does not have support for Canvas.</canvas></p>
+
+    <p style="clear:both"><em>Double click on the video or on the histogram to 
+      enable/disable the full size of the element.</em></p>
+
+    <p id="runtime">Plot runtime...</p>
+
+    <p><label>Histogram for: <select id="histType">
+        <option value="16">RGB</option>
+        <option value="17">Red</option>
+        <option value="18">Green</option>
+        <option value="20">Blue</option>
+        <option value="65">Hue</option>
+        <option value="66">Saturation</option>
+        <option value="68">Value (brightness)</option>
+        <option value="32">CMYK</option>
+        <option value="33">Cyan</option>
+        <option value="34">Magenta</option>
+        <option value="36">Yellow</option>
+        <option value="40">Kelvin (Black)</option>
+    </select></label></p>
+
+    <p><label>Count every <input id="accuracy" type="number" min="1" max="50" 
+      value="1"> pixels</label></p>
+
+    <p><label>Plot style: <select id="plotStyle">
+        <option value="1">Continuous</option>
+        <option value="2">Discreet</option>
+    </select></label></p>
+
+    <p><label>Plot fill <input id="plotFill" type="checkbox"></label></p>
+
+    <p><label>Plot colors: <select id="plotColors">
+        <option value="1">None</option>
+        <option value="2">Flat colors</option>
+        <option value="3">Gradients</option>
+    </select></label></p>
+
+    <p><em>Disclaimer: The videos you see here have been copied from the old <a 
+        href="http://tinyvid.tv">tinyvid.tv</a> web site. Please note that both 
+      videos are owned by their respective copyright holders. I copied these 
+      files strictly for educational purposes.</em></p>
+  </body>
+</html>
+

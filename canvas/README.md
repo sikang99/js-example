@@ -21,6 +21,7 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 - [HTML Canvas API Tutorial](https://flaviocopes.com/canvas/)
 - [Learn HTML5 Canvas](https://www.commonlounge.com/discussion/2ea5b6daefec44e8b01a6acd9e601006)
     - [Optimizing canvas](https://www.commonlounge.com/discussion/f6c17da678d846c88e2c75dfdcd3056d)
+- [Service Worker Sample: Cache Video Sample](https://googlechrome.github.io/samples/service-worker/prefetch-video/)
 
 
 ### Slides
@@ -41,4 +42,7 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 - [mjohnston/canvas-drawimage.html](https://gist.github.com/mjohnston/1a096e4feb7c40be3438) - Canvas drawImage() benchmark
 - [web-platform-tests/wpt](https://github.com/web-platform-tests/wpt) - Test suites for Web platform specs — including WHATWG, W3C, and others https://web-platform-tests.org/
     - [wpt/offscreencanvas](https://github.com/web-platform-tests/wpt/tree/master/offscreen-canvas)
+ - [nk-o/video-worker](https://github.com/nk-o/video-worker) - API wrapper for Youtube, Vimeo and Local videos
+- [**GoogleChrome/samples**](https://github.com/GoogleChrome/samples) - A repo containing samples tied to new functionality in each release of Google Chrome. https://www.chromestatus.com/samples
+
 

@@ -30,6 +30,7 @@ Javascript programming
 - 2018/11/20 [Web workers vs Service workers vs Worklets](https://bitsofco.de/web-workers-vs-service-workers-vs-worklets/)
 - 2018/10/31 [Transferable ImageData](https://www.kevinhoyt.com/2018/10/31/transferable-imagedata/)
 - 2018/10/23 [**Image Processing in a Web Worker**](https://www.kevinhoyt.com/2018/10/23/image-processing-in-a-web-worker/)
+- 2018/10/18 [**Webcam + WebWorker + Transferable**]](https://observablehq.com/@jobleonard/webcam-webworker-transferable)
 - 2018/10/01 [A Quick Look at WorkerDOM](https://www.loxodrome.io/post/worker-dom/)
 - 2018/09/23 [Building an Async React Renderer with Diffing in Web Worker](https://medium.com/@azizhk/building-an-async-react-renderer-with-diffing-in-web-worker-f3be07f16d90)
 - 2018/09/09 [**Improved Performance with OffscreenCanvas**](https://newinweb.com/2018/09/10/offscreen-canvas/)
