@@ -47,5 +47,6 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
     - [wpt/offscreencanvas](https://github.com/web-platform-tests/wpt/tree/master/offscreen-canvas)
  - [nk-o/video-worker](https://github.com/nk-o/video-worker) - API wrapper for Youtube, Vimeo and Local videos
 - [**GoogleChrome/samples**](https://github.com/GoogleChrome/samples) - A repo containing samples tied to new functionality in each release of Google Chrome. https://www.chromestatus.com/samples
+- [Stanko/html-canvas-video-player](https://github.com/Stanko/html-canvas-video-player) - iPlay inline videos on iPhone with HTML canvas player : deprecated
 
 
