@@ -53,12 +53,11 @@ function draw(v,k,w,h) {
 					postMessage('context not initialized');
 					return;
 				}
-				//canvas.drawColor(Color.BLACK)
 				context.fillRect(0,0,100,100)
 				postMessage('started');
 				break;
 			case 'play':
-
+				context.fillRect(100,100,300,300)
 				break;
 			case 'stop':
 				break;
