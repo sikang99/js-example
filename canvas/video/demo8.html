@@ -37,11 +37,11 @@ function draw(v,k,w,h) {
 	
 	//onst pixels = v.getImageData(0,0,w,h);
 	k.postMessage({msg: 'play'});
-	setTimeout(draw,20,v,k,w,h);
+	setTimeout(draw,20,v,k,w,h);	// default: 20ms
 }
 </script> 
 
-<script type="script/worker" id="workerCode">
+<script type="script/worker" id="workerCode"> 	// inline worker
     self.onmessage = async function(e) {
 		//console.log(e.data.msg);
 		var c
@@ -54,7 +54,7 @@ function draw(v,k,w,h) {
 					return;
 				}
 				//canvas.drawColor(Color.BLACK)
-				canvas.drawLine(0,0,canvas.width,canvas.height, Paint)
+				context.fillRect(0,0,100,100)
 				postMessage('started');
 				break;
 			case 'play':
