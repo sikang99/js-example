@@ -6,6 +6,7 @@ Javascript programming
 - [Web Workers](https://w3c.github.io/workers/), Editor’s Draft, 26 June 2017 
 - [HTML Living Standard](https://html.spec.whatwg.org/multipage/) — Last Updated 23 August 2019
     - [10 Web workers](https://html.spec.whatwg.org/multipage/#toc-workers)
+- [Media Capture Stream with Worker](https://w3c.github.io/mediacapture-worker/) - W3C Editor's Draft 17 December 2018
 
 
 ### History
@@ -76,6 +77,7 @@ Javascript programming
 - [Adding a Service Worker and Offline into your Web App](https://developers.google.com/web/fundamentals/codelabs/offline/)
 - [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
+
 ### Stack Overflow
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
 - Tags
@@ -103,6 +105,7 @@ Javascript programming
 - [mdn/simple-shared-worker](https://github.com/mdn/simple-shared-worker) - A simple demo to show shared worker basics.
 - [Rumyra/Talk-Web-Workers](https://github.com/Rumyra/Talk-Web-Workers) - A talk about web workers, the what & how, with a focus on workers in specs, like audio worklet, offline canvas and CSS Paint API among others
 - [webpack-contrib/worker-loader](https://github.com/webpack-contrib/worker-loader) 
+
 
 ### Persons
 - [loxodrome.io](https://www.loxodrome.io) - WebAssembly, Web Worker, Web Component, Go, WorkerDOM

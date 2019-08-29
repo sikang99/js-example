@@ -37,29 +37,30 @@ function draw(v,k,w,h) {
 	
 	//onst pixels = v.getImageData(0,0,w,h);
 	k.postMessage({msg: 'play'});
-	setTimeout(draw,20,v,k,w,h);	// default: 20ms
+	setTimeout(draw,100,v,k,w,h);	// default: 20ms
 }
 </script> 
 
 <script type="script/worker" id="workerCode"> 	// inline worker
     self.onmessage = async function(e) {
 		//console.log(e.data.msg);
-		var c
+		var c;
       	switch (e.data.msg) {
 			case 'start':
-				canvas = e.data.canvas
+				canvas = e.data.canvas;
 				context = canvas.getContext('2d');
 				if (!context) {
 					postMessage('context not initialized');
 					return;
 				}
-				context.fillRect(0,0,100,100)
+				context.fillRect(0,0,100,100);
 				postMessage('started');
 				break;
 			case 'play':
-				context.fillRect(100,100,300,300)
+				context.fillRect(100,100,500,500);
 				break;
 			case 'stop':
+				postMessage('stopped');
 				break;
       	}
 	}
