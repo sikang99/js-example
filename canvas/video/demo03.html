@@ -1,12 +1,12 @@
 <!DOCTYPE html> 
-<title>Video/Canvas Demo 7: Desynchronized</title> 
+<title>Video/Canvas Demo 03: Grayscale</title> 
 <script> 
 document.addEventListener('DOMContentLoaded', function(){
 	var v = document.getElementById('v');
 	var canvas = document.getElementById('c');
-	var context = canvas.getContext('2d', {desynchronized: true}); // best-effort
+	var context = canvas.getContext('2d');
 	var back = document.createElement('canvas');
-	var backcontext = back.getContext('2d', {desynchronized: true});
+	var backcontext = back.getContext('2d');
  
 	var cw,ch;
  
@@ -25,7 +25,23 @@ document.addEventListener('DOMContentLoaded', function(){
 function draw(v,c,bc,w,h) {
 	if(v.paused || v.ended)	return false;
 	// First, draw it into the backing canvas
-	c.drawImage(v,0,0,w,h);
+	bc.drawImage(v,0,0,w,h);
+	// Grab the pixel data from the backing canvas
+	var idata = bc.getImageData(0,0,w,h);
+	var data = idata.data;
+	// Loop through the pixels, turning them grayscale
+	for(var i = 0; i < data.length; i+=4) {
+		var r = data[i];
+		var g = data[i+1];
+		var b = data[i+2];
+		var brightness = (3*r+4*g+b)>>>3;
+		data[i] = brightness;
+		data[i+1] = brightness;
+		data[i+2] = brightness;
+	}
+	idata.data = data;
+	// Draw the pixels onto the visible canvas
+	c.putImageData(idata,0,0);
 	// Start over!
 	setTimeout(draw,20,v,c,bc,w,h);
 }
@@ -46,15 +62,17 @@ function draw(v,c,bc,w,h) {
 	margin: -180px 0 0 -500px;
 }
 </style> 
-"</body>
+
+</body>
 <center>
-<h2>Video/Canvas Demo 7: Desynchronized</h2>
+<h2>Video/Canvas Demo 03: Grayscale</h2>
 </center>
+<body>
 <video id="v" controls loop> 
 	<source src=video.webm type=video/webm> 
 	<source src=video.ogg type=video/ogg> 
 	<source src=video.mp4 type=video/mp4> 
 </video> 
 <canvas id="c"></canvas> 
-</body> 
+</body>
 </html>

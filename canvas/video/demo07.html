@@ -1,12 +1,12 @@
 <!DOCTYPE html> 
-<title>Video/Canvas Demo 4</title> 
+<title>Video/Canvas Demo 07: Desynchronized</title> 
 <script> 
 document.addEventListener('DOMContentLoaded', function(){
 	var v = document.getElementById('v');
 	var canvas = document.getElementById('c');
-	var context = canvas.getContext('2d');
-	var back = document.createElement('canvas')
-	var backcontext = back.getContext('2d');
+	var context = canvas.getContext('2d', {desynchronized: true}); // best-effort
+	var back = document.createElement('canvas');
+	var backcontext = back.getContext('2d', {desynchronized: true});
  
 	var cw,ch;
  
@@ -22,24 +22,12 @@ document.addEventListener('DOMContentLoaded', function(){
  
 },false);
  
-function draw(v,c,bc,cw,ch) {
+function draw(v,c,bc,w,h) {
 	if(v.paused || v.ended)	return false;
 	// First, draw it into the backing canvas
-	bc.drawImage(v,0,0,cw,ch);
-	// Grab the pixel data from the backing canvas
-	var idata = bc.getImageData(0,0,cw,ch);
-	var data = idata.data;
-	var w = idata.width;
-	var limit = data.length
-	// Loop through the subpixels, convoluting each using an edge-detection matrix.
-	for(var i = 0; i < limit; i++) {
-		if( i%4 == 3 ) continue;
-		data[i] = 127 + 2*data[i] - data[i + 4] - data[i + w*4];
-	}
-	// Draw the pixels onto the visible canvas
-	c.putImageData(idata,0,0);
+	c.drawImage(v,0,0,w,h);
 	// Start over!
-	setTimeout(draw,20,v,c,bc,cw,ch);
+	setTimeout(draw,20,v,c,bc,w,h);
 }
 </script> 
  
@@ -58,17 +46,15 @@ function draw(v,c,bc,cw,ch) {
 	margin: -180px 0 0 -500px;
 }
 </style> 
-
-</body>
+"</body>
 <center>
-<h2>Video/Canvas Demo 4: Gradient</h2>
+<h2>Video/Canvas Demo 07: Desynchronized</h2>
 </center>
-<body>
 <video id="v" controls loop> 
 	<source src=video.webm type=video/webm> 
 	<source src=video.ogg type=video/ogg> 
 	<source src=video.mp4 type=video/mp4> 
 </video> 
 <canvas id="c"></canvas> 
-</body>
+</body> 
 </html>

@@ -1,10 +1,12 @@
 <!DOCTYPE html> 
-<title>Video/Canvas Demo 9: Worker Processing</title> 
+<title>Video/Canvas Demo 08: Worker, Offscreen, Desynchronized</title> 
 <script> 
 document.addEventListener('DOMContentLoaded', function(){
 	var v = document.getElementById('v');
-	var canvas = document.getElementById('c');
-	var context = canvas.getContext('2d')
+	//var canvas = document.getElementById('c');
+	//var context = canvas.getContext('2d', {desynchronized: true});
+	const canvas = document.getElementById('c').transferControlToOffscreen();
+	//var context = canvas.getContext('2d'); // don't use in offscreen
 	
 	var back = document.createElement('canvas');
 	var backcontext = back.getContext('2d', {desynchronized: true});
@@ -14,25 +16,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	const url = URL.createObjectURL(blob);
 	
 	const worker = new Worker(url);
+	console.log(worker);
 	worker.onmessage = function(e) {
 		console.log('main:' + e.data.msg);
-		img = e.data.img;
-		context.putImageData(img,0,0)
 	}
 
-	// v.addEventListener('play', () => {
-   	// 	function step() {
-	// 		// backcontext.canvas.width = v.clientWidth;
-	// 		// backcontext.canvas.height = v.clientHeight;
-	// 		backcontext.drawImage(v, 0, 0, v.clientWidth, v.clientHeight)
-	// 		let img = backcontext.getImageData(0,0,v.clientWidth, v.clientHeight);
-	// 		worker.postMessage({msg: 'play', img: img});
-	// 		requestAnimationFrame(step)
-	// 	}
-  	// 	requestAnimationFrame(step);
-	// })
-
 	var cw,ch;
+	//console.log(v.clientWidth, v.clientHeight)
 	v.addEventListener('play', function(){
 		cw = v.clientWidth;
 		ch = v.clientHeight;
@@ -45,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	},false);
 
 	//console.log(v.width, v.height);
-	worker.postMessage({msg: 'start'});
+	worker.postMessage({msg: 'start', w: cw, h: ch, canvas: canvas}, [canvas]);
 
 },false);
  
@@ -53,25 +43,33 @@ function draw(v,bc,k,w,h) {
 	if(v.paused || v.ended)	return false;
 	
 	bc.drawImage(v,0,0,w,h);
-	let img = bc.getImageData(0,0,w,h);
-	k.postMessage({msg: 'play', img: img});
-
+	let frame = bc.getImageData(0,0,w,h);
+	//k.postMessage({msg: 'play', img: frame}, [frame]); // frame is not transferable
+	k.postMessage({msg: 'play', img: frame, w: w, h: h});
 	setTimeout(draw,40,v,bc,k,w,h);	// default: 20ms
 }
 </script>
 
-<script id="workerCode"> 	// inline worker
-//<script type="script/worker" id="workerCode">
+<!-- <script id="workerCode"> 	// inline worker -->
+<script type="text/javascript" id="workerCode"> 	// inline worker
+    var ctx;
 	self.onmessage = async function(e) {
 		//console.log('worker: ' + e.data.msg);
       	switch (e.data.msg) {
 			case 'start':
-				//postMessage({msg: e.data.msg});
+				if (!ctx) {
+					ctx = e.data.canvas.getContext('2d', {desynchronized: true});
+					console.log('worker:', ctx.canvas.width, ctx.canvas.height)
+				}
+				postMessage({msg: e.data.msg});
 				break;
 			case 'play':
+				ctx.canvas.width = e.data.w;
+				ctx.canvas.height = e.data.h;
 				img = e.data.img;
 				chromakey(img.data);
-				postMessage({msg: e.data.msg, img: img});
+				ctx.putImageData(img,0,0)
+				postMessage({msg: e.data.msg});
 				break;
 			case 'stop':
 				postMessage({msg: e.data.msg});
@@ -110,7 +108,7 @@ function draw(v,bc,k,w,h) {
 
 </body>
 <center>
-<h2>Video/Canvas Demo 9: Worker Processing</h2>
+<h2>Video/Canvas Demo 08: Worker, Offscreen, Desynchronized</h2>
 </center>
 <video id="v" controls loop> 
 	<source src=video.webm type=video/webm> 

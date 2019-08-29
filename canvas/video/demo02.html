@@ -1,0 +1,52 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 02: Animation</title> 
+<script> 
+document.addEventListener('DOMContentLoaded', function(){
+	var video = document.getElementById('v');
+	var canvas = document.getElementById('c');
+	var context = canvas.getContext('2d');
+
+ 	video.addEventListener('play', () => {
+   		function step() {
+			// NOTICE: below setting does not work
+			// context.canvas.clientWidth = v.clientWidth;
+			// context.canvas.clientHeight = v.clientHeight;
+			canvas.width = video.clientWidth;
+			canvas.height = video.clientHeight;
+			context.drawImage(v, 0,0, video.clientWidth, video.clientHeight)
+			requestAnimationFrame(step)
+		}
+  		requestAnimationFrame(step);
+	})
+},false);
+</script> 
+ 
+<style> 
+#c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 20px;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -500px;
+}
+</style> 
+
+</body>
+<center>
+<h2>Video/Canvas Demo 02: Animation</h2>
+</center>
+<body>
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+<canvas id="c"></canvas> 
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 10: Worker, Processing, Transferable, Animation</title> 
+<script> 
+document.addEventListener('DOMContentLoaded', function(){
+	var video = document.getElementById('v');
+	var canvas = document.getElementById('c');
+	var context = canvas.getContext('2d', {desynchronized: true})
+	
+	var backcanvas = document.createElement('canvas');
+	var backcontext = backcanvas.getContext('2d', {desynchronized: true});
+ 
+	const workerCode = document.querySelector('#workerCode').textContent;
+	const blob = new Blob([workerCode], { type: 'text/javascript' });
+	const url = URL.createObjectURL(blob);
+	
+	const worker = new Worker(url);
+	worker.onmessage = function(e) {
+		console.log('main:' + e.data.msg);
+		img = e.data.img;
+		canvas.width = video.clientWidth;
+		canvas.height = video.clientHeight;
+		context.putImageData(img,0,0)
+	}
+
+	video.addEventListener('play', () => {
+   		function step() {
+			if(video.paused || video.ended)	return false;
+			backcanvas.width = video.clientWidth;
+			backcanvas.height = video.clientHeight;
+			backcontext.drawImage(v, 0,0, video.clientWidth, video.clientHeight)
+			let img = backcontext.getImageData(0,0, video.clientWidth, video.clientHeight);
+			worker.postMessage({msg: 'play', img: img}, [img.data.buffer]);
+			requestAnimationFrame(step)
+		}
+  		requestAnimationFrame(step);
+	})
+
+	//var cw,ch;
+	// video.addEventListener('play', function(){
+	// 	cw = video.clientWidth;
+	// 	ch = video.clientHeight;
+	// 	canvas.width = cw;
+	// 	canvas.height = ch;
+	// 	backcanvas.width = cw;
+	// 	backcanvas.height = ch;
+	// 	draw(v,backcontext,worker,cw,ch);
+	// 	console.log('main:', cw,ch)
+	// },false);
+
+	//console.log(video.width, video.height);
+	//worker.postMessage({msg: 'start'});
+
+},false);
+ 
+function draw(v,bc,k,w,h) {
+	if(v.paused || v.ended)	return false;
+	
+	bc.drawImage(v,0,0,w,h);
+	let img = bc.getImageData(0,0,w,h);
+	k.postMessage({msg: 'play', img: img}, [img.data.buffer]);
+
+	setTimeout(draw,40,v,bc,k,w,h);	// default: 20ms
+}
+</script>
+
+<script id="workerCode"> 	// inline worker
+//<script type="script/worker" id="workerCode">
+	self.onmessage = async function(e) {
+		//console.log('worker: ' + e.data.msg);
+      	switch (e.data.msg) {
+			case 'start':
+				//postMessage({msg: e.data.msg});
+				break;
+			case 'play':
+				img = e.data.img;
+				chromakey(img.data);
+				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+			case 'stop':
+				postMessage({msg: e.data.msg});
+				break;
+      	}
+	}
+
+	function chromakey(data) {
+		let l = data.length / 4;
+
+		for (let i = 0; i < l; i++) {
+			let r = data[i * 4 + 0];
+			let g = data[i * 4 + 1];
+			let b = data[i * 4 + 2];
+			if (g > 100 && r > 100 && b < 43)
+				data[i * 4 + 3] = 0;
+		}
+	}
+</script>
+
+<style> 
+#c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 20px;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -500px;
+}
+</style> 
+
+</body>
+<center>
+<h2>Video/Canvas Demo 10: Worker, Processing, Transferable, Animation</h2>
+</center>
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+<canvas id="c"></canvas> 
+</body> 
+</html>

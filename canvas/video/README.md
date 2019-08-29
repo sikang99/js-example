@@ -5,3 +5,5 @@
 
 - [Manipulating video using canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_using_canvas)
 
+- [tieleman/blur_worker.js](https://gist.github.com/tieleman/6028023)
+- [Basic Video & canvas example](https://stackoverflow.com/questions/4429440/html5-display-video-inside-canvas)
