@@ -6,7 +6,7 @@ Javascript programming
 - [Web Workers](https://w3c.github.io/workers/), Editor’s Draft, 26 June 2017 
 - [HTML Living Standard](https://html.spec.whatwg.org/multipage/) — Last Updated 23 August 2019
     - [10 Web workers](https://html.spec.whatwg.org/multipage/#toc-workers)
-- [Media Capture Stream with Worker](https://w3c.github.io/mediacapture-worker/) - W3C Editor's Draft 17 December 2018
+- [**Media Capture Stream with Worker**](https://w3c.github.io/mediacapture-worker/) - W3C Editor's Draft 17 December 2018
 
 
 ### History
