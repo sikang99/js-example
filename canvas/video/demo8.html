@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	const url = URL.createObjectURL(blob);
 	
 	const worker = new Worker(url);
-	worker.onmessage = e => console.log(e.data);
+	worker.onmessage = function(e) {
+		console.log(e.data.msg);
+	}
 	worker.postMessage({msg: 'start', canvas: canvas}, [canvas]);
 
 	var cw,ch;
@@ -42,25 +44,28 @@ function draw(v,k,w,h) {
 </script> 
 
 <script type="script/worker" id="workerCode"> 	// inline worker
-    self.onmessage = async function(e) {
+    var ctx;
+	self.onmessage = async function(e) {
 		//console.log(e.data.msg);
-		var c;
       	switch (e.data.msg) {
 			case 'start':
-				canvas = e.data.canvas;
-				context = canvas.getContext('2d');
-				if (!context) {
+				ctx = e.data.canvas.getContext('2d');
+				if (!ctx) {
 					postMessage('context not initialized');
 					return;
 				}
-				context.fillRect(0,0,100,100);
-				postMessage('started');
+				ctx.fillRect(0,0,100,100);
+				postMessage({msg: 'started'});
 				break;
 			case 'play':
-				context.fillRect(100,100,500,500);
+				//context = e.data.canvas.getContext('2d');
+				ctx.clearRect(0,0,100,100);
+				ctx.flllStyle = "#FF0000";
+				ctx.fillRect(100,100,500,500);
+				postMessage({msg: 'played'});
 				break;
 			case 'stop':
-				postMessage('stopped');
+				postMessage({msg: 'stopped'});
 				break;
       	}
 	}
