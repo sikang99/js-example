@@ -1,0 +1,36 @@
+<!DOCTYPE html> 
+<title>Low Latency</title> 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+	const vid = document.getElementById('videoTag');
+	const canvas = document.getElementById('canvasTag');
+  const context = canvas.getContext('2d', {desynchronized: true});
+  
+  // start draw()ing upong |vid| start. 
+  vid.addEventListener('play', () => {
+		const width = vid.clientWidth;
+		const height = vid.clientHeight;
+		canvas.width = width;
+		canvas.height = height;
+    
+		draw(vid, context, width, height);
+	});
+ 
+});
+
+function draw(video,canvasContext,width,height) {
+	if (video.ended) return false;
+
+  canvasContext.drawImage(video, 0, 0, width, height);
+  // Do draw() again in 20ms.
+  setTimeout(draw, 20, video, canvasContext, width, height);
+}
+</script>
+</body>
+<video id="videoTag" controls loop crossorigin="anonymous"> 
+<source src="https://upload.wikimedia.org/wikipedia/commons/2/25/Sintel_webm_extract.webm" type="video/webm"> 
+</video> 
+<br>
+<canvas id="canvasTag" width="320" height="320"></canvas> 
+</body>
+</html>

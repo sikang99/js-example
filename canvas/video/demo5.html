@@ -1,0 +1,115 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 5</title> 
+<script> 
+var mouse = [-1000,-1000];
+document.addEventListener('DOMContentLoaded', function(){
+	var v = document.getElementById('v');
+	var canvas = document.getElementById('c');
+	var context = canvas.getContext('2d');
+	var back = document.createElement('canvas');
+	var backcontext = back.getContext('2d');
+ 
+	var cw,ch;
+ 
+	v.addEventListener('play', function(){
+		cw = v.clientWidth;
+		ch = v.clientHeight;
+		canvas.width = cw;
+		canvas.height = ch;
+		back.width = cw;
+		back.height = ch;
+		draw(v,context,backcontext,cw,ch);
+	},false);
+ 
+	var test = document.getElementById('test');
+	window.addEventListener('mousemove', function(e) {
+		var canvaspos = findPos(canvas);
+		mouse = {'x':e.clientX - canvaspos[0], 'y':e.clientY - canvaspos[1]};
+	});
+ 
+},false);
+ 
+function draw(v,c,bc,w,h) {
+	if(v.paused || v.ended)	return false;
+	// First, draw it into the backing canvas
+	bc.drawImage(v,0,0,w,h);
+	// Grab the pixel data from the backing canvas
+	var idata = bc.getImageData(0,0,w,h);
+	var data = idata.data;
+	// Loop through the pixels, turning them grayscale
+	for(var y = 0; y < h; y++) {
+		for(var x = 0; x < w; x++) {
+			var i = (y*w+x)*4;
+			var color = getColor(data[i],data[i+1],data[i+2],x,y);
+			data[i] = color[0];
+			data[i+1] = color[1];
+			data[i+2] = color[2];
+		}
+	}
+	idata.data = data;
+	// Draw the pixels onto the visible canvas
+	c.putImageData(idata,0,0);
+	// Start over!
+	setTimeout(draw,20,v,c,bc,w,h);
+}
+ 
+function getColor(r,g,b,x,y) {
+	var distance = Math.pow(x - mouse.x,2) + Math.pow(y - mouse.y,2);
+	if( distance < 10000 ) {
+		return [r,g,b];
+	}
+	var brightness = ((3*r+4*g+b)>>>3)&0xc0;
+	if( distance > 40000 ) {
+		return [brightness,brightness,brightness];
+	}
+	var imult = (Math.sqrt(distance)-100)/100; // between 0 and 1
+	var mult = 1 - imult;
+	return [
+		r*mult + brightness*imult,
+		g*mult + brightness*imult,
+		b*mult + brightness*imult
+	];
+}
+ 
+function findPos(obj) {
+	var curleft = curtop = 0;
+	if (obj.offsetParent) {
+		do {
+			curleft += obj.offsetLeft;
+			curtop += obj.offsetTop;
+		} while (obj = obj.offsetParent);
+	}
+	return [curleft,curtop];
+}
+</script> 
+ 
+<style> 
+#c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 20px;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -500px;
+}
+</style> 
+
+</body>
+<center>
+<h2>Video/Canvas Demo 5: Brightness</h2>
+</center>
+<body>
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+<canvas id="c"></canvas> 
+</body>
+</html>
+ 

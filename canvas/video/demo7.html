@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 7: Desynchronized</title> 
+<script> 
+document.addEventListener('DOMContentLoaded', function(){
+	var v = document.getElementById('v');
+	var canvas = document.getElementById('c');
+	var context = canvas.getContext('2d', {desynchronized: true}); // best-effort
+	var back = document.createElement('canvas');
+	var backcontext = back.getContext('2d', {desynchronized: true});
+ 
+	var cw,ch;
+ 
+	v.addEventListener('play', function(){
+		cw = v.clientWidth;
+		ch = v.clientHeight;
+		canvas.width = cw;
+		canvas.height = ch;
+		back.width = cw;
+		back.height = ch;
+		draw(v,context,backcontext,cw,ch);
+	},false);
+ 
+},false);
+ 
+function draw(v,c,bc,w,h) {
+	if(v.paused || v.ended)	return false;
+	// First, draw it into the backing canvas
+	c.drawImage(v,0,0,w,h);
+	// Start over!
+	setTimeout(draw,20,v,c,bc,w,h);
+}
+</script> 
+ 
+<style> 
+#c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 20px;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -500px;
+}
+</style> 
+"</body>
+<center>
+<h2>Video/Canvas Demo 7: Desynchronized</h2>
+</center>
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+<canvas id="c"></canvas> 
+</body> 
+</html>

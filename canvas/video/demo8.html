@@ -1,0 +1,96 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 8: Worker</title> 
+<script> 
+document.addEventListener('DOMContentLoaded', function(){
+	var v = document.getElementById('v');
+	//var canvas = document.getElementById('c');
+	//var context = canvas.getContext('2d', {desynchronized: true}); // not work
+	const canvas = document.getElementById('c').transferControlToOffscreen();
+	//var context = canvas.getContext('2d'); // don't use in offscreen
+	
+	var back = document.createElement('canvas');
+	var backcontext = back.getContext('2d', {desynchronized: true});
+ 
+	const workerCode = document.querySelector('#workerCode').textContent;
+	const blob = new Blob([workerCode], { type: 'text/javascript' });
+	const url = URL.createObjectURL(blob);
+	
+	const worker = new Worker(url);
+	worker.onmessage = e => console.log(e.data);
+	worker.postMessage({msg: 'start', canvas: canvas}, [canvas]);
+
+	var cw,ch;
+	v.addEventListener('play', function(){
+		cw = v.clientWidth;
+		ch = v.clientHeight;
+		canvas.width = cw;
+		canvas.height = ch;
+		back.width = cw;
+		back.height = ch;
+		draw(v,worker,cw,ch);
+		
+	},false);
+},false);
+ 
+function draw(v,k,w,h) {
+	if(v.paused || v.ended)	return false;
+	
+	//onst pixels = v.getImageData(0,0,w,h);
+	k.postMessage({msg: 'play'});
+	setTimeout(draw,20,v,k,w,h);
+}
+</script> 
+
+<script type="script/worker" id="workerCode">
+    self.onmessage = async function(e) {
+		//console.log(e.data.msg);
+		var c
+      	switch (e.data.msg) {
+			case 'start':
+				canvas = e.data.canvas
+				context = canvas.getContext('2d');
+				if (!context) {
+					postMessage('context not initialized');
+					return;
+				}
+				//canvas.drawColor(Color.BLACK)
+				canvas.drawLine(0,0,canvas.width,canvas.height, Paint)
+				postMessage('started');
+				break;
+			case 'play':
+
+				break;
+			case 'stop':
+				break;
+      	}
+	}
+</script>
+
+<style> 
+#c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 20px;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -500px;
+}
+</style> 
+
+</body>
+<center>
+<h2>Video/Canvas Demo 8: Worker</h2>
+</center>
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+<canvas id="c"></canvas> 
+</body> 
+</html>

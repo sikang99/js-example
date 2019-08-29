@@ -1,0 +1,67 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 1</title> 
+<script src=jquery.min.js></script> 
+<script> 
+document.addEventListener('DOMContentLoaded', function(){
+	var v = document.getElementById('v');
+	var canvas = document.getElementById('c');
+	var context = canvas.getContext('2d');
+ 
+	var cw = Math.floor(canvas.clientWidth / 100);
+	var ch = Math.floor(canvas.clientHeight / 100);
+	canvas.width = cw;
+	canvas.height = ch;
+ 
+	v.addEventListener('play', function(){
+		draw(this,context,cw,ch);
+	},false);
+ 
+},false);
+ 
+function draw(v,c,w,h) {
+	if(v.paused || v.ended)	return false;
+	c.drawImage(v,0,0,w,h);
+	setTimeout(draw,20,v,c,w,h);
+}
+</script> 
+ 
+<style> 
+body {
+	background: black;
+}
+ 
+#c {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -240px;
+}
+ 
+p {
+	position: relative;
+	z-index: 1;
+}
+</style> 
+
+</body>
+<center>
+<h2>Video/Canvas Demo 1: Background</h2>
+</center>
+<canvas id="c"></canvas> 
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+</body> 
+</html>
