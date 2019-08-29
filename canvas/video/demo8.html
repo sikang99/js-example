@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<title>Video/Canvas Demo 8: Worker computing</title> 
+<title>Video/Canvas Demo 8: Worker Offscreen</title> 
 <script> 
 document.addEventListener('DOMContentLoaded', function(){
 	var v = document.getElementById('v');
@@ -16,12 +16,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	const url = URL.createObjectURL(blob);
 	
 	const worker = new Worker(url);
+	console.log(worker);
 	worker.onmessage = function(e) {
 		console.log('main:' + e.data.msg);
 	}
-	worker.postMessage({msg: 'start', canvas: canvas}, [canvas]);
-ß
+
 	var cw,ch;
+	//console.log(v.clientWidth, v.clientHeight)
 	v.addEventListener('play', function(){
 		cw = v.clientWidth;
 		ch = v.clientHeight;
@@ -29,21 +30,28 @@ document.addEventListener('DOMContentLoaded', function(){
 		canvas.height = ch;
 		back.width = cw;
 		back.height = ch;
-		draw(v,worker,cw,ch);
-		
+		draw(v,backcontext,worker,cw,ch);
+		console.log('main:', cw,ch)
 	},false);
+
+	//console.log(v.width, v.height);
+	worker.postMessage({msg: 'start', w: cw, h: ch, canvas: canvas}, [canvas]);
+
 },false);
  
-function draw(v,k,w,h) {
+function draw(v,bc,k,w,h) {
 	if(v.paused || v.ended)	return false;
 	
-	const pixels = v.getImageData(0,0,w,h);
-	k.postMessage({msg: 'play'});
-	setTimeout(draw,100,v,k,w,h);	// default: 20ms
+	bc.drawImage(v,0,0,w,h);
+	let frame = bc.getImageData(0,0,w,h);
+	//k.postMessage({msg: 'play', img: frame}, [frame]); // frame is not transferable
+	k.postMessage({msg: 'play', img: frame, w: w, h: h});
+	setTimeout(draw,40,v,bc,k,w,h);	// default: 20ms
 }
-</script> 
+</script>
 
-<script type="script/worker" id="workerCode"> 	// inline worker
+<!-- <script id="workerCode"> 	// inline worker -->
+<script type="text/javascript" id="workerCode"> 	// inline worker
     var ctx;
 	self.onmessage = async function(e) {
 		//console.log('worker: ' + e.data.msg);
@@ -51,20 +59,34 @@ function draw(v,k,w,h) {
 			case 'start':
 				if (!ctx) {
 					ctx = e.data.canvas.getContext('2d');
+					console.log('worker:', ctx.canvas.width, ctx.canvas.height)
 				}
-				ctx.fillRect(0,0,100,100);
 				postMessage({msg: e.data.msg});
 				break;
 			case 'play':
-				ctx.clearRect(0,0,100,100);
-				ctx.flllStyle = "#FF0000";
-				ctx.fillRect(100,100,500,500);
+				ctx.canvas.width = e.data.w;
+				ctx.canvas.height = e.data.h;
+				img = e.data.img;
+				chromakey(img.data);
+				ctx.putImageData(img,0,0)
 				postMessage({msg: e.data.msg});
 				break;
 			case 'stop':
 				postMessage({msg: e.data.msg});
 				break;
       	}
+	}
+
+	function chromakey(data) {
+		let l = data.length / 4;
+
+		for (let i = 0; i < l; i++) {
+			let r = data[i * 4 + 0];
+			let g = data[i * 4 + 1];
+			let b = data[i * 4 + 2];
+			if (g > 100 && r > 100 && b < 43)
+				data[i * 4 + 3] = 0;
+		}
 	}
 </script>
 
@@ -86,7 +108,7 @@ function draw(v,k,w,h) {
 
 </body>
 <center>
-<h2>Video/Canvas Demo 8: Worker computing</h2>
+<h2>Video/Canvas Demo 8: Worker Offscreen</h2>
 </center>
 <video id="v" controls loop> 
 	<source src=video.webm type=video/webm> 
