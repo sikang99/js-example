@@ -36,7 +36,7 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 - 2017 [Drawing multiple offscreen canvases into onscreen canvas](https://stackoverflow.com/questions/44608344/drawing-multiple-offscreen-canvases-into-onscreen-canvas)
 - 2017 [how to render offscreen canvas properly](https://stackoverflow.com/questions/43369748/how-to-render-offscreen-canvas-properly)
 - [Run the benchmark: OffscreenCanvas drawImage vs HTMLCanvasElement drawImage()](https://www.measurethat.net/Benchmarks/Show/5098/0/offscreencanvas-drawimage-vs-htmlcanvaselement-drawimag)
-
+- 2011 [html5: display video inside canvas](https://stackoverflow.com/questions/4429440/html5-display-video-inside-canvas)
 
 
 ### Open Source

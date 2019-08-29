@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	
 	const worker = new Worker(url);
 	worker.onmessage = function(e) {
-		console.log(e.data.msg);
+		console.log('main:' + e.data.msg);
 	}
 	worker.postMessage({msg: 'start', canvas: canvas}, [canvas]);
 
@@ -46,26 +46,23 @@ function draw(v,k,w,h) {
 <script type="script/worker" id="workerCode"> 	// inline worker
     var ctx;
 	self.onmessage = async function(e) {
-		//console.log(e.data.msg);
+		//console.log('worker: ' + e.data.msg);
       	switch (e.data.msg) {
 			case 'start':
-				ctx = e.data.canvas.getContext('2d');
 				if (!ctx) {
-					postMessage('context not initialized');
-					return;
+					ctx = e.data.canvas.getContext('2d');
 				}
 				ctx.fillRect(0,0,100,100);
-				postMessage({msg: 'started'});
+				postMessage({msg: e.data.msg});
 				break;
 			case 'play':
-				//context = e.data.canvas.getContext('2d');
 				ctx.clearRect(0,0,100,100);
 				ctx.flllStyle = "#FF0000";
 				ctx.fillRect(100,100,500,500);
-				postMessage({msg: 'played'});
+				postMessage({msg: e.data.msg});
 				break;
 			case 'stop':
-				postMessage({msg: 'stopped'});
+				postMessage({msg: e.data.msg});
 				break;
       	}
 	}
