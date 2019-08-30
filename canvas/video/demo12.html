@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	worker1.onmessage = function(e) {
 		switch (e.data.msg) {
 			case 'start':
-				worker2.postMessage({msg: e.data.msg});
+				console.log('worker1:', e.data.msg, "ed.")	
 				break;
 			case 'play':
 				img = e.data.img;
@@ -54,8 +54,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	function workerOne(e) {
 		switch (e.data.msg) {
 			case 'start':
-				console.log('worker1:', e.data.msg, "ed.")
-				//postMessage({msg: e.data.msg});
+				postMessage({msg: e.data.msg});
 				break;
 			case 'play':
 				img = e.data.img;
@@ -76,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	worker2.onmessage = function(e) {
 		switch (e.data.msg) {
 			case 'start':
+				console.log('worker2:', e.data.msg, "ed.")
 				break;
 			case 'play':
 				break;
@@ -90,12 +90,14 @@ document.addEventListener('DOMContentLoaded', function(){
 	function workerTwo(e) {
 		switch (e.data.msg) {
 			case 'start':
-				console.log('worker2:', e.data.msg, "ed.")
+				postMessage({msg: e.data.msg});
 				break;
 			case 'play':
 				img = e.data.img;
 				chromakey(img.data);
 				postMessage({msg: 'end', img: img}, [img.data.buffer]);
+				break;
+			case 'end':
 				break;
 		}
 	}	
