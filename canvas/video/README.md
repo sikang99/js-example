@@ -12,6 +12,10 @@
     - ArrayBuffer, MessagePort, ImageBitmap and OffscreenCanvas types 
 
 
+### Stack Overflow
+- [Why can't Web Worker call a function directly?](https://stackoverflow.com/questions/11354992/why-cant-web-worker-call-a-function-directly)
+
+
 ### Open Source
 - [nolanlawson/promise-worker](https://github.com/nolanlawson/promise-worker) - Promise-based messaging for Web Workers and Service Workers
 - [tieleman/blur_worker.js](https://gist.github.com/tieleman/6028023)

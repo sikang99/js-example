@@ -1,0 +1,145 @@
+<!DOCTYPE html> 
+<title>Video/Canvas Demo 12: Worker cascading, Processing, Transferable, Animation</title> 
+<script> 
+document.addEventListener('DOMContentLoaded', function(){
+	var video = document.getElementById('v');
+
+	// physical canvas for rendering
+	var canvas = document.getElementById('c');
+	var context = canvas.getContext('2d', {desynchronized: true});
+	
+	// virtual canvas for processing
+	var backcanvas = document.createElement('canvas');
+	var backcontext = backcanvas.getContext('2d', {desynchronized: true});
+ 
+	// main event handler
+	video.addEventListener('play', () => {
+   		function step() {
+			if (video.paused || video.ended) return false;
+			backcanvas.width = video.clientWidth;
+			backcanvas.height = video.clientHeight;
+			backcontext.drawImage(v, 0,0, video.clientWidth, video.clientHeight)
+			let img = backcontext.getImageData(0,0, video.clientWidth, video.clientHeight);
+			worker1.postMessage({msg: 'play', img: img}, [img.data.buffer]);
+			requestAnimationFrame(step)
+		}
+  		requestAnimationFrame(step);
+	})
+//},false);
+
+	// the first worker : WorkerOne
+	var blobOne = new Blob(["onmessage = " + workerOne + "\n"], { type: 'text/javascript' });
+	const urlOne = URL.createObjectURL(blobOne);
+	const worker1 = new Worker(urlOne);
+
+	worker1.onmessage = function(e) {
+		switch (e.data.msg) {
+			case 'start':
+				worker2.postMessage({msg: e.data.msg});
+				break;
+			case 'play':
+				img = e.data.img;
+				worker2.postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+			case 'end':
+				img = e.data.img;
+				canvas.width = video.clientWidth;
+				canvas.height = video.clientHeight;
+				context.putImageData(img,0,0)
+				break;
+		}
+	}
+	worker1.postMessage({msg: 'start'});
+
+	function workerOne(e) {
+		switch (e.data.msg) {
+			case 'start':
+				console.log('worker1:', e.data.msg, "ed.")
+				//postMessage({msg: e.data.msg});
+				break;
+			case 'play':
+				img = e.data.img;
+				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+			case 'end':
+				img = e.data.img;
+				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+		}
+	}
+
+	// another second worker : WorkerTwo
+	var blobTwo = new Blob(["onmessage = " + workerTwo + "\n" + chromakey], { type: 'text/javascript' });
+	const urlTwo = URL.createObjectURL(blobTwo);
+	const worker2 = new Worker(urlTwo);
+
+	worker2.onmessage = function(e) {
+		switch (e.data.msg) {
+			case 'start':
+				break;
+			case 'play':
+				break;
+			case 'end':
+				img = e.data.img;
+				worker1.postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+		}
+	}
+	worker2.postMessage({msg: 'start'});
+
+	function workerTwo(e) {
+		switch (e.data.msg) {
+			case 'start':
+				console.log('worker2:', e.data.msg, "ed.")
+				break;
+			case 'play':
+				img = e.data.img;
+				chromakey(img.data);
+				postMessage({msg: 'end', img: img}, [img.data.buffer]);
+				break;
+		}
+	}	
+
+	function chromakey(data) {
+		let l = data.length / 4;
+
+		for (let i = 0; i < l; i++) {
+			let r = data[i * 4 + 0];
+			let g = data[i * 4 + 1];
+			let b = data[i * 4 + 2];
+			if (g > 100 && r > 100 && b < 50)
+				data[i * 4 + 3] = 0;
+		}
+	}
+},false);
+</script>
+
+<style> 
+#c {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 20px;
+}
+ 
+#v {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -180px 0 0 -500px;
+}
+</style> 
+
+</body>
+<center>
+<h2>Video/Canvas Demo 12: Worker cascading, Processing, Transferable, Animation</h2>
+<h3>Main => Worker1 => Worker2 (filter) => Worker1 (draw)</h3>
+</center>
+<video id="v" controls loop> 
+	<source src=video.webm type=video/webm> 
+	<source src=video.ogg type=video/ogg> 
+	<source src=video.mp4 type=video/mp4> 
+</video> 
+<canvas id="c"></canvas> 
+</body> 
+</html>

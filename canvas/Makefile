@@ -5,7 +5,7 @@ usage:
 	@echo "usage: make [edit]"
 
 edit e:
-	vi draw.html
+	vi index.html
 
 web w:
 	simplehttpserver &

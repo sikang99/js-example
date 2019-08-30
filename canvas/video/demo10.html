@@ -52,15 +52,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
 },false);
  
-function draw(v,bc,k,w,h) {
-	if(v.paused || v.ended)	return false;
+// function draw(v,bc,k,w,h) {
+// 	if(v.paused || v.ended)	return false;
 	
-	bc.drawImage(v,0,0,w,h);
-	let img = bc.getImageData(0,0,w,h);
-	k.postMessage({msg: 'play', img: img}, [img.data.buffer]);
+// 	bc.drawImage(v,0,0,w,h);
+// 	let img = bc.getImageData(0,0,w,h);
+// 	k.postMessage({msg: 'play', img: img}, [img.data.buffer]);
 
-	setTimeout(draw,40,v,bc,k,w,h);	// default: 20ms
-}
+// 	setTimeout(draw,40,v,bc,k,w,h);	// default: 20ms
+// }
 </script>
 
 <script id="workerCode"> 	// inline worker
