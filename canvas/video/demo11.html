@@ -4,16 +4,19 @@
 document.addEventListener('DOMContentLoaded', function(){
 	var video = document.getElementById('v');
 
+	// canvas control
 	var canvas = document.getElementById('c');
 	var context = canvas.getContext('2d', {desynchronized: true})
 	
 	var backcanvas = document.createElement('canvas');
 	var backcontext = backcanvas.getContext('2d', {desynchronized: true});
  
+	// worker control
 	const workerOne = document.querySelector('#workerOne').textContent;
 	const blobOne = new Blob([workerOne], { type: 'text/javascript' });
 	const urlOne = URL.createObjectURL(blobOne);
 	
+	// the first worker
 	const worker1 = new Worker(urlOne);
 	worker1.onmessage = function(e) {
 		switch (e.data.msg) {
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 	worker1.postMessage({msg: 'start'});
 
+	// another second worker
 	const workerTwo = document.querySelector('#workerTwo').textContent;
 	const blobTwo = new Blob([workerTwo], { type: 'text/javascript' });
 	const urlTwo = URL.createObjectURL(blobTwo);
@@ -48,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 	worker2.postMessage({msg: 'start'});
 
+	// main event handler
 	video.addEventListener('play', () => {
    		function step() {
 			if (video.paused || video.ended) return false;
