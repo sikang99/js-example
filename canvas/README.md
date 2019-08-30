@@ -40,6 +40,7 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 
 
 ### Open Source
+- [spite/ccapture.js](https://github.com/spite/ccapture.js) - A library to capture canvas-based animations at a fixed framerate
 - [Gaia3D/mago3djs](https://github.com/Gaia3D/mago3djs) - 3D Rendering Library
 - [devnook/OffscreenCanvasDemo](https://github.com/devnook/OffscreenCanvasDemo) - OffscreenCanvas demo set
 - [mjohnston/canvas-drawimage.html](https://gist.github.com/mjohnston/1a096e4feb7c40be3438) - Canvas drawImage() benchmark
