@@ -1,7 +1,8 @@
 <!DOCTYPE html> 
-<title>Video/Canvas Demo 13: Worker cascading, Processing, Transferable, Animation</title> 
+<title>Video/Canvas Demo 13: Worker cascading, Filters, Transferable, Animation</title> 
 <script> 
 document.addEventListener('DOMContentLoaded', function(){
+	// video source
 	var video = document.getElementById('v');
 
 	// physical canvas for rendering
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	})
 //},false);
 
-	// the first worker : WorkerOne
+	// --- the first worker : WorkerOne
 	var blobOne = new Blob(["onmessage = " + workerOne + "\n"], { type: 'text/javascript' });
 	const urlOne = URL.createObjectURL(blobOne);
 	const worker1 = new Worker(urlOne);
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	worker1.onmessage = function(e) {
 		switch (e.data.msg) {
 			case 'start':
-				console.log('worker1:', e.data.msg, "ed.")	
+				console.log('worker1:', e.data.msg, 'ready')	
 				break;
 			case 'play':
 				img = e.data.img;
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				break;
 			case 'play':
 				img = e.data.img;
-				worker2.postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
 				break;
 			case 'end':
 				img = e.data.img;
@@ -67,15 +68,15 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 	}
 
-	// another second worker : WorkerTwo
-	var blobTwo = new Blob(["onmessage = " + workerTwo + "\n" + chromakey], { type: 'text/javascript' });
+	// --- another second worker : WorkerTwo
+	var blobTwo = new Blob(["onmessage = " + workerTwo + "\n" + chromakey + invert + sepia], { type: 'text/javascript' });
 	const urlTwo = URL.createObjectURL(blobTwo);
 	const worker2 = new Worker(urlTwo);
 
 	worker2.onmessage = function(e) {
 		switch (e.data.msg) {
 			case 'start':
-				console.log('worker2:', e.data.msg, "ed.")
+				console.log('worker2:', e.data.msg, 'ready')
 				break;
 			case 'play':
 				break;
@@ -95,6 +96,8 @@ document.addEventListener('DOMContentLoaded', function(){
 			case 'play':
 				img = e.data.img;
 				chromakey(img.data);
+				sepia(img.data);
+				invert(img.data);
 				postMessage({msg: 'end', img: img}, [img.data.buffer]);
 				break;
 			case 'end':
@@ -102,16 +105,61 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 	}	
 
+	// CAUTION: image is not shared area, use image.data
 	function chromakey(data) {
-		let l = data.length / 4;
-
-		for (let i = 0; i < l; i++) {
-			let r = data[i * 4 + 0];
-			let g = data[i * 4 + 1];
-			let b = data[i * 4 + 2];
+		for (let i = 0; i < data.length; i+=4) {
+			let r = data[i+0];
+			let g = data[i+1];
+			let b = data[i+2];
 			if (g > 100 && r > 100 && b < 50)
-				data[i * 4 + 3] = 0;
+				data[i+ 3] = 0;
 		}
+		return data;
+	}
+
+	function invert(data) {
+		for (let i = 0; i < data.length/2; i+=4) {
+			data[i] = 255 - data[i];		// R
+			data[i+1] = 255 - data[i+1]; 	// G
+			data[i+2] = 255 - data[i+2]; 	// B
+			data[i+3] = 255;			// alpha
+		}
+		return data;
+	}
+
+	function brightness(data, value) {
+		for(var i =0; i< data.length; i+=4){
+			data[i] += value/3;
+			data[i+1] += value/3;
+			data[i+2] += value/3;
+		}
+		return data;
+	}
+
+	function grayscale(data) {
+		for(var i =0; i< data.length; i+=4){
+			let r = data[i];
+			let g = data[i+1];
+			let b = data[i+2];
+
+			var v = 0.2126*r + 0.7152*g + 0.0722*b;  // complemented value
+			data[i] = data[i+1] = data[i+2] = v      // same rgb values
+		}
+		return data;
+	}
+
+	// old style image
+	function sepia(data) {
+		for (let i = 0; i < data.length; i+=4) {
+			let r = data[i+0];
+			let g = data[i+1];
+			let b = data[i+2];
+			
+			data[i] = r*0.3588 + g*0.7044 + b*0.1368;
+			data[i+1] = r*0.2990 + g*0.5870 + b+0.1140;
+			data[i+2] = r*0.2392 + g*0.4696 + b*0.0912;
+		}
+		return data;
 	}
 },false);
 </script>
@@ -130,18 +178,26 @@ document.addEventListener('DOMContentLoaded', function(){
 	left: 50%;
 	margin: -180px 0 0 -500px;
 }
+
+#b {
+	position: absolute;
+	top: 110%;
+	left: 20%;
+	margin: -180px 0 0 20px;
+}
 </style> 
 
 </body>
 <center>
-<h2>Video/Canvas Demo 13: Worker cascading, Processing, Transferable, Animation</h2>
+<h2>Video/Canvas Demo 13: Worker cascading, Filters, Transferable, Animation</h2>
 <h3>Main => Worker1 => Worker2 (filter) => Worker1 (draw)</h3>
 </center>
-<video id="v" controls loop> 
+<video id="v" class=display-none controls autoplay loop> 
 	<source src=video.webm type=video/webm> 
 	<source src=video.ogg type=video/ogg> 
 	<source src=video.mp4 type=video/mp4> 
 </video> 
 <canvas id="c"></canvas> 
+<input id="b" type=file accept=image/*>
 </body> 
 </html>
