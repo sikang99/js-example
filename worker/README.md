@@ -80,6 +80,7 @@ Javascript programming
 
 
 ### Stack Overflow
+- [Why can't Web Worker call a function directly?](https://stackoverflow.com/questions/11354992/why-cant-web-worker-call-a-function-directly)
 - [How to share variables from main thread and web workers in javascript?](https://stackoverflow.com/questions/47850679/how-to-share-variables-from-main-thread-and-web-workers-in-javascript)
 - Tags
     - [service worker](https://stackoverflow.com/questions/tagged/service-worker)
