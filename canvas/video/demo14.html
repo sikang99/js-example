@@ -1,6 +1,8 @@
 <!DOCTYPE html> 
-<title>Video/Canvas Demo 13: Worker cascading, Filters, Transferable, Animation</title> 
+<html>
+<title>Video/Canvas Demo 14: Worker fork, Filters, Transferable, Animation</title> 
 <script> 
+//import * as filter from "./filter.js";
 document.addEventListener('DOMContentLoaded', function(){
 	// video source
 	var video = document.getElementById('v');
@@ -28,25 +30,35 @@ document.addEventListener('DOMContentLoaded', function(){
 	})
 //},false);
 
+	// code for set of filter functions
+	const filter = document.querySelector('#Filter').textContent;
+
 	// --- the first worker : WorkerOne
 	var blobOne = new Blob(["onmessage = " + workerOne + "\n"], { type: 'text/javascript' });
 	const urlOne = URL.createObjectURL(blobOne);
 	const worker1 = new Worker(urlOne);
 
+	worker1.onerror = function(e) {
+		document.getElementById('e').textContent = 
+			['ERROR>' + e.filename + e.lineno + ' >> ' + e.message + '\n'];
+	}
 	worker1.onmessage = function(e) {
 		switch (e.data.msg) {
 			case 'start':
-				console.log(worker1.constructor.name, e.data.msg, 'ready')	
+				console.log('worker1:', e.data.msg, 'ready')	
 				break;
 			case 'play':
 				img = e.data.img;
 				worker2.postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
 				break;
-			case 'end':
+			case 'done':
 				img = e.data.img;
 				canvas.width = video.clientWidth;
 				canvas.height = video.clientHeight;
 				context.putImageData(img,0,0)
+				break;
+			case 'end':
+				worker1.terminate(); 
 				break;
 		}
 	}
@@ -56,20 +68,25 @@ document.addEventListener('DOMContentLoaded', function(){
 		switch (e.data.msg) {
 			case 'start':
 				postMessage({msg: e.data.msg});
+				//postMessage(1/x);
 				break;
 			case 'play':
 				img = e.data.img;
 				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
 				break;
-			case 'end':
+			case 'done':
 				img = e.data.img;
 				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+			case 'end': 
+				postMessage({msg: e.data.msg});
+				close();
 				break;
 		}
 	}
 
 	// --- another second worker : WorkerTwo
-	var blobTwo = new Blob(["onmessage = " + workerTwo + "\n" + chromakey + invert + sepia], { type: 'text/javascript' });
+	var blobTwo = new Blob(["onmessage = " + workerTwo + "\n" + filter + "\n"], { type: 'text/javascript' });
 	const urlTwo = URL.createObjectURL(blobTwo);
 	const worker2 = new Worker(urlTwo);
 
@@ -80,13 +97,18 @@ document.addEventListener('DOMContentLoaded', function(){
 				break;
 			case 'play':
 				break;
-			case 'end':
+			case 'done':
 				img = e.data.img;
 				worker1.postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
+				break;
+			case 'end': 
+				console.log('worker2:', e.data.msg, 'close')
+				worker2.terminate();
 				break;
 		}
 	}
 	worker2.postMessage({msg: 'start'});
+
 
 	function workerTwo(e) {
 		switch (e.data.msg) {
@@ -95,16 +117,25 @@ document.addEventListener('DOMContentLoaded', function(){
 				break;
 			case 'play':
 				img = e.data.img;
+				brightness(img.data, 6);
 				chromakey(img.data);
 				sepia(img.data);
 				invert(img.data);
-				postMessage({msg: 'end', img: img}, [img.data.buffer]);
+				grayscale(img.data);
+				postMessage({msg: 'done', img: img}, [img.data.buffer]);
 				break;
-			case 'end':
+			case 'done':
+				break;
+			case 'end': 
+				postMessage({msg: e.data.msg});
+				close();
 				break;
 		}
 	}	
+},false);
+</script>
 
+<script type="text/javascript" id="Filter">
 	// CAUTION: image is not shared area, use image.data
 	function chromakey(data) {
 		for (let i = 0; i < data.length; i+=4) {
@@ -161,8 +192,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 		return data;
 	}
-},false);
 </script>
+
 
 <style> 
 #c {
@@ -196,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 </body>
 <center>
-<h2>Video/Canvas Demo 13: Worker cascading, Filters, Transferable, Animation</h2>
+<h2>Video/Canvas Demo 14: Worker fork, Filters, Transferable, Animation</h2>
 <h3>Main => Worker1 => Worker2 (filter) => Worker1 (draw)</h3>
 </center>
 <video id="v" class=display-none controls autoplay loop> 
@@ -206,8 +237,9 @@ document.addEventListener('DOMContentLoaded', function(){
 </video> 
 <canvas id="c"></canvas> 
 <input id="b" type=file accept=image/*>
+<output id="e" style="color: red;"></output>
 <div id="s">
-filter: 
+<b>filter:</b> 
 <select name="filter">
 	<option value="invert">invert</option>
 	<option value="chromekey">chromakey</option>

@@ -1,18 +1,14 @@
 #
-# Makefile for inline worker
+# Makefile for module test of javascript
 #
 usage:
 	@echo "usage: make [run|web|kill]"
-
-edit e:
-	vi work02.html
 
 web w:
 	open http://localhost:8080
 
 run r:
-	simplehttpserver &
+	simplehttpserver -port=8080 &
 
 kill k:
 	pkill simplehttpserver
-
