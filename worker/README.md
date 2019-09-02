@@ -77,6 +77,7 @@ Javascript programming
 - [The Service Worker Lifecycle](https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle)
 - [Adding a Service Worker and Offline into your Web App](https://developers.google.com/web/fundamentals/codelabs/offline/)
 - [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers/)
+- [When should you be using Web Workers?](https://dassur.ma/things/when-workers/)
 
 
 ### Stack Overflow
