@@ -36,15 +36,16 @@ onmessage = function(e) {
 </script>
 
 <script>
-var workerOne = document.querySelector('#workerOne').textContent;
+// --- main.js
+//const workerOne = document.querySelector('#workerOne').textContent;
+const workerOne = document.getElementById('workerOne').textContent;
 const blobOne = new Blob([workerOne], { type: 'text/javascript' });
 const urlOne = URL.createObjectURL(blobOne);
 
-var workerTwo = document.querySelector('#workerTwo').textContent;
+const workerTwo = document.querySelector('#workerTwo').textContent;
 const blobTwo = new Blob([workerTwo], { type: 'text/javascript' });
 const urlTwo = URL.createObjectURL(blobTwo);
 
-// --- main.js
 var w1 = new Worker(urlOne);
 var w2 = new Worker(urlTwo);
 
