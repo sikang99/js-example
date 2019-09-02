@@ -1,4 +1,4 @@
-// worker1.js
+// --- worker1.js
 var port;
 
 // listen on main.html who created this worker

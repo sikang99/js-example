@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			backcanvas.height = video.clientHeight;
 			backcontext.drawImage(v, 0,0, video.clientWidth, video.clientHeight)
 			let img = backcontext.getImageData(0,0, video.clientWidth, video.clientHeight);
-			worker1.postMessage({msg: 'play', img: img}, [img.data.buffer]);
+			worker1.postMessage({msg: 'work', img: img}, [img.data.buffer]);
 			requestAnimationFrame(step)
 		}
   		requestAnimationFrame(step);
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			case 'start':
 				console.log('worker1:', e.data.msg, 'ready')	
 				break;
-			case 'play':
+			case 'work':
 				img = e.data.img;
 				worker2.postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
 				break;
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				postMessage({msg: e.data.msg});
 				//postMessage(1/x);
 				break;
-			case 'play':
+			case 'work':
 				img = e.data.img;
 				postMessage({msg: e.data.msg, img: img}, [img.data.buffer]);
 				break;
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			case 'start':
 				console.log('worker2:', e.data.msg, 'ready')
 				break;
-			case 'play':
+			case 'work':
 				break;
 			case 'done':
 				img = e.data.img;
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			case 'start':
 				postMessage({msg: e.data.msg});
 				break;
-			case 'play':
+			case 'work':
 				img = e.data.img;
 				brightness(img.data, 6);
 				chromakey(img.data);

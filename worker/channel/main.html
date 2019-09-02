@@ -1,3 +1,11 @@
+</title>
+<body>
+	<h2>Shared worker test using message channel: Multiple sources</h2>
+	Test Example, include three files: main.html, worker1.js, worker2.js</br>
+	We are going to post a message to worker2 through worker1
+</body>
+</html>
+
 <script>
 // Test Example, include three files: main.html, worker1.js, worker2.js
 // We are going to post a message to worker2 through worker1
@@ -13,7 +21,7 @@ w2.postMessage('here is your port', [mc.port2]);
 
 // listen on w2
 // there is a global onmessage, but it's not for workers, it's for communicate between iframes/documents
-w2.onmessage = function(e){
+w2.onmessage = function(e) {
 	alert(e.data);
 }
 

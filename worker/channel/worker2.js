@@ -1,4 +1,4 @@
-// worker2.js
+// --- worker2.js
 var port;
 
 // listen on creator of this worker
