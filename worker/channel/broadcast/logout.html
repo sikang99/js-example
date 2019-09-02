@@ -1,0 +1,23 @@
+<button id="logout">Logout</button>
+
+<script>
+function doLogout() {
+    // update the UI login state for this page.
+}
+
+const authChannel = new BroadcastChannel('auth');
+
+const button = document.querySelector('#logout');
+button.addEventListener('click', e => {
+// A channel won't broadcast to itself so we invoke doLogout()
+// manually on this page.
+    doLogout();
+    authChannel.postMessage({cmd: 'logout', user: 'Eric Bidelman'});
+});
+
+authChannel.onmessage = function(e) {
+    if (e.data.cmd === 'logout') {
+        doLogout();
+    }
+};
+</script>

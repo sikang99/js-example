@@ -1,0 +1,46 @@
+<script>
+// --- index.html
+const channel = new BroadcastChannel('app-channel');
+channel.onmessage = function(e) {
+    if (e.data.action === 'clearcache') {
+        console.log('Cache removed:', e.data.removed);
+    }
+};
+
+const messageChannel = new MessageChannel();
+
+// Send the service worker a message to clear the cache.
+// We can't use a BroadcastChannel for this because the
+// service worker may need to be woken up. MessageChannels do that.
+navigator.serviceWorker.controller.postMessage({
+    action: 'clearcache',
+    cacheName: 'v1-cache'
+}, [messageChannel.port2]);
+</script>
+
+<script>
+// --- sw.js
+function nukeCache(cacheName) {
+    return caches.delete(cacheName).then(removed => {
+        // ...do more stuff (internal) to this service worker...
+        return removed;
+    });
+}
+
+self.onmessage = function(e) {
+    const action = e.data.action;
+    const cacheName = e.data.cacheName;
+
+    if (action === 'clearcache') {
+        nukeCache(cacheName).then(removed => {
+            // Send the main page a response via the BroadcastChannel API.
+            // We could also use e.ports[0].postMessage(), but the benefit
+            // of responding with the BroadcastChannel API is that other
+            // subscribers may be listening.
+            const channel = new BroadcastChannel('app-channel');
+            channel.postMessage({action, removed});
+        });
+    }
+};
+</script>
+
