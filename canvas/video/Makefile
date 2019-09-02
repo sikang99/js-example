@@ -18,8 +18,10 @@ e7:
 	vi demo7.html
 
 web w:
-	simplehttpserver &
 	open http://localhost:8080
+
+run r:
+	simplehttpserver &
 
 kill k:
 	pkill simplehttpserver

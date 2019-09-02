@@ -39,6 +39,7 @@ Javascript programming
 - 2018/08/28 [50 popular JavaScript open-source projects on GitHub in 2018](https://hackernoon.com/50-popular-javascript-open-source-projects-on-github-in-2018-469c11b48b8d)
 - 2018/07/04 [Service Worker State Management](https://www.loxodrome.io/page/2/)
     - Service Workers are a separate thread that sit at in the background at browser level (rather than the page level like Web Workers) allowing pages and workers on the same domain scope (i.e. example.com) to interact with it.
+- 2018/05/22 [Web Worker driven Classes and methods](https://medium.com/@WebReflection/web-worker-driven-classes-and-methods-8a5a8e9bdb67)
 - 2018/05/22 [Examining Web Worker Performance](https://www.loxodrome.io/post/web-worker-performance/)
     -  web worker libraries: greenlet, Workerize and [Comlink](https://github.com/GoogleChromeLabs/comlink)
     -  transferable values of type ArrayBuffer, MessagePort, ImageBitmap
