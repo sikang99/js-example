@@ -8,7 +8,7 @@
     const startAudio = function() {
         // allow the user to play sound
         context.resume();
-        if(oscillatorAudioNode) oscillatorAudioNode.stop();
+        if (oscillatorAudioNode) oscillatorAudioNode.stop();
         // create an oscillator node
         oscillatorAudioNode = context.createOscillator();
         // connect it to the destination

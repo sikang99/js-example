@@ -44,5 +44,4 @@ Web Audio, Audio Worklet
 - [pioug/audio-worklet](https://github.com/pioug/audio-worklet) - AudioWorklet sample (noise generator)
 - [aatishb/synthesine](https://github.com/aatishb/synthesine) - Synthesine https://aatishb.com/synthesine/
 - [bloom510/react-audio-worklet-example](https://github.com/bloom510/react-audio-worklet-example) - 
-
-
+- [**interlucid/web-audio-api**](https://github.com/interlucid/web-audio-api) - A learning resource that demonstrates the capabilities of the web audio API and teaches users about it
