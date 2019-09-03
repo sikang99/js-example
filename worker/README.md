@@ -11,6 +11,7 @@ Javascript programming
 
 
 ### History
+- 2019/07/29 [A Simple Introduction to Web Workers in JavaScript](https://medium.com/young-coder/a-simple-introduction-to-web-workers-in-javascript-b3504f9d9d1c)
 - 2019/07/22 [Using WebAssembly with Web Workers](https://www.sitepen.com/blog/using-webassembly-with-web-workers/)
 - 2019/07/15 [Faster Fractals with Multi-Threaded WebAssembly](https://blog.scottlogic.com/2019/07/15/multithreaded-webassembly.html)
 - 2019/06/20 [The ImageBitmap rendering context for <offscreenCanvas>](https://www.chromestatus.com/feature/5700221617045504)

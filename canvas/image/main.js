@@ -1,0 +1,8 @@
+var img = new Image(63, 177);
+img.src = "https://cdn.sstatic.net/Img/unified/sprites.svg";
+img.onload = _ => {
+	createImageBitmap(img).then(bitmap => {
+		var canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+		canvas.getContext('bitmaprenderer');
+	}).catch(e => console.error(e.message));
+};

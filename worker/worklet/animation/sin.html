@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Worklet Example with Math.sin() in the Animator</title>
+        <link rel="stylesheet" href="./styles.css">
+    </head>
+    <body>
+        <div class="wrapper">
+            <h2>Worklet Example with Math.sin() in the Animator</h2>
+            <div class="example">
+                <div class="box" id="box2"></div>
+                <script>
+                    if(!('animationWorklet' in CSS)) {
+                        document.write("You need AnimationWorklet to see this demo :(");
+                    }
+
+                    CSS.animationWorklet.addModule('./sin.js').then(function () {
+                        new WorkletAnimation(
+                            'sin',
+                            new KeyframeEffect(
+                                document.querySelector('#box2'),
+                                [
+                                    {
+                                        transform: 'translate3d(0, 0, 0) rotate(0deg)'
+                                    },
+                                    {
+                                        transform: 'translate3d(500px, 0, 0) rotate(360deg)'
+                                    }
+                                ],
+                                {
+                                    duration: 1000,
+                                    iterations: Number.POSITIVE_INFINITY
+                                }
+                            ),
+                            document.timeline
+                        ).play();
+                    });
+                </script>
+            </div>
+        </div>
+    </body>
+</html>
