@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>ES6 Test 04: Generator (Coroutine)</title>
+</head>
+<body>
+<h2>ES6 Test 04: Generator (Coroutine)</h2>
+<a href="https://wonism.github.io/javascript-generator/">JavaScript Generator 이해하기</a>
+</body>   
+<script>
+function* sampleGFunction() {
+    console.log(yield 10);
+    console.log(yield 5);
+    console.log(yield 0);
+}
+
+function run(gen) {
+    const it = gen();
+
+    (function iterate({ value, done }) {
+        if (done) {
+            return value;
+        }
+
+        if (value % 2 === 0) {
+            iterate(it.next(value + 1));
+        } else {
+            iterate(it.next(value));
+        }
+    })(it.next());
+}
+
+run(sampleGFunction);
+// 11
+// 5
+// 1
+</script>
+</html>

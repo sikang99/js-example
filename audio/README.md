@@ -10,6 +10,8 @@ Web Audio, Audio Worklet
 - 2019/07/23 [Audio/Video synchronization with the Web Audio API](https://blog.paul.cx/post/audio-video-synchronization-with-the-web-audio-api/)
 - 2019/05/16 [**Audio rendering in web**](http://www.secmem.org/blog/2019/05/16/audio-rendering-in-web/)
 - 2019/05/13 [Screen Recorder: recording microphone and the desktop audio at the same time](https://paul.kinlan.me/screen-recorderrecording-microphone-and-the-desktop-audio-at-the-same-time/)
+- 2019/02/07 [Making Reverb with the Web Audio API](http://blog.gskinner.com/archives/2019/02/reverb-web-audio-api.html)
+- 2019/00/00
 - 2018/12/27 [Implementing AudioWorklets with React](https://hackernoon.com/implementing-audioworklets-with-react-8a80a470474)
 - 2018/06/12 [Algorithmic Reverb and Web Audio API](https://itnext.io/algorithmic-reverb-and-web-audio-api-e1ccec94621a)
     - [Convolution Reverb and Web Audio API](https://itnext.io/convolution-reverb-and-web-audio-api-8ee65108f4ae)

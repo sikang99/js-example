@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>ES6 Test 09: Generator (Coroutine)</title>
+</head>
+<body>
+<h2>ES6 Test 09: Generator (Coroutine)</h2>
+<a href="https://wonism.github.io/javascript-generator/">JavaScript Generator 이해하기</a>
+: throw with yield
+</body>   
+<script>
+function* decrement() {
+  console.log('[ENTERED]');
+  let i = 0;
+
+  try {
+    while (true) {
+      yield i--;
+    }
+  } catch (e) {
+    yield e;
+  }
+}
+const withThrowWithYield = decrement();
+
+console.log(withThrowWithYield.next());
+console.log(withThrowWithYield.next());
+console.log(withThrowWithYield.next());
+console.log(withThrowWithYield.next());
+console.log(withThrowWithYield.throw(Infinity));
+console.log(withThrowWithYield.next());
+
+// [ENTERED]
+// { value: 0, done: false }
+// { value: -1, done: false }
+// { value: -2, done: false }
+// { value: -3, done: false }
+// { value: Infinity, done: false }
+// { value: undefined, done: true }
+</script>
+</html>

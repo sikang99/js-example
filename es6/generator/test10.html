@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>ES6 Test 10: Generator (Coroutine)</title>
+</head>
+<body>
+<h2>ES6 Test 10: Generator (Coroutine)</h2>
+<a href="https://wonism.github.io/javascript-generator/">JavaScript Generator 이해하기</a>
+: yield*
+</body>   
+<script>
+function* iterableYield() {
+  const a = 1;
+  yield a;
+  yield* [1, 2, 3].map(el => el * (10 ** a));
+
+  const b = 2;
+  yield b;
+  yield* [1, 2, 3].map(el => el * (10 ** b));
+
+  const c = 3;
+  yield c;
+  yield* [1, 2, 3].map(el => el * (10 ** c));
+}
+
+function run(gen) {
+  const it = gen();
+
+  (function iterate({ value, done }) {
+    console.log({ value, done });
+    if (done) {
+      return value;
+    }
+
+    iterate(it.next(value));
+  })(it.next());
+}
+
+run(iterableYield);
+// { value: 1, done: false }
+// { value: 10, done: false }
+// { value: 20, done: false }
+// { value: 30, done: false }
+// { value: 2, done: false }
+// { value: 100, done: false }
+// { value: 200, done: false }
+// { value: 300, done: false }
+// { value: 3, done: false }
+// { value: 1000, done: false }
+// { value: 2000, done: false }
+// { value: 3000, done: false }
+// { value: undefined, done: true }
+</script>
+</html>

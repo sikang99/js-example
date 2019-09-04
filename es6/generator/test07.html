@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>ES6 Test 07: Generator (Coroutine)</title>
+</head>
+<body>
+<h2>ES6 Test 07: Generator (Coroutine)</h2>
+<a href="https://wonism.github.io/javascript-generator/">JavaScript Generator 이해하기</a>
+</body>   
+<script>
+function* oneToX() {
+  yield 1;
+
+  try {
+    yield 2;
+  } finally {
+    yield 3;
+    yield 4;
+  }
+
+  yield 5;
+}
+
+var withReturnWithFinally = oneToX();
+
+console.log(withReturnWithFinally.next()); // { value: 1, done: false }
+console.log(withReturnWithFinally.next()); // { value: 2, done: false }
+console.log(withReturnWithFinally.return(6)); // { value: 3, done: false }
+console.log(withReturnWithFinally.next()); // { value: 4, done: false }
+console.log(withReturnWithFinally.next()); // { value: 6, done: true }
+</script>
+</html>

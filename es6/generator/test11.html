@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>ES6 Test 11: Generator (Coroutine)</title>
+</head>
+<body>
+<h2>ES6 Test 11: Generator (Coroutine)</h2>
+<a href="https://wonism.github.io/javascript-generator/">JavaScript Generator 이해하기</a>
+: Iterable Generator
+</body>   
+<script>
+function* generateName() {
+  yield 'W';
+  yield 'O';
+  yield 'N';
+  yield 'I';
+  yield 'S';
+  yield 'M';
+}
+
+// for..of
+const genForForOf = generateName();
+for (let i of genForForOf) {
+  console.log(i);
+}
+// W
+// O
+// N
+// I
+// S
+// M
+
+// ...
+const genForSpread = generateName();
+console.log([...genForSpread]); // ['W', 'O', 'N', 'I', 'S', 'M']
+</script>
+</html>

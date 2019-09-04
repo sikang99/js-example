@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>ES6 Test 06: Generator (Coroutine)</title>
+</head>
+<body>
+<h2>ES6 Test 06: Generator (Coroutine)</h2>
+<a href="https://wonism.github.io/javascript-generator/">JavaScript Generator 이해하기</a>
+</body>   
+<script>
+function* increment() {
+  console.log('[ENTERED]');
+  let i = 0;
+
+  try {
+    while (true) {
+      yield i++;
+    }
+  } catch (e) {
+    console.log('[ERROR]', e);
+  }
+}
+
+const withReturn = increment();
+console.log(withReturn.next());     // [ENTERED] { value: 0, done: false }
+console.log(withReturn.next());     // { value: 1, done: false }
+console.log(withReturn.next());     // { value: 2, done: false }
+console.log(withReturn.next());     // { value: 3, done: false }
+console.log(withReturn.return(42)); // { value: 42, done: true }
+</script>
+</html>
