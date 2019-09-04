@@ -2,6 +2,9 @@
 <head>
 <title>ES6 Test 01: Generator (Coroutine)</title>
 </head>
+<body>
+ES6 Test 01: Generator (Coroutine)
+</body>   
 <script>
 function* quips(name) {
     yield "hello " + name + "!";
@@ -17,6 +20,9 @@ do {
     var res = iter.next();
     console.log(res);
 } while (res.done == false);
+
+console.log(iter.next());
+console.log(iter.return);
 
 // var r1 = iter.next()
 // console.log(r1)
@@ -57,7 +63,7 @@ function range(start, stop) {
 
 // 3 times value display
 for (var value of range(0, 3)) {
-    alert("Ding! at floor #" + value);
+    console.log("Ding! at floor #" + value);
 }
 
 function* es6Range(start, stop) {
@@ -66,11 +72,37 @@ function* es6Range(start, stop) {
 }
 
 for (var value of es6Range(0, 3)) {
-    alert("ES6: Ding! at floor #" + value);
+    console.log("ES6: Ding! at floor #" + value);
+}
+
+// my test for producer and consumer
+function* produce(val) {
+    let res = val;
+    while (true) {
+        res++;
+        yield res;
+
+    }
+}
+
+function* consume(val) {
+    let res = val;
+    while (true) {
+        res = 10 + val;
+        yield res;
+    }
+}
+
+// initialize producer and consumer
+var producer = produce(0);
+var consumer = consume(0);
+
+for (var i=0; i < 3; i++) {
+    console.log(i);
+    var pro = producer.next(i)
+    var con = consumer.next(pro.value);
+    console.log(pro.value, con.value);
 }
 
 </script>
-<body>
-    ES6 Test 01: Generator (Coroutine)
-</body>    
 </html>

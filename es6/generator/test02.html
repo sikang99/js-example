@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>ES6 Test 01: Generator (Coroutine)</title>
+</head>
+<body>
+ES6 Test 02: Generator (Coroutine)
+</body>   
+<script>
+function* g1() {
+    yield 2;
+    yield 3;
+    yield 4;
+}
+
+function* g2() {
+    yield 1;
+    yield* g1();    // pass control to g1()
+    yield 5;
+}
+
+var iter = g2()
+
+do {
+    res = iter.next();
+    console.log(res.value);
+} while (res.done == false);
+</script>
+</html>

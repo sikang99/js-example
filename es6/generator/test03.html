@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>ES6 Test 03: Generator (Coroutine)</title>
+</head>
+<body>
+ES6 Test 03: Generator (Coroutine)
+</body>   
+<script>
+function* genFuncChild() {
+    yield 1;
+    yield 2;
+    return 'foo';
+    yield 3; // note that this is ignored
+}
+
+function* genFuncMain() {
+    const result = yield* genFuncChild();
+    console.log(result);
+    yield 'the end';
+}
+
+var generator = genFuncMain();
+
+for (let i of generator) {
+    console.log(i)
+}
+
+</script>
+</html>
