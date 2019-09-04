@@ -14,4 +14,6 @@ Javascript programming
 - [Canvas](canvas/README.md)
 - [Security](security/README.md)
 - [**Worker**](worker/README.md)
+- [es6](es6/README.md)
+- [blob](blob/README.md)
 
