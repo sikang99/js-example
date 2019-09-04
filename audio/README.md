@@ -1,6 +1,10 @@
 # js-example/audio
-
 Web Audio, Audio Worklet
+
+### Standards
+- [Web Audio API](https://webaudio.github.io/web-audio-api/), Editor’s Draft, 29 August 2019
+- [Web Audio API](https://webaudioapi.com/): [Samples](https://webaudioapi.com/samples/)
+
 
 ### History
 - 2019/07/23 [Audio/Video synchronization with the Web Audio API](https://blog.paul.cx/post/audio-video-synchronization-with-the-web-audio-api/)
@@ -25,6 +29,8 @@ Web Audio, Audio Worklet
 - [dsp.audio](https://dsp.audio/) - Workler Editor
 - [Web Audio API](https://webaudio.github.io/web-audio-api/), Editor’s Draft, 23 August 2019
 - [Audio DSP Playground](https://arthurcarabott.com/audio-dsp-playground/)
+- [wavesurfer.js](https://wavesurfer-js.org/) - Web Audio + Canvas
+
 
 ### Papers
 - 2018 [Web Assembly Audio Worklet (WAAW) Csound](https://arxiv.org/abs/1804.111200)
@@ -45,3 +51,7 @@ Web Audio, Audio Worklet
 - [aatishb/synthesine](https://github.com/aatishb/synthesine) - Synthesine https://aatishb.com/synthesine/
 - [bloom510/react-audio-worklet-example](https://github.com/bloom510/react-audio-worklet-example) - 
 - [**interlucid/web-audio-api**](https://github.com/interlucid/web-audio-api) - A learning resource that demonstrates the capabilities of the web audio API and teaches users about it
+- [**chrisguttandin/standardized-audio-context**](https://github.com/chrisguttandin/standardized-audio-context) - A cross-browser implementation of the AudioContext which aims to closely follow the standard.
+- [bbc/waveform-data.js/](https://github.com/bbc/waveform-data.js) - Audio Waveform Data Manipulation API – resample, offset and segment waveform data in JavaScript
+
+

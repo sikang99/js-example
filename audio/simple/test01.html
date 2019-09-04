@@ -1,13 +1,27 @@
+<!DOCTYPE html>
+ <html>
+<head>
+<title>Web Audio Test 01: </title> 
+</head>
+<body>
+<h3>Web Audio Test 01: </h3>
 <div>
     <button onclick="startAudio()">Start</button>
     <button onclick="endAudio()">Stop</button>
 </div>
+</body>
 <script>
-    const context = new AudioContext();
-    let oscillatorAudioNode;
-    const startAudio = function() {
-        // allow the user to play sound
-        context.resume();
+//window.onload = function() {     
+    var context;
+    var oscillatorAudioNode;
+    
+    function startAudio() {
+        if (context) {
+            context.resume();
+        } else {
+            context = new AudioContext();
+        }
+        
         if (oscillatorAudioNode) oscillatorAudioNode.stop();
         // create an oscillator node
         oscillatorAudioNode = context.createOscillator();
@@ -16,7 +30,11 @@
         // start the oscillator
         oscillatorAudioNode.start();
     }
-    const endAudio = function() {
+    function endAudio() {
         oscillatorAudioNode.stop();
     }
+//}
 </script>
+
+
+

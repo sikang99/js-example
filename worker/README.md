@@ -16,7 +16,7 @@ Javascript programming
 - 2019/07/15 [Faster Fractals with Multi-Threaded WebAssembly](https://blog.scottlogic.com/2019/07/15/multithreaded-webassembly.html)
 - 2019/06/20 [The ImageBitmap rendering context for <offscreenCanvas>](https://www.chromestatus.com/feature/5700221617045504)
 - 2019/06/20 [Understanding Worker Threads in Node.js](https://nodesource.com/blog/worker-threads-nodejs/)
-- 2019/06/19 [Real-time processing with Web Workers](https://blog.logrocket.com/real-time-processing-web-workers/)
+- 2019/06/19 [Real-time processing with Wßeb Workers](https://blog.logrocket.com/real-time-processing-web-workers/)
 - 2019/05/16 [Web Workers](https://flaviocopes.com/web-workers/)
     - [The Channel Messaging API](https://flaviocopes.com/channel-messaging-api/)
 - 2019/05/13 [Web Workers in the Real World](https://medium.com/samsung-internet-dev/web-workers-in-the-real-world-d61387958a40)

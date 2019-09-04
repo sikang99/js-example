@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Web Audio Test 02: </title> 
+</head>
+<script>
+//window.onload = function() {
+    var audioCtx = new AudioContext();
+    var sinenode;
+    var delay = 1000; // in ms
+    var loop = true;
+
+    function sleep(ms) {
+        return new Promise((resolve, reject) => setTimeout(resolve, ms));
+    }
+
+    function AudioPlay(freq, wave, delay) {
+        audioCtx.resume();
+        if (sinenode) sinenode.stop()
+        sinenode = audioCtx.createOscillator();
+        sinenode.frequency.value = freq;
+        sinenode.type = wave;
+        sinenode.connect(audioCtx.destination);
+        sinenode.start();
+        if (delay > 0) setTimeout(Stop, delay);
+    }
+
+    const SineA = function() {
+        AudioPlay(440, "sine");
+    }
+    
+    const SineB = function() {
+        AudioPlay(523.25, "sine");
+    }
+    
+    const SineC = function() {
+        AudioPlay(698.46, "sine");
+    }
+
+    const Cycle = async function() {
+        if (loop == false) { loop = true; }
+        while (loop) {
+            AudioPlay(440, "sine", delay);
+            await sleep(500);
+            AudioPlay(523.25, "sine", delay);
+            await sleep(500);
+            AudioPlay(698.46, "sine", delay);
+            await sleep(500);
+        }   
+    }
+    
+    const Stop = function() {
+        if (sinenode) sinenode.stop();
+    }
+
+    const Mute = function() {
+        loop = false;
+        Stop()
+    } 
+//}
+</script>
+
+<style>
+#bm {
+    background-color: lightblue;
+    color: black;
+    border-radius: 15%;
+}
+</style>
+
+<body>
+<h3>Web Audio Test 02: </h3>
+<div>
+    <button type=button id="ba" onclick="SineA()">SineA</button>
+    <button type=button id="bb" onclick="SineB()">SineB</button>
+    <button type=button id="bc" onclick="SineC()">SineC</button>
+    <button type=button id="bx" onclick="Cycle()">Cycle</button>
+    <button type=button id="bm" onclick="Mute()">Mute</button>
+</div>
+</body>
+</html>

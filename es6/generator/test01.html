@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>ES6 Test 01: Generator (Coroutine)</title>
+</head>
+<script>
+function* quips(name) {
+    yield "hello " + name + "!";
+    yield "i hope you are enjoying the blog posts";
+    if (name.startsWith("X")) {
+        yield "it's cool how your name starts with X, " + name;
+    }
+    yield "see you later!";
+}
+
+var iter = quips("Xtoney");
+do {
+    var res = iter.next();
+    console.log(res);
+} while (res.done == false);
+
+// var r1 = iter.next()
+// console.log(r1)
+// //  { value: "hello jorendorff!", done: false }
+// var r2 = iter.next()
+// console.log(r2)
+// //   { value: "i hope you are enjoying the blog posts", done: false }
+// var r3 = iter.next()
+// console.log(r3)
+// //   { value: "see you later!", done: false }
+// var r4 = iter.next()
+// console.log(r4)
+// //   { value: undefined, done: true }
+
+// The following example is implemented generator with iterator
+class RangeIterator {
+    constructor(start, stop) {
+        this.value = start;
+        this.stop = stop;
+    }
+
+    [Symbol.iterator]() { return this; }
+
+    next() {
+        var value = this.value;
+        if (value < this.stop) {
+            this.value++;
+            return {done: false, value: value};
+        } else {
+            return {done: true, value: undefined};
+        }
+    }
+}
+
+function range(start, stop) {
+    return new RangeIterator(start, stop);
+}
+
+// 3 times value display
+for (var value of range(0, 3)) {
+    alert("Ding! at floor #" + value);
+}
+
+function* es6Range(start, stop) {
+  for (var i = start; i < stop; i++)
+    yield i;
+}
+
+for (var value of es6Range(0, 3)) {
+    alert("ES6: Ding! at floor #" + value);
+}
+
+</script>
+<body>
+    ES6 Test 01: Generator (Coroutine)
+</body>    
+</html>
