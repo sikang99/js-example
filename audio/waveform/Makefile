@@ -1,13 +1,8 @@
-
-
+#
+# Makefile for simple web test
+#
 usage:
-	@echo "usage: make [edit|web|kill]"
-
-edit e:
-	@echo "make (edit) [1|2|4|5|7]"
-
-e15:
-	vi demo15.html
+	@echo "usage: make [web|run|kill]"
 
 web w:
 	open http://localhost:8080
@@ -17,5 +12,4 @@ run r:
 
 kill k:
 	pkill simplehttpserver
-
 

@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    background-color: #464646;
+  }
+  
+  svg {
+    display: block;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+  }
+  
+  .waveforms {
+    display: flex;
+    width: 688px;
+    justify-content: space-between;
+    margin: 8px 0;
+    .waveform {
+      border: 3px solid transparent;
+      cursor: pointer;
+      &.active {
+        border: 3px solid #50B9FF;
+        border-radius: 2px;
+        background-color: #f7f9fb;
+      }
+    }
+  }
+  
+  @keyframes visualize {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-108px);
+    }
+  }
+  
+  .animated {
+    animation: visualize 0.2s linear infinite;
+    animation-play-state: paused;
+  }
+  
+  .playing .active .animated {
+    animation-play-state: running;
+  }
+  
+  .button {
+    margin-top: 8px;
+    height: 36px;
+    padding: 8px 30px;
+    border-radius: 18px;
+    background-color: #44BFA3;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 20px;
+    line-height: 20px;
+    &:hover {
+      background-color: lighten(#44BFA3, 5%);
+    }
+  }
+  
+  html, body {
+    height: 100%;
+  }
