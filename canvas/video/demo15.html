@@ -1,6 +1,6 @@
 <!DOCTYPE html> 
 <html>
-<title>Video/Canvas Demo 14: Worker fork, Filters, Transferable, Animation</title> 
+<title>Video/Canvas Demo 15: Camera Worker fork, Filters, Transferable, Animation</title> 
 <script> 
 //import * as filter from "./filter.js";
 document.addEventListener('DOMContentLoaded', function(){
@@ -31,8 +31,36 @@ document.addEventListener('DOMContentLoaded', function(){
 	})
 //},false);
 
+	var onButton = document.getElementById('onbtn');
+	var offButton = document.getElementById('offbtn');
+	var localStream = new window.MediaStream;
+
+	async function startVideo() {
+		//onButton.disabled = true;
+		localStream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+		playVideo(video, localStream);
+	}
+
+	async function playVideo(element, stream) {
+		element.srcObject = stream;
+		try {
+			await element.play();
+		} catch(error) {
+			console.log('error auto play:' + error);
+		}
+	}
+	
+	async function stopVideo() {
+		//offButton.disabled = true;
+		localStream.getTracks().forEach(track => track.stop());
+		console.log ("video stopped");
+	}
+
+	onButton.addEventListener('onclick', startVideo());
+	//offButton.addEventListener('onclick', stopVideo());
+	
 	// code for set of filter functions
-	const filter = document.querySelector('#Filter').textContent;
+	var filter = document.querySelector('#Filter').textContent;
 
 	// --- the first worker : WorkerOne
 	var blobOne = new Blob(["onmessage = " + workerOne + "\n"], { type: 'text/javascript' });
@@ -195,7 +223,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 </script>
 
-
 <style> 
 #c {
 	position: absolute;
@@ -228,23 +255,26 @@ document.addEventListener('DOMContentLoaded', function(){
 
 </body>
 <center>
-<h2>Video/Canvas Demo 14: Worker fork, Filters, Transferable, Animation</h2>
-<h3>Main => Worker1 => Worker2 (filter) => Worker1 (draw)</h3>
+<h2>Video/Canvas Demo 15: Camera, Worker fork, Filters, Transferable, Animation</h2>
+<h3>Main => Worker1 (back) => Worker2 (filter) => Worker1 (draw)</h3>
 </center>
-<video id="v" class=display-none controls autoplay loop> 
+<!-- <video id="v" class=display-none controls autoplay loop> 
 	<source src=video.webm type=video/webm> 
 	<source src=video.ogg type=video/ogg> 
 	<source src=video.mp4 type=video/mp4> 
-</video> 
+</video>  -->
+<video id="v" muted autoplay></video>
 <canvas id="c"></canvas> 
-<input id="b" type=file accept=image/*>
+<!-- <input id="b" type=file accept=image/*>
 <output id="e" style="color: red;"></output>
 <div id="s">
 <b>filter:</b> 
 <select name="filter">
 	<option value="invert">invert</option>
 	<option value="chromekey">chromakey</option>
-</select>
+</select> -->
+<button id="onbtn">Camera On</button>
+<button id="offbtn">Camera Off</button>
 </div>
 </body> 
 </html>
