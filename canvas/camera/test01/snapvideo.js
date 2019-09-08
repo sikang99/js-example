@@ -43,7 +43,13 @@ document.getElementById("snap").addEventListener("click", function() {
 	context.drawImage(video, 0, 0, 320, 240);
 });
 
+var txt = document.getElementById('log');
+
+function logPrint(txt, msg) {
+    txt.value += msg + '\n';
+}
 //var log = msg => div.innerHTML += "<br>" + msg;
 
-console.log("ready to play");
+logPrint(txt, "Ready to play. Capture video from camera.");
+
 }, false);
