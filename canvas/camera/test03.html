@@ -8,9 +8,12 @@
 window.addEventListener('DOMContentLoaded', function() {
     // Grab elements, create settings, etc.
     var video = document.getElementById('video');
+
     const mediaConstraints = {
-        video: {width: {min: 640}, height: {min: 480}}
+        video: {width: {min: 640}, height: {min: 480}},
+        audio: false
     };
+
     function ToggleCamera(video) {
         // check if camera is already on
         if (video.srcObject) { 
