@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Camera Test 02: Snap Camera Photo & Save</title>
+<title>Camera Test 03: Camera Photo/Video & Save</title>
 </head>
+<script src="groover.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     // Grab elements, create settings, etc.
     var video = document.getElementById('video');
-    
+    const mediaConstraints = {
+        video: {width: {min: 640}, height: {min: 480}}
+    };
     function ToggleCamera(video) {
         // check if camera is already on
         if (video.srcObject) { 
@@ -17,7 +20,7 @@ window.addEventListener('DOMContentLoaded', function() {
         // Get access to the camera!
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // Not adding `{ audio: true }` since we only want video now
-            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            navigator.mediaDevices.getUserMedia(mediaConstraints).then(function(stream) {
                 //video.src = window.URL.createObjectURL(stream);
                 video.srcObject = stream;
                 video.play();
@@ -58,19 +61,12 @@ window.addEventListener('DOMContentLoaded', function() {
         txt.value += msg + '\n';
     }
     
-    document.getElementById("save").addEventListener("click", function() {
-        saveCanvasToFile(canvas, "photo.png")
+    document.getElementById("save_photo").addEventListener("click", function() {
+        savePhotoToFile(canvas, "photo.png")
     });
 
-    function saveCanvasToFile(canvas, filename) {
-        // if (video.srcObject == undefined) {
-        //     logPrint("Not ready to save the photo to file.");
-        //     return
-        // }
-        // var d = canvas.toDataURL("image/png");
-        // var w = window.open('about:blank','image from canvas');
-        // w.document.write("<img src='" + d + "' alt='from canvas'/>");
-        var dURL = canvas.toDataURL("image/png"),   // ("mage/jpg")
+    function savePhotoToFile(canvas, filename) {
+        var dURL = canvas.toDataURL("image/png"),
             aTag = document.createElement("a");
         aTag.download = filename;
         aTag.href = dURL;
@@ -81,13 +77,40 @@ window.addEventListener('DOMContentLoaded', function() {
         logPrint("save the photo to " + filename);
     }
 
+    document.getElementById("save_video").addEventListener("click", function() {
+        saveVideoToFile(video, "video.webm")
+    });
+
+    function saveVideoToFile(video, filename) {
+        name = "Canvas Video";
+        quality = 0.7;
+        fps = 30;
+
+        var groove = new Groover.Video(fps, quality, name);
+
+        function capture() {
+            if (groove.timecode < 5000) { // 5 seconds
+                setTimeout(capture, groove.frameDelay);             
+            } else {
+                //var video = document.createElement("video");
+                //video.src = URL.createObjectURL(groove.toBlob());
+                document.body.appendChild(video);
+                groove = undefined; // DeReference as it is memory hungry.
+                return;
+            }
+            // first frame sets the video size
+            groove.addFrame(video); // Add current canvas frame
+        }
+        capture();
+    }
+
     logPrint("Ready to play. Capture video from camera.");
 }, false);
 </script>    
 
 <body>
 <center>  
-<h2>Camera Test 02: Snap Camera Photo & Save</h2>
+<h2>Camera Test 03: Camera Photo/Video & Save</h2>
 <div id="display">
     <video id="video" width="320" height="240" autoplay></video>
     <canvas id="canvas" width="320" height="240"></canvas>
@@ -97,7 +120,8 @@ window.addEventListener('DOMContentLoaded', function() {
     <button id="camera">Camera Toogle</button>
     <button id="toggle">Video Toggle</button>
     <button id="snap">Snap Photo</button>
-    <button id="save">Save Photo</button>
+    <button id="save_photo">Save Photo</button>
+    <button id="save_video">Save Video</button>
 </div>
 <p></p>
 <div id="div"></div>
