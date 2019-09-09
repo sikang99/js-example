@@ -246,7 +246,7 @@ var Groover = (function(){
             }
             if(width === null){
                 this.width = width = frame.width,
-                this.height = height = frame.height
+                this.height = height = frame.height;
                 startEncoding();
             }else
             if(width !== frame.width || height !== frame.height){
