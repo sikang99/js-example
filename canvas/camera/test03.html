@@ -28,12 +28,27 @@ window.addEventListener('DOMContentLoaded', function() {
                 video.srcObject = stream;
                 video.play();
             });
+        } else {
+            alert("WebRTC not available");
         }
     }
+
+    // navigator.mediaDevices.getUserMedia(constraints, gumSuccessCallback, gumFailureCallback);
+
+    // function gumSuccessCallback(stream) {
+    //     console.log('getUserMedia() got stream: ', stream);
+    //     window.stream = stream;
+    //     video.srcObject = stream;
+    // }
+
+    // function gumFailureCallback(error) {
+    //     console.log('getUserMedia() error: ', error);
+    // }
     
     // Camera control button
-    document.getElementById("camera").addEventListener("click", function() {
+    document.getElementById("toggle_camera").addEventListener("click", function() {
         ToggleCamera(video);
+        logPrint("ToggleCamera()")
     });
     
     function ToggleVideo(video) {
@@ -45,8 +60,9 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     // Video control button
-    document.getElementById("toggle").addEventListener("click", function() {
+    document.getElementById("toggle_video").addEventListener("click", function() {
         ToggleVideo(video);
+        logPrint("ToggleVideo()")
     });
     
     // Elements for taking the snapshot
@@ -54,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function() {
     var context = canvas.getContext('2d');
     
     // Trigger photo take button
-    document.getElementById("snap").addEventListener("click", function() {
+    document.getElementById("snap_photo").addEventListener("click", function() {
         context.drawImage(video, 0, 0, 320, 240);
     });
     
@@ -77,7 +93,7 @@ window.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(aTag);
         aTag.click();
         aTag.parentNode.removeChild(aTag);
-        logPrint("save the photo to " + filename);
+        logPrint("save the camera photo to a file of " + filename);
     }
 
     document.getElementById("save_video").addEventListener("click", function() {
@@ -107,7 +123,7 @@ window.addEventListener('DOMContentLoaded', function() {
         capture();
     }
 
-    logPrint("Ready to play. Capture video from camera.");
+    logPrint("Ready to play.\nCapture video from camera.");
 }, false);
 </script>    
 
@@ -120,9 +136,9 @@ window.addEventListener('DOMContentLoaded', function() {
 </div>
 <p></p>
 <div id="control">
-    <button id="camera">Camera Toogle</button>
-    <button id="toggle">Video Toggle</button>
-    <button id="snap">Snap Photo</button>
+    <button id="toggle_camera">Toogle Camera</button>
+    <button id="toggle_video">Toggle Video</button>
+    <button id="snap_photo">Snap Photo</button>
     <button id="save_photo">Save Photo</button>
     <button id="save_video">Save Video</button>
 </div>
