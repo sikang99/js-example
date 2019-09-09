@@ -3,37 +3,39 @@
 <head>
 <title>Camera Test 03: Camera Photo/Video & Save</title>
 </head>
+<body>
+<center>  
+<h2>Camera Test 03: Camera Photo/Video & Save</h2>
+<div id="display">
+    <video id="camera" width="320" height="240"></video>
+    <canvas id="canvas" width="320" height="240"></canvas>
+    <video id="video" width="320" height="240" autoplay></video>
+</div>
+<p></p>
+<div id="control">
+    <button id="toggle_camera">Toogle Camera</button>
+    <button id="toggle_video">Toggle Video</button>
+    <button id="snap_photo">Snap Photo</button>
+    <button id="save_photo">Save Photo</button>
+    <button id="record_video">Start Recording</button>
+    <button id="play_video">Play Video</button>
+    <button id="save_video">Save Video</button>
+</div>
+<p></p>
+<div id="div"></div>
+<textarea id="log" rows=12 cols=100></textarea>
+</center>
+</body>
+
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     // Grab elements, create settings, etc.
-    var video = document.getElementById('video');
-    var gcanvas = document.getElementById('ghost');
-    var gcontext = gcanvas.getContext('2d');
-
-    const mediaConstraints = {
-        video: {width: {min: 640}, height: {min: 480}},
-        audio: false
-    };
-
-    function ToggleCamera(video) {
-        // check if camera is already on
-        if (video.srcObject) { 
-            video.srcObject = undefined;
-            return;
-        }
-        // Get access to the camera!
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Not adding `{ audio: true }` since we only want video now
-            navigator.mediaDevices.getUserMedia(mediaConstraints).then(function(stream) {
-                window.stream = stream;
-                //video.src = window.URL.createObjectURL(stream);
-                video.srcObject = stream;
-                video.play();
-            });
-        } else {
-            alert("WebRTC not available");
-        }
-    }
+    var camera = document.getElementById('camera');
+        // Elements for taking the snapshot
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    // var gcanvas = document.getElementById('ghost');
+    // var gcontext = gcanvas.getContext('2d');
 
     // navigator.mediaDevices.getUserMedia(constraints, gumSuccessCallback, gumFailureCallback);
 
@@ -47,75 +49,135 @@ window.addEventListener('DOMContentLoaded', function() {
     //     console.log('getUserMedia() error: ', error);
     // }
     
+    // ----------------------------------------------------------------------------   
+    textArea = document.getElementById('log');
+
+    // text block for displaying log messages
+    function logPrint() {
+        for (var i = 0; i <arguments.length; i++) {
+            if (typeof arguments[i] == 'object') {
+                textArea.value += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + ' ';
+            } else {
+                textArea.value += arguments[i] + ' ';
+            }
+        }
+        textArea.value += '\n';
+    }
+
+    // ----------------------------------------------------------------------------
     // Camera control button
-    document.getElementById("toggle_camera").addEventListener("click", function() {
-        ToggleCamera(video);
+    cameraButton = document.getElementById("toggle_camera");
+    cameraButton.addEventListener("click", function() {
+        ToggleCamera(camera);
         logPrint("ToggleCamera()")
+    }, false);
+ 
+    // Video control button
+    videoButton = document.getElementById("toggle_video");
+    videoButton.addEventListener("click", function() {
+        ToggleVideo(camera);
+        logPrint("ToggleVideo()")
     });
-    
+
+    // Trigger photo take button
+    snapButton =  document.getElementById("snap_photo");
+    snapButton.addEventListener("click", function() {
+        context.drawImage(camera, 0, 0, 320, 240);
+    });
+
+    saveButton = document.getElementById("save_photo");
+    saveButton.addEventListener("click", function() {
+        savePhotoToFile(canvas, "photo.png")
+    });
+
+    let supported = navigator.mediaDevices.getSupportedConstraints();
+    logPrint("Supported constraints", supported);
+
+    const mediaConstraints = {
+        video: {width: {min: 640}, height: {min: 480}},
+        audio: {echoCancellation: true, noiseSuppression: true}
+    };
+
+    function ToggleCamera(video) {
+        // check if camera is already on
+        if (video.srcObject) { 
+            video.srcObject = undefined;
+            videoButton.disabled = true;
+            return;
+        }
+
+        // Get access to the camera!
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia(mediaConstraints).then(function(stream) {
+                window.stream = stream;
+                //video.src = window.URL.createObjectURL(stream);
+                video.srcObject = stream;
+                video.play();
+            });
+        } else {
+            logPrint("WebRTC getUserMedia() not available");
+        }
+        logPrint('Using media constraints:', mediaConstraints);
+        videoButton.disabled = false;
+    }
+
     function ToggleVideo(video) {
         if (video == undefined || video.srcObject == undefined) {
             alert("First, make camera on")
-            return;
+        } else {
+            video.srcObject.getTracks().forEach(t => t.enabled = !t.enabled);
+            snapButton.enabled = false;
         }
-        video.srcObject.getTracks().forEach(t => t.enabled = !t.enabled);
     }
     
-    // Video control button
-    document.getElementById("toggle_video").addEventListener("click", function() {
-        ToggleVideo(video);
-        logPrint("ToggleVideo()")
-    });
-    
-    // Elements for taking the snapshot
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-    
-    // Trigger photo take button
-    document.getElementById("snap_photo").addEventListener("click", function() {
-        context.drawImage(video, 0, 0, 320, 240);
-    });
-    
-    // text block for displaying log messages
-    function logPrint(msg) {
-        let txt = document.getElementById('log');
-        txt.value += msg + '\n';
-    }
-    
-    document.getElementById("save_photo").addEventListener("click", function() {
-        savePhotoToFile(canvas, "photo.png")
-    });
- 
     function savePhotoToFile(canvas, filename) {
         var dURL = canvas.toDataURL("image/png"),
-            aTag = document.createElement("a");
-        aTag.download = filename;
-        aTag.href = dURL;
-        aTag.textContent = "click to download";
-        document.body.appendChild(aTag);
-        aTag.click();
-        aTag.parentNode.removeChild(aTag);
-        logPrint("save the camera photo to a file of " + filename);
+            a = document.createElement("a");
+        a.download = filename;
+        a.href = dURL;
+        a.textContent = "click to download";
+        document.body.appendChild(a);
+        a.click();
+        a.parentNode.removeChild(a);
+        logPrint("save the camera photo to a file of ", filename);
     }
 
     // ----------------------------------------------------------------------------
     var mediaRecorder;
     var recordedBlobs = [];
-    var sourceBuffer;
+    //var sourceBuffer;
+    var contentType = 'video/webm'
     
+    // recordButton = document.getElementById("record_video");
+    // recordButton.onclick = function() {toggleRecording()};
+    // recordButton.onclick = toggleRecording.bind(this, a, b);
+    // downloadButton = document.getElementById("save_video");
+    // downloadButton.onclick = downloadVideo();
+
     recordButton = document.getElementById("record_video");
-    recordButton.onclick = toggleRecording();
+    recordButton.addEventListener("click", function() {
+        toggleRecording();
+    }); 
 
     downloadButton = document.getElementById("save_video");
-    downloadButton.onclick = downloadVideo();
+    downloadButton.addEventListener("click", function() {
+        downloadVideo("video.webm");
+    });    
+
+    playButton = document.getElementById("play_video");
+    playButton.addEventListener("click", function() {
+        playVideo();
+    });  
 
     function toggleRecording() {
         if (recordButton.textContent === 'Start Recording') {
             startRecording();
+            playButton.disabled = true;
+            downloadButton.disabled = true;
         } else {
             stopRecording();
             recordButton.textContent = 'Start Recording';
-            //playButton.disabled = false;
+            playButton.disabled = false;
             downloadButton.disabled = false;
         }
     }
@@ -127,20 +189,21 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleStop(event) {
-        console.log('Recorder stopped: ', event);
+        logPrint('Recorder stopped: ', event);
     }
 
     function startRecording() {
-        logPrint("startRecording");
-        var options = {mimeType: 'video/webm;codecs=vp8', bitsPerSecond: 100000};
-        // recordedBlobs = [];    
+        logPrint("startRecording()");
+        var options = {mimeType: 'video/webm; codecs=vp8', bitsPerSecond: 100000};   // rate control
+        // reset the buffer to record
+        recordedBlobs = [];    
         try {
             mediaRecorder = new MediaRecorder(window.stream, options);
         } catch (e) {
-            console.log('Unable to create MediaRecorder with options Object: ', options, e);
+            logPrint('ERROR> Unable to create MediaRecorder with options Object: ', options, e);
             return;
         }
-        console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
+        logPrint('Created MediaRecorder', mediaRecorder, 'with options', options);
 
         recordButton.textContent = 'Stop Recording';
         mediaRecorder.onstop = handleStop;
@@ -149,18 +212,25 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function stopRecording() {
+        logPrint("stopRecording()");
         mediaRecorder.stop();
         console.log('Recorded Blobs: ', recordedBlobs);
-        recordedVideo.controls = true;
+        video.controls = true;
     }   
 
-    function downloadVideo() {
-        var blob = new Blob(recordedBlobs, {type: 'video/webm'});
+    function playVideo() {
+        var superBuffer = new Blob(recordedBlobs, {type: contentType});
+        video.src = window.URL.createObjectURL(superBuffer);
+        video.play();
+    }
+
+    function downloadVideo(filename) {
+        var blob = new Blob(recordedBlobs, {type: contentType});
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = 'video.webm';
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         setTimeout(function() {
@@ -172,27 +242,4 @@ window.addEventListener('DOMContentLoaded', function() {
     logPrint("Ready to play.\nCapture video from camera.");
 }, false);
 </script>    
-
-<body>
-<center>  
-<h2>Camera Test 03: Camera Photo/Video & Save</h2>
-<div id="display">
-    <video id="video" width="320" height="240" autoplay></video>
-    <canvas id="canvas" width="320" height="240"></canvas>
-    <canvas id="ghost" style="display:none" width="320" height="240"></canvas>
-</div>
-<p></p>
-<div id="control">
-    <button id="toggle_camera">Toogle Camera</button>
-    <button id="toggle_video">Toggle Video</button>
-    <button id="snap_photo">Snap Photo</button>
-    <button id="save_photo">Save Photo</button>
-    <button id="record_video">Start Recording</button>
-    <button id="save_video">Save Video</button>
-</div>
-<p></p>
-<div id="div"></div>
-<textarea id="log" rows=12 cols=100></textarea>
-</center>
-</body>
 </html>

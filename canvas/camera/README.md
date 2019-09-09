@@ -5,6 +5,7 @@
 - [Capture canvas and Save as webM video](https://riptutorial.com/html5-canvas/example/19522/capture-canvas-and-save-as-webm-video)
 - 2018/09/18 [Switch Cameras getUserMedia](https://h3manth.com/new/blog/2018/switch-cameras-getusermedia/)
 - 2016/10/12 [Capturing Audio & Video in HTML5](https://www.html5rocks.com/en/tutorials/getusermedia/intro/)
+- 2016/01/01 [Record Audio and Video with MediaRecorder](https://developers.google.com/web/updates/2016/01/mediarecorder)
 - 2015/12/10 [HTML5’s Media Recorder API in Action on Chrome and Firefox](https://blog.addpipe.com/mediarecorder-api/)
 - 2013/01/24 [Turn off the lights! getUserMedia API experiment](https://tomasalabes.me/blog/web-development/2013/01/24/Turn-off-the-lights!-getUserMedia-API-experiment.html)
 - 2012/03/09 [I See You getUserMedia](http://tagsoup.github.io/blog/2012/03/09/i-see-you-getusermedia/)
@@ -31,3 +32,4 @@
 - [addpipe/Media-Recorder-API-Demo](https://github.com/addpipe/Media-Recorder-API-Demo) - An implementation of the MediaStream Recording API
 - [webrtcHacks/WebRTC-Camera-Resolution](https://github.com/webrtcHacks/WebRTC-Camera-Resolution)
 
+2019, Collected by Stoney Kang, sikang99@gmail.com
