@@ -187,7 +187,11 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function snapPhoto(camera) {
+        let now = new Date();
         context.drawImage(camera, 0, 0, 320, 240);
+        context.font = '7pt console';
+        context.fillStyle = 'blue';
+        context.fillText(now, 10, 20);
         saveButton.disabled = false;
     }
     
