@@ -18,6 +18,6 @@ Javascript programming
 - [Security](security/README.md)
 - [**Worker**](worker/README.md)
 - [ES6](es6/README.md)
-- [blob](blob/README.md)
+- [Blob](blob/README.md)
 - [IndexedDB](idb/README.md)
 
