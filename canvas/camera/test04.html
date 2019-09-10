@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Camera Test 03: Camera Photo/Video & Save</title>
+<title>Camera Test 04: Camera Photo/Video & Save</title>
 </head>
 <body>
 <center>  
-<h2>Camera Test 03: Camera Photo/Video & Save</h2>
+<h2>Camera Test 04: Camera Photo/Video & Save</h2>
 <div id="display">
     <video id="camera" width="320" height="240"></video>
     <canvas id="canvas" width="320" height="240"></canvas>
@@ -14,12 +14,13 @@
 <p></p>
 <div id="control">
     <button id="toggle_camera">Toogle Camera</button>
-    <button id="toggle_video">Toggle Video</button>
-    <button id="snap_photo">Snap Photo</button>
-    <button id="save_photo">Save Photo</button>
-    <button id="record_video">Start Recording</button>
-    <button id="play_video">Play Video</button>
-    <button id="save_video">Save Video</button>
+    <button id="toggle_audio" disabled>Toggle Audio</button>
+    <button id="toggle_video" disabled>Toggle Video</button>
+    <button id="snap_photo" disabled>Snap Photo</button>
+    <button id="save_photo" disabled>Save Photo</button>
+    <button id="record_video" disabled>Start Recording</button>
+    <button id="play_video" disabled>Play Video</button>
+    <button id="save_video" disabled>Save Video</button> 
 </div>
 <p></p>
 <div id="div"></div>
@@ -72,6 +73,12 @@ window.addEventListener('DOMContentLoaded', function() {
         logPrint("ToggleCamera()")
     }, false);
  
+    // Audio control : mute
+    audioButton = document.getElementById("toggle_audio");
+    audioButton.addEventListener("click", function() {
+        ToggleAudio(camera)
+    });
+
     // Video control button
     videoButton = document.getElementById("toggle_video");
     videoButton.addEventListener("click", function() {
@@ -90,19 +97,38 @@ window.addEventListener('DOMContentLoaded', function() {
         savePhotoToFile(canvas, "photo.png")
     });
 
+    recordButton = document.getElementById("record_video");
+    recordButton.addEventListener("click", function() {
+        toggleRecording();
+    }); 
+
+    downloadButton = document.getElementById("save_video");
+    downloadButton.addEventListener("click", function() {
+        downloadVideo("video.webm");
+    });    
+
+    playButton = document.getElementById("play_video");
+    playButton.addEventListener("click", function() {
+        playVideo();
+    });  
+
+
     let supported = navigator.mediaDevices.getSupportedConstraints();
-    logPrint("Supported constraints", supported);
+    console.log("Supported constraints", supported);
 
     const mediaConstraints = {
         video: {width: {min: 640}, height: {min: 480}},
         audio: {echoCancellation: true, noiseSuppression: true}
     };
 
-    function ToggleCamera(video) {
+    function ToggleCamera(Camera) {
         // check if camera is already on
-        if (video.srcObject) { 
-            video.srcObject = undefined;
+        if (camera.srcObject) { 
+            camera.srcObject = undefined;
+            audioButton.disabled = true;
             videoButton.disabled = true;
+            snapButton.disabled = true;
+            recordButton.disabled = true;
             return;
         }
 
@@ -111,22 +137,39 @@ window.addEventListener('DOMContentLoaded', function() {
             navigator.mediaDevices.getUserMedia(mediaConstraints).then(function(stream) {
                 window.stream = stream;
                 //video.src = window.URL.createObjectURL(stream);
-                video.srcObject = stream;
-                video.play();
+                camera.srcObject = stream;
+                camera.play();
             });
         } else {
             logPrint("WebRTC getUserMedia() not available");
         }
         logPrint('Using media constraints:', mediaConstraints);
+        audioButton.disabled = false;
         videoButton.disabled = false;
+        snapButton.disabled = false;
+        recordButton.disabled = false;
     }
 
-    function ToggleVideo(video) {
-        if (video == undefined || video.srcObject == undefined) {
+    function ToggleVideo(camera) {
+        logPrint("ToggleVideo()")
+        if (camera == undefined || camera.srcObject == undefined) {
             alert("First, make camera on")
         } else {
-            video.srcObject.getTracks().forEach(t => t.enabled = !t.enabled);
-            snapButton.enabled = false;
+            //camera.srcObject.getTracks().forEach(t => t.enabled = !t.enabled);
+            track = camera.srcObject.getVideoTracks()[0];
+            track.enabled = !track.enabled;
+            //snapButton.disabled = true;
+        }
+    }
+
+    function ToggleAudio(camera) {
+        logPrint("ToggleAudio()")
+        if (camera == undefined || camera.srcObject == undefined) {
+            alert("First, make camera on")
+        } else {
+            track = camera.srcObject.getAudioTracks()[0];
+            track.enabled = !track.enabled;
+            //audioButton.disabled = true;
         }
     }
     
@@ -153,21 +196,6 @@ window.addEventListener('DOMContentLoaded', function() {
     // recordButton.onclick = toggleRecording.bind(this, a, b);
     // downloadButton = document.getElementById("save_video");
     // downloadButton.onclick = downloadVideo();
-
-    recordButton = document.getElementById("record_video");
-    recordButton.addEventListener("click", function() {
-        toggleRecording();
-    }); 
-
-    downloadButton = document.getElementById("save_video");
-    downloadButton.addEventListener("click", function() {
-        downloadVideo("video.webm");
-    });    
-
-    playButton = document.getElementById("play_video");
-    playButton.addEventListener("click", function() {
-        playVideo();
-    });  
 
     function toggleRecording() {
         if (recordButton.textContent === 'Start Recording') {

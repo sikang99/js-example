@@ -4,6 +4,7 @@
 - [Camera and Video Control with HTML5](https://davidwalsh.name/browser-camera) - [Demo](https://davidwalsh.name/demo/camera.php)
 - [Capture canvas and Save as webM video](https://riptutorial.com/html5-canvas/example/19522/capture-canvas-and-save-as-webm-video)
 - 2018/09/18 [Switch Cameras getUserMedia](https://h3manth.com/new/blog/2018/switch-cameras-getusermedia/)
+- 2017/02/27 [Record to an Audio File using HTML5 and JS](https://air.ghost.io/recording-to-an-audio-file-using-html5-and-js/)
 - 2016/10/12 [Capturing Audio & Video in HTML5](https://www.html5rocks.com/en/tutorials/getusermedia/intro/)
 - 2016/01/01 [Record Audio and Video with MediaRecorder](https://developers.google.com/web/updates/2016/01/mediarecorder)
 - 2015/12/10 [HTML5’s Media Recorder API in Action on Chrome and Firefox](https://blog.addpipe.com/mediarecorder-api/)

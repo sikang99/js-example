@@ -21,3 +21,5 @@
 - [nolanlawson/promise-worker](https://github.com/nolanlawson/promise-worker) - Promise-based messaging for Web Workers and Service Workers
 - [tieleman/blur_worker.js](https://gist.github.com/tieleman/6028023)
 - [hg-pyun/study-example](https://github.com/hg-pyun/study-example) - image filters
+- [brianchirls/Seriously.js](https://github.com/brianchirls/Seriously.js) - A real-time, node-based video effects compositor for the web built with HTML5, Javascript and WebGL
+- [agilityfeat/webrtc-filters-tutorial](https://github.com/agilityfeat/webrtc-filters-tutorial) - Filters tutorial using WebRTC
