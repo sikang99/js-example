@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Camera Test 04: Camera Photo/Video & Save</title>
+<title>Camera Test 05: Camera Photo/Video & Save</title>
 </head>
 <body>
 <center>  
-<h2>Camera Test 04: Camera Photo/Video & Save</h2>
+<h2>Camera Test 05: Camera Photo/Video & Save</h2>
 <div id="display">
     <video id="camera" width="320" height="240"></video>
     <canvas id="canvas" width="320" height="240"></canvas>
@@ -55,6 +55,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // text block for displaying log messages
     function logPrint() {
+        console.log(arguments);
         for (var i = 0; i <arguments.length; i++) {
             if (typeof arguments[i] == 'object') {
                 textArea.value += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + ' ';
@@ -113,7 +114,7 @@ window.addEventListener('DOMContentLoaded', function() {
         playVideo();
     });  
 
-
+    // ----------------------------------------------------------------------------
     let supported = navigator.mediaDevices.getSupportedConstraints();
     console.log("Supported constraints", supported);
 
