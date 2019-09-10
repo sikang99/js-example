@@ -1,0 +1,28 @@
+<html>
+<head>
+</head>
+<body>
+<h3>Big Bunny Video Player</h3>
+<p></p>
+<video id="video" style="display:none" src="big_buck_bunny.mp4"></video>
+<canvas id="canvas"></canvas>
+<p></p>
+<button id="play" onclick="video.play()">Play</button>
+<button id="pause" onclick="video.pause()">Pause</button>
+</body>
+
+<script>
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d', {desynchronized: true});
+var video = document.getElementById('video');
+video.addEventListener('play', function () {
+   var $this = this;
+   (function loop() {
+      if (!$this.paused && !$this.ended) {
+         context.drawImage($this, 0, 0);
+         setTimeout(loop, 1000 / 30);
+      }
+   })();
+}, 0);
+</script>
+</html>

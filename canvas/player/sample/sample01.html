@@ -1,0 +1,25 @@
+<html>
+<head>
+<script src="sample01.js"></script>
+<style src="sample01.css"></style>
+</head>
+<body>
+<h3>Canvas Video Player (Not)</h3>
+<div class="video-wrapper js-video-wrapper">
+    <div class="video-responsive">
+        <video class="video js-video" muted>
+            <source src="big_buck_bunny.mp4" type="video/mp4">
+            <source src="big_buck_bunny.ogv" type="video/ogg">    
+            Your browser does not support HTML5 video.
+        </video>
+
+        <canvas class="canvas js-canvas"></canvas>
+
+        <div class="video-timeline js-timeline">
+            <div class="video-timeline-passed js-timeline-passed">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

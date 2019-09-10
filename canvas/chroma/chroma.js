@@ -15,7 +15,6 @@ processor.doLoad = function () {
     }, false);
 
 },
-
 processor.timerCallback = function timerCallback() {
     if (this.video.paused || this.video.ended) {
         return;
@@ -26,7 +25,6 @@ processor.timerCallback = function timerCallback() {
         self.timerCallback();
     }, 0);
 },
-
 processor.computeFrame = function computeFrame() {
     this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
     var frame = this.ctx1.getImageData(0, 0, this.width, this.height);
