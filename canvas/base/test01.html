@@ -1,0 +1,87 @@
+<html>
+<body>
+
+</body>    
+
+<script>
+var canvas;    // Global canvas reference
+var ctx;       // Global 2D context reference
+// Creates a canvas
+function createCanvas () {                
+    const canvas = document.createElement("canvas"); 
+    canvas.style.position = "absolute"; // Set the style 
+    canvas.style.left     = "0px";      // Position in top left
+    canvas.style.top      = "0px";
+    canvas.style.zIndex   = 1;        
+    document.body.appendChild(canvas);  // Add to document
+    return canvas;
+}
+// Resizes canvas. Will create a canvas if it does not exist
+function sizeCanvas () {                
+    if (canvas === undefined) {         // Check for global canvas reference
+        canvas = createCanvas();        // Create a new canvas element
+        ctx = canvas.getContext("2d");  // Get the 2D context
+    }
+    canvas.width  = innerWidth;         // Set the canvas resolution to fill the page
+    canvas.height = innerHeight;        
+}
+// Removes the canvas
+function removeCanvas () {
+    if (canvas !== undefined) {              // Make sure there is something to remove
+        removeEventListener("resize", sizeCanvas); // Remove resize event
+        document.body.removeChild(canvas);   // Remove the canvas from the DOM
+        ctx = undefined;                     // Dereference the context
+        canvas = undefined;                  // Dereference the canvas
+     }
+}
+// Add the resize listener
+addEventListener("resize", sizeCanvas); 
+// Call sizeCanvas to create and set the canvas resolution
+sizeCanvas();
+
+// ctx and canvas are now available for use.
+var exampleRunning = false;
+
+const textToDisplay = "Animation using requestAnimationFrame and responsive full screen canvas........";
+const textStyle     = "white";
+const BGStyle       = "black";  // background style
+const textSpeed     = 0.5;      // in pixels per millisecond
+const textHorMargin = 8;        // have the text a little outside the canvas 	
+
+ctx.font = Math.floor(canvas.height * 0.8) + "px arial"; // size the font to 80% of canvas height
+var textWidth     = ctx.measureText(textToDisplay).width; // get the text width
+var totalTextSize = (canvas.width + textHorMargin * 2 + textWidth);
+ctx.textBaseline  = "middle";           // not put the text in the vertical center
+ctx.textAlign     = "left";             // align to the left
+var textX         = canvas.width + 8;   // start with the text off screen to the right
+var textOffset    = 0;                  // how far the text has moved
+var reset = function(){
+    ctx.font = Math.floor(canvas.height * 0.8) + "px arial"; // size the font to 80% of canvas height
+    textWidth     = ctx.measureText(textToDisplay).width; // get the text width
+    totalTextSize = (canvas.width + textHorMargin * 2 + textWidth);
+    textX         = canvas.width + 8;   // start with the text off screen to the right
+    textOffset    = 0;                  // how far the text has moved
+    ctx.textBaseline  = "middle";           // not put the text in the vertical center
+    ctx.textAlign     = "left";             // align to the left        
+}
+
+var startTime;
+// this function is call once a frame which is approx 16.66 ms (60fps)
+function update(time){              // time is passed by requestAnimationFrame
+    if(startTime === undefined){    // get a reference for the start time if this is the first frame
+        startTime = time;
+    }
+    ctx.fillStyle = BGStyle;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);                    // clear the canvas by drawing over it
+    textOffset    = ((time - startTime) * textSpeed) % (totalTextSize); // move the text left 
+    ctx.fillStyle = textStyle;                                          // set the text style
+    ctx.fillText(textToDisplay, textX - textOffset, canvas.height / 2); // render the text
+    requestAnimationFrame(update);// all done request the next frame
+}
+requestAnimationFrame(update);// to start request the first frame
+
+/* End of stackoverflow example Simple animation with 2d context and requestAnimationFrame*/
+exampleRunning = true;
+
+</script>
+</html>

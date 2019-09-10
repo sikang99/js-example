@@ -26,6 +26,7 @@ enum OffscreenRenderingContextId { "2d", "bitmaprenderer", "webgl", "webgl2" };
 - [Learn HTML5 Canvas](https://www.commonlounge.com/discussion/2ea5b6daefec44e8b01a6acd9e601006)
     - [Optimizing canvas](https://www.commonlounge.com/discussion/f6c17da678d846c88e2c75dfdcd3056d)
 - [Service Worker Sample: Cache Video Sample](https://googlechrome.github.io/samples/service-worker/prefetch-video/)
+- [HTML5 Canvas Tutorial](https://www.html5canvastutorials.com/)
 
 
 ### Slides

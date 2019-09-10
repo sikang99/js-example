@@ -23,16 +23,28 @@
     <button id="save_video" disabled>Save Video</button> 
 </div>
 <p></p>
-<div id="div"></div>
+<div id="monitor">
 <textarea id="log" rows=12 cols=100></textarea>
+</div>
 </center>
 </body>
+<style>
+/* .center {
+    margin: auto;
+    background: lime;
+    width: 66%;
+}
+#display{ 
+    margin: auto;
+    border:1px solid red; 
+} */
+</style>
 
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     // Grab elements, create settings, etc.
     var camera = document.getElementById('camera');
-        // Elements for taking the snapshot
+    // Elements for taking the snapshot
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
     // var gcanvas = document.getElementById('ghost');
@@ -55,7 +67,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // text block for displaying log messages
     function logPrint() {
-        console.log(arguments);
+        //console.log(arguments);
         for (var i = 0; i <arguments.length; i++) {
             if (typeof arguments[i] == 'object') {
                 textArea.value += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + ' ';
@@ -71,7 +83,6 @@ window.addEventListener('DOMContentLoaded', function() {
     cameraButton = document.getElementById("toggle_camera");
     cameraButton.addEventListener("click", function() {
         ToggleCamera(camera);
-        logPrint("ToggleCamera()")
     }, false);
  
     // Audio control : mute
@@ -84,7 +95,6 @@ window.addEventListener('DOMContentLoaded', function() {
     videoButton = document.getElementById("toggle_video");
     videoButton.addEventListener("click", function() {
         ToggleVideo(camera);
-        logPrint("ToggleVideo()")
     });
 
     // Trigger photo take button
@@ -124,6 +134,7 @@ window.addEventListener('DOMContentLoaded', function() {
     };
 
     function ToggleCamera(Camera) {
+        logPrint("ToggleCamera()")
         // check if camera is already on
         if (camera.srcObject) { 
             camera.srcObject = undefined;
@@ -181,6 +192,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     function savePhotoToFile(canvas, filename) {
+        logPrint("savePhotoToFile(): ", filename);
         var dURL = canvas.toDataURL("image/png");
         var a = document.createElement("a");
         a.download = filename;
@@ -189,7 +201,6 @@ window.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(a);
         a.click();
         a.parentNode.removeChild(a);
-        logPrint("save the camera photo to a file of ", filename);
     }
 
     // ----------------------------------------------------------------------------
@@ -224,7 +235,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleStop(event) {
-        logPrint('Recorder stopped: ', event);
+        logPrint('handleStop(): ', event);
     }
 
     function startRecording() {
