@@ -1,10 +1,11 @@
 var processor = {};
 
-processor.doLoad = function doLoad() {
+processor.doLoad = function () {
     this.video = document.getElementById('video');
     this.c1 = document.getElementById('c1');
     this.ctx1 = this.c1.getContext('2d');
     this.c2 = document.getElementById('c2');
+    // this.c2.style.cssText ="background-image: url('photo.png')";
     this.ctx2 = this.c2.getContext('2d');
     var self = this;
     this.video.addEventListener('play', function() {
@@ -12,7 +13,8 @@ processor.doLoad = function doLoad() {
         self.height = self.video.videoHeight / 2;
         self.timerCallback();
     }, false);
-};
+
+},
 
 processor.timerCallback = function timerCallback() {
     if (this.video.paused || this.video.ended) {
@@ -23,7 +25,7 @@ processor.timerCallback = function timerCallback() {
     setTimeout(function() {
         self.timerCallback();
     }, 0);
-};
+},
 
 processor.computeFrame = function computeFrame() {
     this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
@@ -41,3 +43,4 @@ processor.computeFrame = function computeFrame() {
     this.ctx2.putImageData(frame, 0, 0);
     return;
 }; 
+
