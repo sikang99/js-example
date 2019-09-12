@@ -1,0 +1,45 @@
+<html>
+
+<body>
+<h2>The Definitive Guide to HTML5 Video, 2010</h2>
+<h3>6-2. Painting video frames at different offsets into the canvas</h3>
+<video controls width="480px" height="270px"> 
+    <source src="HelloWorld.mp4" type="video/mp4"> 
+    <source src="HelloWorld.webm" type="video/webm"> 
+    <source src="HelloWorld.ogv" type="video/ogg">
+</video>
+<canvas id="origin" width="320" height="240" style="border: 1px solid black;"> </canvas>
+</body>
+
+<script>
+window.onload = function() { 
+    initCanvas();
+}
+
+var context, video;
+var x = 0, xpos = 10; 
+var y = 0, ypos = 10;
+
+function initCanvas() {
+    video = document.getElementsByTagName("video")[0]; 
+    canvas = document.getElementsByTagName("canvas")[0]; 
+    context = canvas.getContext("2d");
+    video.addEventListener("play", paintFrame, false); 
+}
+function paintFrame() {
+    context.drawImage(video, x, y, 160, 80); 
+    if (x > 240) xpos = -10;
+    if (x < 0) xpos = 10;
+    x = x + xpos;
+    if (y > 220) ypos = -10;
+    if (y < 0) ypos = 10;
+    y = y + ypos;
+    
+    if (video.paused || video.ended) {return; }
+    setTimeout(function() { 
+        paintFrame();
+    }, 0);
+}
+</script>
+
+</html>

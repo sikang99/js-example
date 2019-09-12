@@ -1,0 +1,57 @@
+<html>
+
+<body>
+<h2>The Definitive Guide to HTML5 Video, 2010</h2>
+<h3>7–1. Sepia coloring of video pixels in the Canvas</h3>
+<video controls width="480px" height="270px"> 
+    <source src="HelloWorld.mp4" type="video/mp4"> 
+    <source src="HelloWorld.webm" type="video/webm"> 
+    <source src="HelloWorld.ogv" type="video/ogg">
+</video>
+<canvas id="origin" width="480" height="270" style="border: 1px solid black;"> </canvas>
+<canvas id="scratch" width="480" height="270" style="display: none;"> </canvas>
+</body>
+
+<script>
+window.onload = function() { 
+    initCanvas();
+}
+var context, video, sctxt; 
+
+function initCanvas() {
+    video = document.getElementsByTagName("video")[0]; 
+    canvas = document.getElementsByTagName("canvas")[0]; 
+    context = canvas.getContext("2d");
+    scratch = document.getElementById("scratch");
+    sctxt = scratch.getContext("2d");
+    video.addEventListener("play", playFrame, false); 
+}
+
+function playFrame() {
+    w = 320; 
+    h = 160; 
+    sctxt.drawImage(video, 0, 0, w, h); 
+    frame = sctxt.getImageData(0, 0, w, h); // Loop over each pixel of frame
+    for (x = 0; x < w; x ++) {
+        for (y = 0; y < h; y ++) {
+            // index in image data array 
+            i = x + w*y;
+            // grab colors
+            r = frame.data[4*i+0];
+            g = frame.data[4*i+1];
+            b = frame.data[4*i+2];
+            // replace with sepia colors
+            frame.data[4*i+0] = Math.min(0.393*r + 0.769*g + 0.180*b,255); 
+            frame.data[4*i+1] = Math.min(0.349*r + 0.686*g + 0.168*b,255); 
+            frame.data[4*i+2] = Math.min(0.272*r + 0.534*g + 0.131*b,255);
+        } 
+    }
+    context.putImageData(frame, 0, 0);
+    if (video.paused || video.ended) { return; } 
+    setTimeout(function () {
+        playFrame(); 
+    }, 0);
+} 
+</script>
+
+</html>

@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Guide to HTML5 video: chapter 6: example 7</title>
+</head>
+<body>
+<h2>The Definitive Guide to HTML5 Video, 2010</h2>
+<h3>6–7. Making certain colors in a video transparent through a Canvas</h3>
+<p>
+    <video controls width="480" height="270" >
+    <source src="HelloWorld.mp4"  type="video/mp4">
+    <source src="HelloWorld.webm" type="video/webm">
+    <source src="HelloWorld.ogv"  type="video/ogg">
+    </video>
+</p>
+<p>
+    <canvas width="1000" height="400" style="border: 1px solid black; background-image: url(Sunrise.jpg);">
+    </canvas>
+</p>
+<script>
+window.onload = function() {
+    initCanvas();
+}
+
+var context, canvas, video;
+
+function initCanvas() {
+    video = document.getElementsByTagName("video")[0];
+    canvas = document.getElementsByTagName("canvas")[0];
+    context = canvas.getContext("2d");
+    video.addEventListener("play", paintFrame, false);
+}
+
+function paintFrame() {
+    w = 480; 
+    h = 270;
+    context.drawImage(video, 0, 0, w, h);
+    frame = context.getImageData(0, 0, w, h);
+    //context.clearRect(0, 0, w, h);
+
+    // Opera doesn't implement createImageData, so use getImageData method
+    output = false;
+    if (context.createImageData) {
+        output = context.createImageData(w, h);
+    } else if (context.getImageData) {
+        output = context.getImageData(0, 0, w, h);
+    }
+
+    // Loop over each pixel of output file
+    for (x = 0; x < w; x++) {
+        for (y = 0; y < h; y++) {
+        // index in output image
+        i = x + w*y;
+        for (c = 0; c < 4; c++) {
+            output.data[4*i+c] = frame.data[4*i+c];
+        }
+        // make pixels transparent
+        r = frame.data[4*i + 0];
+        g = frame.data[4*i+ 1];
+        b = frame.data[4*i + 2];
+        if (!(r > 200 && g > 200 && b > 200))
+            output.data[4*i + 3] = 0;
+        }
+    }
+
+    // Draw the ImageData object.
+    context.putImageData(output, 0, 0);
+    if (video.paused || video.ended) {
+        return;
+    }
+    setTimeout(function () {
+        paintFrame();
+    }, 0);
+}
+</script>
+</body>
+</html>

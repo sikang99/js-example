@@ -1,28 +1,83 @@
 <html>
 <head>
+<title>Big Buck Bunny Canvas Video Player</title>
 </head>
+
 <body>
-<h3>Big Bunny Video Player</h3>
+<h3>Big Buck Bunny Canvas Video Player</h3>
 <p></p>
-<video id="video" style="display:none" src="big_buck_bunny.mp4"></video>
-<canvas id="canvas"></canvas>
+<!-- <video id="video" style="display:none"  src="big_buck_bunny.mp4"></video> -->
+<video id="video" style="display:none"></video>
+<div>
+Canvas A: </br>
+<canvas id="canvas">Canvas A</canvas>
+</div>
+</br>
+<div>
+Canvas B: </br>
+<canvas id="canvas2">Canvas B</canvas>
+</div>
 <p></p>
-<button id="play" onclick="video.play()">Play</button>
-<button id="pause" onclick="video.pause()">Pause</button>
+<button id="play" onclick="playVideo()">Play</button>
+<button id="pause" onclick="pauseVideo()">Pause</button>
+<button id="stop" onclick="stopVideo()">Stop</button>
 </body>
 
 <script>
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext('2d', {desynchronized: true});
+window.onload = function() {
+   initDocument();
+   initVideo();
+}
+
 var video = document.getElementById('video');
-video.addEventListener('play', function () {
-   var $this = this;
-   (function loop() {
-      if (!$this.paused && !$this.ended) {
-         context.drawImage($this, 0, 0);
-         setTimeout(loop, 1000 / 30);
-      }
-   })();
-}, 0);
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+
+var canvas2= document.getElementById('canvas2');
+var context2 = canvas2.getContext('2d', {desynchronized: true});
+
+function initDocument() {
+   console.log("initDocument");
+
+   video.addEventListener('canplay', function() {
+      console.log("canplay");
+      context.drawImage(video, 0, 0);
+   }, true);
+
+   video.addEventListener('timeupdate', function() {
+      context2.drawImage(video, 0, 0);
+   }, true);
+
+   video.addEventListener('play', function () {
+      var $this = this;
+      (function loop() {
+         if (!$this.paused && !$this.ended) {
+            context.drawImage($this, 0, 0);
+            setTimeout(loop, 1000 / 30);
+         }
+      })();
+   }, true);
+}
+
+function initVideo() {
+   console.log("initVideo");
+   video.src = "big_buck_bunny.mp4";
+   video.load();
+   video.currentTime = 0.01;
+}
+
+function playVideo() {
+   video.play();
+}
+
+function pauseVideo() {
+   video.pause();
+}
+
+function stopVideo() {
+   video.pause();
+   video.currentTime = 0.01;
+}
+
 </script>
 </html>

@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Guide to HTML5 video: chapter 6: example 7</title>
+</head>
+<body>
+<h2>The Definitive Guide to HTML5 Video, 2010</h2>
+<h3>6-15. Video spiral using Canvas</h3>
+<p>
+    <video controls width="480" height="270" >
+        <source src="HelloWorld.mp4"  type="video/mp4">
+        <source src="HelloWorld.webm" type="video/webm">
+        <source src="HelloWorld.ogv"  type="video/ogg">
+    </video>
+</p>
+<p>
+    <canvas width="600" height="400" style="border: 1px solid black;">
+    </canvas>
+</p>
+<script>
+window.onload = function() {
+    initCanvas(); 
+}
+
+var context, video;
+var i = 0;
+var repeater;
+
+function initCanvas() {
+    video = document.getElementsByTagName("video")[0]; 
+    canvas = document.getElementsByTagName("canvas")[0]; 
+    context = canvas.getContext("2d");
+    // provide a shadow
+    context.shadowOffsetX = 5; 
+    context.shadowOffsetY = 5;
+    context.shadowBlur = 4;
+    context.shadowColor = "rgba(0, 0, 0, 0.5)"; 
+    video.addEventListener("play", repeat, false);
+}
+function repeat() {
+    // try to get each browser at the same frequency
+    repeater = setInterval("paintFrame()", 30); 
+}
+
+function paintFrame() {
+    context.drawImage(video, 0, 0, 160, 80); 
+    // reset to identity transform 
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    // increasingly move to the right and down & rotate
+    
+    i += 1;
+    context.translate(3 * i , 1.5 * i);
+    context.rotate(0.1 * i);
+    if (video.paused || video.ended) {
+        clearInterval(repeater); 
+    }
+}
+</script>
+</body>
+</html>

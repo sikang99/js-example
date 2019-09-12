@@ -1,0 +1,32 @@
+<html>
+
+<body>
+<h2>The Definitive Guide to HTML5 Video, 2010</h2>
+<h3>6–1. Introducing the video pixel data into a canvas</h3>
+<video controls width="480px" height="270px"> 
+    <source src="HelloWorld.mp4" type="video/mp4"> 
+    <source src="HelloWorld.webm" type="video/webm"> 
+    <source src="HelloWorld.ogv" type="video/ogg">
+</video>
+<canvas id="origin" width="320" height="240" style="border: 1px solid black;"> </canvas>
+</body>
+
+<script>
+window.onload = function() { 
+    initCanvas();
+}
+var context, video, sctxt; 
+
+function initCanvas() {
+    video = document.getElementsByTagName("video")[0]; 
+    canvas = document.getElementsByTagName("canvas")[0]; 
+    context = canvas.getContext("2d");
+    video.addEventListener("timeupdate", paintFrame, false); 
+}
+
+function paintFrame() {
+    context.drawImage(video, 0, 0, 160, 80);
+} 
+</script>
+
+</html>
