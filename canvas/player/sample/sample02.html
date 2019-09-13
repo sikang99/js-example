@@ -1,32 +1,33 @@
 <html>
 <head>
-<title>Big Buck Bunny Canvas Video Player</title>
+<title>Canvas-based Video Player</title>
 </head>
 
 <body>
-<h3>Big Buck Bunny Canvas Video Player</h3>
+<h3>Canvas-based Video Player</h3>
 <p></p>
-<!-- <video id="video" style="display:none"  src="big_buck_bunny.mp4"></video> -->
 <video id="video" style="display:none"></video>
 <div>
-Canvas A: </br>
+Canvas A: Copy</br>
 <canvas id="canvas">Canvas A</canvas>
 </div>
-</br>
 <div>
-Canvas B: Time Update</br>
+Canvas B: by Time Update</br>
 <canvas id="canvas2">Canvas B</canvas>
 </div>
 <p></p>
+<div>
 <button id="play" onclick="playVideo()">Play</button>
 <button id="pause" onclick="pauseVideo()">Pause</button>
 <button id="stop" onclick="stopVideo()">Stop</button>
+Video: <input id="input" type="text" name="fname" value="big_buck_bunny.mp4"  style="color:blue" />
+</div>
 </body>
 
 <script>
 window.onload = function() {
    initDocument();
-   initVideo();
+   initVideo(input.value);
 }
 
 var video = document.getElementById('video');
@@ -36,11 +37,13 @@ var context = canvas.getContext('2d');
 var canvas2= document.getElementById('canvas2');
 var context2 = canvas2.getContext('2d', {desynchronized: true});
 
+var input = document.getElementById('input');
+
 function initDocument() {
-   console.log("initDocument");
+   console.log("initDocument: ");
 
    video.addEventListener('canplay', function() {
-      console.log("canplay");
+      //console.log("canplay");
       context.drawImage(video, 0, 0);
    }, true);
 
@@ -57,26 +60,36 @@ function initDocument() {
          }
       })();
    }, true);
+
+   input.addEventListener('change', (event) => {
+      // const fpath = event.target.value;
+      // fname = fpath.split(/(\\|\/)/g).pop();
+      // console.log("change", fname);
+      initVideo(input.value);
+   }, true); 
 }
 
-function initVideo() {
-   console.log("initVideo");
-   video.src = "big_buck_bunny.mp4";
+function initVideo(fname) {
+   console.log("initVideo: ", fname);
+   video.src = fname;
    video.load();
-   video.currentTime = 0.01;
+   video.currentTime = 0.001;
 }
 
 function playVideo() {
+   console.log("playVideo: ");
    video.play();
 }
 
 function pauseVideo() {
+   console.log("pauseVideo: ");
    video.pause();
 }
 
 function stopVideo() {
+   console.log("stopVideo: ");
    video.pause();
-   video.currentTime = 0.01;
+   video.currentTime = 0.001;
 }
 
 </script>
