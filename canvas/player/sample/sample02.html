@@ -8,9 +8,10 @@
 <p></p>
 <video id="video" style="display:none"></video>
 <div>
-Canvas A: Copy</br>
+Canvas A: Scaled Copy</br>
 <canvas id="canvas">Canvas A</canvas>
 </div>
+<p></p>
 <div>
 Canvas B: by Time Update</br>
 <canvas id="canvas2">Canvas B</canvas>
@@ -43,19 +44,20 @@ function initDocument() {
    console.log("initDocument: ");
 
    video.addEventListener('canplay', function() {
-      //console.log("canplay");
-      context.drawImage(video, 0, 0);
+      console.log("canplay");
+      copyVideoToCanvas(video, context);
+      copyCanvasToCanvas(canvas, context2);
    }, true);
 
    video.addEventListener('timeupdate', function() {
-      context2.drawImage(video, 0, 0);
+      copyCanvasToCanvas(canvas, context2);
    }, true);
 
    video.addEventListener('play', function () {
       var $this = this;
       (function loop() {
          if (!$this.paused && !$this.ended) {
-            context.drawImage($this, 0, 0);
+            renderVideoToCanvas(video, context);
             setTimeout(loop, 1000 / 30);
          }
       })();
@@ -67,6 +69,37 @@ function initDocument() {
       // console.log("change", fname);
       initVideo(input.value);
    }, true); 
+}
+
+// Render video image on canvas with resizing
+function renderVideoToCanvas(srcVideo, dstContext) {
+   // fill vertically  
+   var vratio = (dstContext.canvas.height / srcVideo.videoHeight) * srcVideo.videoWidth;
+   dstContext.drawImage(srcVideo, 0,0, vratio, dstContext.canvas.height);
+   // fill horizontally  
+   var hratio = (dstContext.canvas.width / srcVideo.videoWidth) * srcVideo.videoHeight;
+   dstContext.drawImage(srcVideo, 0,0, dstContext.canvas.width, hratio); 
+}
+
+// Copy video image to another canvas without resizing
+function copyVideoToCanvas(srcVideo, dstContext) {
+   dstContext.canvas.width = srcVideo.videoWidth;
+   dstContext.canvas.height = srcVideo.videoHeight;
+   dstContext.drawImage(srcVideo, 0,0, srcVideo.videoWidth, srcVideo.videoHeight); 
+}
+
+// Copy canvas image to another canvas without resizing
+function copyCanvasToCanvas(srcCanvas, dstContext) {
+   dstContext.canvas.width = srcCanvas.width;
+   dstContext.canvas.height = srcCanvas.height;
+   dstContext.drawImage(srcCanvas, 0, 0);
+}
+
+function resizeCanvas(canvas, width, height) {
+   console.log("resizeCanvas 1: ", video.videoWidth, video.videoHeight);
+   canvas.width = width;
+   canvas.height = height;
+   console.log("resizeCanvas 2: ", canvas.width, canvas.height);
 }
 
 function initVideo(fname) {
