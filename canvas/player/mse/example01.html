@@ -1,0 +1,119 @@
+<video id="v" autoplay> </video>
+
+<script>
+  var video = document.getElementById('v');
+
+  // Create a new MediaSource.
+  var mediaSource = new MediaSource();
+
+  // When the MediaSource is connected to the Video and is ready to receive streaming data, it emits a sourceopen event. 
+  mediaSource.addEventListener('sourceopen', onSourceOpen.bind(this, video));
+  
+  // Connect the MediaSource that we just created to the video object.
+  video.src = window.URL.createObjectURL(mediaSource);
+  
+  // This handler will run once the mediaSource is open. 
+  function onSourceOpen(videoTag, e) {
+    var mediaSource = e.target;
+    // Disregard any unnecessary events from the sourceopen. We need a sourceBuffer. 
+    if (mediaSource.sourceBuffers.length > 0)
+        return;
+
+    // Use the addSourceBuffer method from the mediaSource to create a sourceBuffer. It will take the codec information as the input. 
+    // In the example code, the sourceBuffer can take the encoded data using the webm
+    var sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
+   
+    // Filter the handlers as required by the video object's needs. 
+    videoTag.addEventListener('seeking', onSeeking.bind(videoTag, mediaSource));
+    videoTag.addEventListener('progress', onProgress.bind(videoTag, mediaSource));
+    
+    // Use the application code to receive the initialization segment. While the process will the asynchronous, 
+    // for both initialization and media segments, you need to set the response time as "arrayBuffer" when making an 
+    // ajax request.
+    var initSegment = GetInitializationSegment();
+
+    if (initSegment == null) {      
+      // If the initialization segment is null, the video cannot be played. 
+      // Use the mediaSource.endOfStream method to end stream. This method is called when the stream has finished
+      // under normal circumstances  and also under errors. If the stream has finished due to an error, it passes the
+      // cause as an input. "network" or "decode" error
+      mediaSource.endOfStream("network");
+      return;
+    }
+
+    // Provides the initialization segment to sourceBuffer. 
+    // Once the firstAppendHandler initialization segment has successfully been inserted into the sourceBuffer, this 
+    // event handler is disregarded. It is just a one-time function used to insert initialization segment and then to
+    // transition into media segments. 
+    var firstAppendHandler = function(e) {
+      var sourceBuffer = e.target;
+      sourceBuffer.removeEventListener('updateend', firstAppendHandler);
+
+      // Use the following function to start providing media segments to the sourceBuffer. 
+      appendNextMediaSegment(mediaSource);
+    };
+    
+    // Once the sourceBuffer receives the media data, the sourceBuffer starts decoding the received data, and when
+    // the update task has finished, the updateend event occurs regardless of success or failure of the task. 
+    // Here, it is used briefly to provide the initialization segment and the media segment. 
+    sourceBuffer.addEventListener('updateend', firstAppendHandler);
+    sourceBuffer.appendBuffer(initSegment);
+  }
+
+  
+  // It is the function used to provide the media segment after the initialization segment has been provided. 
+  // After the first execution, the code runs according to the video object's progress event. 
+  function appendNextMediaSegment(mediaSource) {    
+    // The MediaSource.readyState has three possible values: "open", "closed", and "ended".
+    // During "open," it is currently processing media data, and "ended" is the same as a wait status.
+    // When it is "closed," it can no longer take any media streams. 
+    if (mediaSource.readyState == "closed")
+      return;
+
+    
+    // If there are no more media segments to provide using the application code, use the endOfStream to finish streaming. 
+    if (!HaveMoreMediaSegments()) {
+      mediaSource.endOfStream();
+      return;
+    }
+    
+    // Since the process of providing the video buffer requires data decoding, it takes time and CPU cost.
+    // Therefore, you must always check that the sourceBuffer is updating to provide it with a new buffer. 
+    // If the updating is true, it means that it is still processing the previous media data. 
+    if (mediaSource.sourceBuffers[0].updating)
+        return;
+    
+    // The application code used to get next media segment.  
+    var mediaSegment = GetNextMediaSegment();
+
+    if (!mediaSegment) {
+      // If the media Segment does not exist, it will throw out an error. 
+      mediaSource.endOfStream("network");
+      return;
+    }
+
+    // Provides media data to sourceBuffer.
+    // If the MediaSource.readyState is "ended," it will become "open" again, and the onSourceOpen handler from the
+    // sourceopen event can occur again, so you need to take care of it. 
+    mediaSource.sourceBuffers[0].appendBuffer(mediaSegment);
+  }
+
+  //Use the seeking event handler to provide the media data to the resulting location. 
+  function onSeeking(mediaSource, e) {
+    var video = e.target;
+
+    // Cancels any buffers being processed in the sourceBuffer.
+    if (mediaSource.readyState == "open") {
+      mediaSource.sourceBuffers[0].abort();
+    }
+    // Uses the application code to read the current location of the video object, and prepares the respective media segment. 
+    SeekToMediaSegmentAt(video.currentTime);
+    
+    // Provides the MediaSource with the updated buffer.
+    appendNextMediaSegment(mediaSource);
+  }
+  // Uses the progress event handler to prepare the new playable segment data, and provides it to the sourceBuffer. 
+  function onProgress(mediaSource, e) {
+    appendNextMediaSegment(mediaSource);
+  }
+</script>

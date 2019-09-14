@@ -65,13 +65,11 @@ function initDocument() {
       })();
    }, true);
 
-   video.addEventListener('encrypted', function() {
+   video.addEventListener('encrypted', (event) => {
       console.log("encrypted:");
    }, true);
 
    input.addEventListener('change', (event) => {
-      // const fpath = event.target.value;
-      // fname = fpath.split(/(\\|\/)/g).pop();
       initVideo(input.value);
    }, true); 
 
@@ -80,7 +78,7 @@ function initDocument() {
    }, true); 
 }
 
-// Render video image on canvas with resizing
+// Render video image on a canvas with resizing
 function renderVideoToCanvas(srcVideo, dstContext) {
    // fill vertically  
    var vratio = (dstContext.canvas.height / srcVideo.videoHeight) * srcVideo.videoWidth;
@@ -92,16 +90,17 @@ function renderVideoToCanvas(srcVideo, dstContext) {
 
 // Copy video image to another canvas without resizing
 function copyVideoToCanvas(srcVideo, dstContext) {
-   // dstContext.canvas.width = srcVideo.videoWidth;
-   // dstContext.canvas.height = srcVideo.videoHeight;
-   dstContext.drawImage(srcVideo, 0,0, srcVideo.videoWidth, srcVideo.videoHeight); 
+   dstContext.drawImage(srcVideo, 0,0); 
 }
 
 // Copy canvas image to another canvas without resizing
 function copyCanvasToCanvas(srcCanvas, dstContext) {
-   // dstContext.canvas.width = srcCanvas.width;
-   // dstContext.canvas.height = srcCanvas.height;
    dstContext.drawImage(srcCanvas, 0, 0);
+}
+
+function sizeCanvasContext(dstContext, width, height) {
+   dstContext.canvas.width = width;
+   dstContext.canvas.height = height;
 }
 
 function sizeVideoCanvas(srcVideo, dstContext) {
