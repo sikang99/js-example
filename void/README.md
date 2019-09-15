@@ -1,0 +1,1 @@
+- [void in JavaScript and TypeScript](https://fettblog.eu/void-in-javascript-and-typescript/)

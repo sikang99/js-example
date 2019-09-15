@@ -1,0 +1,40 @@
+<html>
+
+<body>
+<a href="https://fettblog.eu/void-in-javascript-and-typescript/">void in JavaScript and TypeScript</a>
+<p></p>
+<button id="void" value="void">void</button>
+</body>
+
+<script>
+let i = void 2; // i === undefined
+console.log(i);
+
+void function() {
+   console.log('What');
+}()
+
+void function aRecursion(i) {
+  if(i > 0) {
+    console.log(i--)
+    aRecursion(i)
+  }
+}(3)
+console.log(typeof aRecursion) // undefined
+
+// returning something else than undefined would crash the app
+function middleware(nextCallback) {
+  if (conditionApplies()) {
+    return void nextCallback();
+  }
+}
+
+function doSomething() {
+   console.log('doSomething');
+}
+
+button = document.getElementById("void");
+button.onclick = () => void doSomething();
+
+</script>
+</html>
