@@ -1,0 +1,29 @@
+
+
+<script>
+let user2 = Object.create(null);
+
+user2.name = "Cam";
+user2.points = 8;
+user2.increment = function() {
+  user2.points++;
+}
+
+console.log(user2);
+
+function createUser(name, points) {
+  let newUser = {};
+  newUser.name = name;
+  newUser.points = points;
+  newUser.increment = function() {
+    newUser.points++;
+  };
+  return newUser;
+}
+
+let user1 = createUser("Bob", 5);
+user1.increment();
+
+console.log(user1);
+</script>
+

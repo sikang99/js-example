@@ -2,10 +2,7 @@ usage:
 	@echo "usage: make [edit|web|run|kill|md]"
 
 edit e:
-	@echo "make (edit) [1|2|03]"
-
-e03:
-	vi test03.html
+	vi index.html
 
 web w:
 	open http://localhost:8080

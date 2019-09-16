@@ -1,0 +1,20 @@
+
+
+<script>
+function User(name, points) {
+ this.name = name; 
+ this.points = points;
+}
+User.prototype.increment = function(){
+ this.points++;
+}
+User.prototype.login = function() {
+ console.log("Please login.");
+}
+
+let user1 = new User("Dylan", 6);
+user1.increment();
+
+console.log(user1);
+</script>
+

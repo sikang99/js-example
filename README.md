@@ -14,7 +14,7 @@ Javascript programming
 
 ## My Sub Functions
 - [Audio](audio/README.md)
-- [Canvas](canvas/README.md)
+- [Canvas](canvas/README.md) - Camera, Video, Player, ...
 - [Security](security/README.md)
 - [**Worker**](worker/README.md)
 - [ES6](es6/README.md)

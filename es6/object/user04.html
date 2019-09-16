@@ -1,0 +1,22 @@
+
+
+<script>
+class User {
+  constructor(name, points) {
+    this.name = name;
+    this.points = points;
+  }
+  increment () {
+    this.points++;
+  }
+  login () {
+    console.log("Please login.")
+  }
+}
+
+let user1 = new User("John", 12);
+user1.increment();
+
+console.log(user1);
+</script>
+

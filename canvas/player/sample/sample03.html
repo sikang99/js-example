@@ -1,14 +1,14 @@
 <html>
 <head>
-<title>Canvas-based Video Player</title>
+<title>Canvas-based Video Player 03:</title>
 </head>
 
 <body>
-<h3>Canvas-based Video Player</h3>
+<h3>Canvas-based Video Player 03:</h3>
 <p></p>
 <video id="video" style="display:none"></video>
 <div>
-Canvas A: Scaled Copy</br>
+Canvas A: Scaled Copy with Poster</br>
 <canvas id="canvas">Canvas A</canvas>
 </div>
 <p></p>
@@ -45,10 +45,11 @@ var ratio = document.getElementById('ratio');
 function initDocument() {
    console.log("initDocument:");
 
-   // video metadata loaded at this time
+   // video metadata loaded at the first time or the stopped time
    video.addEventListener('canplay', function() {
       console.log("canplay:", ratio.value);
       sizePlayer(video, context, context2);
+      loadImageToCanvas('rodents.jpg', context);
    }, true);
 
    video.addEventListener('timeupdate', function() {
@@ -79,68 +80,93 @@ function initDocument() {
 }
 
 // Render video image on a canvas with resizing
-function renderVideoToCanvas(srcVideo, dstContext) {
+function renderVideoToCanvas(sVideo, dContext) {
    // fill vertically  
-   var vratio = (dstContext.canvas.height / srcVideo.videoHeight) * srcVideo.videoWidth;
-   dstContext.drawImage(srcVideo, 0,0, vratio, dstContext.canvas.height);
+   var vratio = (dContext.canvas.height / sVideo.videoHeight) * sVideo.videoWidth;
+   dContext.drawImage(sVideo, 0,0, vratio, dContext.canvas.height);
    // fill horizontally  
-   var hratio = (dstContext.canvas.width / srcVideo.videoWidth) * srcVideo.videoHeight;
-   dstContext.drawImage(srcVideo, 0,0, dstContext.canvas.width, hratio); 
+   var hratio = (dContext.canvas.width / sVideo.videoWidth) * sVideo.videoHeight;
+   dContext.drawImage(sVideo, 0,0, dContext.canvas.width, hratio); 
 }
 
 // Copy video image to another canvas without resizing
-function copyVideoToCanvas(srcVideo, dstContext) {
-   dstContext.drawImage(srcVideo, 0,0); 
+function copyVideoToCanvas(sVideo, dContext) {
+   dContext.drawImage(srcVideo, 0,0); 
 }
 
 // Copy canvas image to another canvas without resizing
-function copyCanvasToCanvas(srcCanvas, dstContext) {
-   dstContext.drawImage(srcCanvas, 0, 0);
+function copyCanvasToCanvas(sCanvas, dContext) {
+   dContext.drawImage(sCanvas, 0, 0);
 }
 
-function sizeCanvasContext(dstContext, width, height) {
-   dstContext.canvas.width = width;
-   dstContext.canvas.height = height;
+function sizeCanvasContext(dContext, width, height) {
+   dContext.canvas.width = width;
+   dContext.canvas.height = height;
 }
 
-function sizeVideoCanvas(srcVideo, dstContext) {
-   dstContext.canvas.width = srcVideo.videoWidth * (ratio.value/100);
-   dstContext.canvas.height = srcVideo.videoHeight * (ratio.value/100);
+function sizeVideoCanvas(sVideo, dContext) {
+   dContext.canvas.width = sVideo.videoWidth * (ratio.value/100);
+   dContext.canvas.height = sVideo.videoHeight * (ratio.value/100);
    console.log("sizeVideoCanvas:", 
-         srcVideo.videoWidth, srcVideo.videoHeight,
-         dstContext.canvas.width, dstContext.canvas.height);
+         sVideo.videoWidth, sVideo.videoHeight,
+         dContext.canvas.width, dContext.canvas.height);
 }
 
 function sizePlayer(video, context1, context2) {
    sizeVideoCanvas(video, context1);
    sizeVideoCanvas(video, context2);
-   if (video.paused) {
+   if (!video.playing) {
       renderVideoToCanvas(video, context1);
       copyCanvasToCanvas(canvas, context2);
    }
 }
 
-function initVideo(fname) {
-   video.src = fname;
+function renderImageToCanvas(sImage, dContext) {
+   //console.log(dContext.canvas.width, dContext.canvas.height);  
+   var vratio = (dContext.canvas.height / sImage.height) * sImage.width;
+   dContext.drawImage(sImage, 0,0, vratio, dContext.canvas.height);
+   var hratio = (dContext.canvas.width / sImage.width) * sImage.height;
+   dContext.drawImage(sImage, 0,0, dContext.canvas.width, hratio); 
+   console.log("renderImageToCanvas:", vratio, hratio);
+}
+
+function loadImageToCanvas(fName, dContext) {
+   const img = new Image();
+   img.src = fName;
+   img.onload = () => {
+      renderImageToCanvas(img, dContext);
+   };
+   console.log("loadContextImage:", fName, img.width, img.height);
+}
+
+function loadVideo(fName) {
+   var v = document.createElement("video");
+   v.src = fName;
+   v.load();
+   return v;
+}
+
+function initVideo(fName) {
+   video.src = fName;
    video.load();
    video.currentTime = 0.001;
    console.log("initVideo:", video.src, video.videoWidth, video.videoHeight);
 }
 
 function playVideo() {
-   console.log("playVideo:");
    video.play();
+   console.log("playVideo:");
 }
 
 function pauseVideo() {
-   console.log("pauseVideo:");
    video.pause();
+   console.log("pauseVideo:");
 }
 
 function stopVideo() {
-   console.log("stopVideo:");
    video.pause();
-   video.currentTime = 0.001;
+   video.currentTime = 0.000;
+   console.log("stopVideo:");
 }
 
 </script>

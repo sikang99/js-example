@@ -1,0 +1,444 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0057)http://craftymind.com/factory/html5video/CanvasVideo.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HTML5 Video Destruction</title> 
+<script type="text/javascript" src="dat.gui.js"></script>
+<script type="text/javascript">
+
+var video;
+var copy;
+var copycanvas;
+var outputcanvas;
+var draw;
+
+var TILE_WIDTH = 32;
+var TILE_HEIGHT = 24;
+var TILE_CENTER_WIDTH = 16;
+var TILE_CENTER_HEIGHT = 12;
+var SOURCERECT = {x:0, y:0, width:0, height:0};
+var PAINTRECT = {x:0, y:0, width:1000, height:600};
+
+var webcamError = function(e) {
+	alert('Webcam error!', e);
+};
+
+var webcam, canvasSource, canvasBlended, contextSource, contextBlended, lastImageData;
+var canvasGrid, contextGrid;
+var motion = false;
+
+function initWebCam() {
+	webcam = document.getElementById('webcam');
+	canvasSource = document.getElementById('canvas-source');
+	canvasBlended = document.getElementById('canvas-blended');
+
+	contextSource = canvasSource.getContext('2d');
+	contextBlended = canvasBlended.getContext('2d');
+
+	navigator.mediaDevices.getUserMedia({video: true}, function(stream) {
+			webcam.src = window.URL.createObjectURL(stream);
+			webcam.onplay = function() {
+				var note = document.getElementById('note')
+				note.innerHTML = 'You may move hand to destruct the video.';
+				motion = true;
+			}
+		}, webcamError);
+	contextSource.translate(canvasSource.width, 0);
+	contextSource.scale(-1, 1);
+
+	drawAreas();
+}
+
+var frames = 0;
+
+function update() {
+	processFrame();
+	if (motion) {
+		frames++;
+		drawVideo();
+		blend();
+		checkAreas();
+	}
+	requestAnimationFrame(update);
+}
+
+function drawVideo() {
+	contextSource.drawImage(webcam, 0, 0, webcam.width, webcam.height);
+}
+
+function fastAbs(value) {
+	// funky bitwise, equal Math.abs
+	return (value ^ (value >> 31)) - (value >> 31);
+}
+
+function threshold(value) {
+	return (value > 0x15) ? 0xFF : 0;
+}
+
+function difference(target, data1, data2) {
+	// blend mode difference
+	if (data1.length != data2.length) return null;
+	var i = 0;
+	while (i < (data1.length * 0.25)) {
+		target[4*i] = data1[4*i] == 0 ? 0 : fastAbs(data1[4*i] - data2[4*i]);
+		target[4*i+1] = data1[4*i+1] == 0 ? 0 : fastAbs(data1[4*i+1] - data2[4*i+1]);
+		target[4*i+2] = data1[4*i+2] == 0 ? 0 : fastAbs(data1[4*i+2] - data2[4*i+2]);
+		target[4*i+3] = 0xFF;
+		++i;
+	}
+}
+
+function differenceAccuracy(target, data1, data2) {
+	if (data1.length != data2.length) return null;
+	var i = 0;
+	while (i < (data1.length * 0.25)) {
+		var average1 = (data1[4*i] + data1[4*i+1] + data1[4*i+2]) / 3;
+		var average2 = (data2[4*i] + data2[4*i+1] + data2[4*i+2]) / 3;
+		var diff = threshold(fastAbs(average1 - average2));
+		target[4*i] = diff;
+		target[4*i+1] = diff;
+		target[4*i+2] = diff;
+		target[4*i+3] = 0xFF;
+		++i;
+	}
+}
+
+var Configuraton = function() {
+	this.motionThreshold = 100;
+	this.framesToSkip = 30;
+	this.restructionSpeed = 0.05;
+
+	this.lines = 8;
+	this.columns = 8;
+	this.top = 1;
+	this.left = 1;
+	this.right = 6;
+	this.bottom = 6;
+}
+
+var config =new Configuraton();
+
+function initGUI() {
+	var gui = new dat.GUI();
+	gui.add(config, 'motionThreshold', 10, 300).step(10);
+	//gui.add(config, 'framesToSkip', 0, 100).step(1);
+	gui.add(config, 'restructionSpeed', 0.0001, 0.1).step(0.0001);
+	var f = gui.addFolder('Checking Area');
+	f.add(config, 'lines', 2, 8).step(1).onFinishChange(function(){drawAreas();});
+	f.add(config, 'columns', 2, 8).step(1).onFinishChange(function(){drawAreas();});
+	f.add(config, 'top').min(0).max(7).step(1).onFinishChange(function(){drawAreas();});
+	f.add(config, 'left').min(0).max(7).step(1).onFinishChange(function(){drawAreas();});
+	f.add(config, 'right').min(0).max(7).step(1).onFinishChange(function(){drawAreas();});
+	f.add(config, 'bottom').min(0).max(7).step(1).onFinishChange(function(){drawAreas();});
+}
+
+function drawAreas() {
+	canvasGrid = document.getElementById('canvas-grid');
+	contextGrid = canvasGrid.getContext('2d');
+
+	contextGrid.clearRect(0, 0, canvasGrid.width, canvasGrid.height);
+
+	contextGrid.strokeStyle = 'green';
+	contextGrid.lineWidth = 2;
+
+	for (var r=0; r<config.columns; ++r) {
+		contextGrid.beginPath();
+		contextGrid.moveTo(1/config.columns*r*canvasGrid.width, 0);
+		contextGrid.lineTo(1/config.columns*r*canvasGrid.width, canvasGrid.height);
+		contextGrid.stroke();
+	}
+
+	for (var l=0; l<config.lines; ++l) {
+		contextGrid.beginPath();
+		contextGrid.moveTo(0, 1/config.lines*l*canvasGrid.height);
+		contextGrid.lineTo(canvasGrid.width, 1/config.lines*l*canvasGrid.height);
+		contextGrid.stroke();
+	}
+
+	contextGrid.strokeStyle = 'red';
+	contextGrid.lineWidth = 3;
+	contextGrid.beginPath();
+	contextGrid.strokeRect(1/config.columns*config.left*canvasGrid.width,
+		                   1/config.lines*config.top*canvasGrid.height,
+		                   1/config.columns*(config.right-config.left+1)*canvasGrid.width,
+		                   1/config.lines*(config.bottom-config.top+1)*canvasGrid.height);
+}
+
+function checkAreas() {
+	if (frames < config.framesToSkip)
+		return;
+	else if (frames == config.framesToSkip)
+		console.log('start checkAreas');
+	// loop over the note areas
+	for (var l=config.top; l<=config.bottom; ++l) {
+		for (var r=config.left; r<=config.right; ++r) {
+			var blendedData = contextBlended.getImageData(
+				    1/config.columns*r*webcam.width, 1/config.lines*l*webcam.height, webcam.width/config.columns, webcam.height/config.lines);
+			var i = 0;
+			var average = 0;
+			// loop over the pixels
+			while (i < (blendedData.data.length * 0.25)) {
+				// make an average between the color channel
+				average += (blendedData.data[i*4] + blendedData.data[i*4+1] + blendedData.data[i*4+2]) / 3;
+				++i;
+			}
+			// calculate an average between of the color values of the note area
+			average = Math.round(average / (blendedData.data.length * 0.25));
+			if (average > config.motionThreshold) {
+				console.log('motion detecion at ' + r + ' ' + l);
+				explode(1/config.columns*r*outputcanvas.width + 1/(config.columns*2)*outputcanvas.width,
+					    1/config.lines*l*outputcanvas.height + 1/(config.lines*2)*outputcanvas.height);
+			}
+		}
+	}
+}
+
+function blend() {
+	var width = canvasSource.width;
+	var height = canvasSource.height;
+	// get webcam image data
+	var sourceData = contextSource.getImageData(0, 0, width, height);
+	// create an image if the previous image doesn’t exist
+	if (!lastImageData) lastImageData = contextSource.getImageData(0, 0, width, height);
+	// create a ImageData instance to receive the blended result
+	var blendedData = contextSource.createImageData(width, height);
+	// blend the 2 images
+	differenceAccuracy(blendedData.data, sourceData.data, lastImageData.data);
+	// draw the result in a canvas
+	contextBlended.putImageData(blendedData, 0, 0);
+	// store the current webcam image
+	lastImageData = sourceData;
+}
+
+
+
+function init(){
+	video = document.getElementById('sourcevid');
+	copycanvas = document.getElementById('sourcecopy');
+	copy = copycanvas.getContext('2d');
+	outputcanvas = document.getElementById('output');
+	draw = outputcanvas.getContext('2d');
+	initGUI();
+	initWebCam();
+	update();
+}
+function createTiles(){
+	var offsetX = TILE_CENTER_WIDTH+(PAINTRECT.width-SOURCERECT.width)/2;
+	var offsetY = TILE_CENTER_HEIGHT+(PAINTRECT.height-SOURCERECT.height)/2;
+	var y=0;
+	while(y < SOURCERECT.height){
+		var x=0;
+		while(x < SOURCERECT.width){
+			var tile = new Tile();
+			tile.videoX = x;
+			tile.videoY = y;
+			tile.originX = offsetX+x;
+			tile.originY = offsetY+y;
+			tile.currentX = tile.originX;
+			tile.currentY = tile.originY;
+			tiles.push(tile);
+			x+=TILE_WIDTH;
+		}
+		y+=TILE_HEIGHT;
+	}
+}
+
+var RAD = Math.PI/180;
+var randomJump = false;
+var tiles = [];
+var debug = false;
+
+var diffThreshold = 0.8;
+function processFrame(){
+	if(!isNaN(video.duration)){
+		if(SOURCERECT.width == 0){
+			SOURCERECT = {x:0,y:0,width:video.videoWidth,height:video.videoHeight};
+			createTiles();
+		}
+		//this is to keep my sanity while developing
+		if(randomJump){
+			randomJump = false;
+			video.currentTime = Math.random()*video.duration;
+		}
+		//loop
+		if(video.currentTime == video.duration){
+			video.currentTime = 0;
+		}
+	}
+	var debugStr = "";
+	//copy tiles
+	copy.drawImage(video, 0, 0);
+	draw.clearRect(PAINTRECT.x, PAINTRECT.y,PAINTRECT.width,PAINTRECT.height);
+	
+	for(var i=0; i<tiles.length; i++){
+		var tile = tiles[i];
+		if(tile.force > config.restructionSpeed){
+			//expand
+			tile.moveX *= tile.force;
+			tile.moveY *= tile.force;
+			tile.moveRotation *= tile.force;
+			tile.currentX += tile.moveX;
+			tile.currentY += tile.moveY;
+			tile.rotation += tile.moveRotation;
+			tile.rotation %= 360;
+			tile.force *= 0.9;
+			if(tile.currentX <= 0 || tile.currentX >= PAINTRECT.width){
+				tile.moveX *= -1;
+			}
+			if(tile.currentY <= 0 || tile.currentY >= PAINTRECT.height){
+				tile.moveY *= -1;
+			}
+		}else if(tile.rotation != 0 || tile.currentX != tile.originX || tile.currentY != tile.originY){
+			//contract
+			var diffx = (tile.originX-tile.currentX)*0.2;
+			var diffy = (tile.originY-tile.currentY)*0.2;
+			var diffRot = (0-tile.rotation)*0.2;
+			
+			if(Math.abs(diffx) < 0.5){
+				tile.currentX = tile.originX;
+			}else{
+				tile.currentX += diffx;
+			}
+			if(Math.abs(diffy) < 0.5){
+				tile.currentY = tile.originY;
+			}else{
+				tile.currentY += diffy;
+			}
+			if(Math.abs(diffRot) < 0.5){
+				tile.rotation = 0;
+			}else{
+				tile.rotation += diffRot;
+			}
+		}else{
+			tile.force = 0;
+		}
+		draw.save();
+		draw.translate(tile.currentX, tile.currentY);
+		draw.rotate(tile.rotation*RAD);
+		draw.drawImage(copycanvas, tile.videoX, tile.videoY, TILE_WIDTH, TILE_HEIGHT, -TILE_CENTER_WIDTH, -TILE_CENTER_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+		draw.restore();
+	}
+	if(debug){
+		debug = false;
+		document.getElementById('trace').innerHTML = debugStr;
+	}
+}
+
+function explode(x, y){
+	console.log('explode ' + x + ' ' + y);
+	for(var i=0; i<tiles.length; i++){
+		var tile = tiles[i];
+		
+		var xdiff = tile.currentX-x;
+		var ydiff = tile.currentY-y;
+		var dist = Math.sqrt(xdiff*xdiff + ydiff*ydiff);
+		
+		var randRange = 220+(Math.random()*30);
+		var range = randRange-dist;
+		var force = 3*(range/randRange);
+		if(force > tile.force){
+			tile.force = force;
+			var radians = Math.atan2(ydiff, xdiff);
+			tile.moveX = Math.cos(radians);
+			tile.moveY = Math.sin(radians);
+			tile.moveRotation = 0.5-Math.random();
+		}
+	}
+	tiles.sort(zindexSort);
+	processFrame();
+}
+function zindexSort(a, b){
+	return (a.force-b.force);
+}
+
+function dropBomb(evt, obj){
+	var posx = 0;
+	var posy = 0;
+	var e = evt || window.event;
+	if (e.pageX || e.pageY){
+		posx = e.pageX;
+		posy = e.pageY;
+	}else if (e.clientX || e.clientY) {
+		posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+		posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	}
+	var canvasX = posx-obj.offsetLeft;
+	var canvasY = posy-obj.offsetTop;
+	explode(canvasX, canvasY);
+}
+
+function Tile(){
+	this.originX = 0;
+	this.originY = 0;
+	this.currentX = 0;
+	this.currentY = 0;
+	this.rotation = 0;
+	this.force = 0;
+	this.z = 0;
+	this.moveX= 0;
+	this.moveY= 0;
+	this.moveRotation = 0;
+	
+	this.videoX = 0;
+	this.videoY = 0;
+}
+
+
+/*
+	getPixel
+	return pixel object {r,g,b,a}
+*/
+function getPixel(imageData, x, y){
+	var data = imageData.data;
+	var pos = (x + y * imageData.width) * 4;
+	return {r:data[pos], g:data[pos+1], b:data[pos+2], a:data[pos+3]}
+}
+/*
+	setPixel
+	set pixel object {r,g,b,a}
+*/
+function setPixel(imageData, x, y, pixel){
+	var data = imageData.data;
+	var pos = (x + y * imageData.width) * 4;
+	data[pos] = pixel.r;
+	data[pos+1] = pixel.g;
+	data[pos+2] = pixel.b;
+	data[pos+3] = pixel.a;
+}
+/*
+	copyPixel
+	faster then using getPixel/setPixel combo
+*/
+function copyPixel(sImageData, sx, sy, dImageData, dx, dy){
+	var spos = (sx + sy * sImageData.width) * 4;
+	var dpos = (dx + dy * dImageData.width) * 4;
+	dImageData.data[dpos] = sImageData.data[spos];     //R
+	dImageData.data[dpos+1] = sImageData.data[spos+1]; //G
+	dImageData.data[dpos+2] = sImageData.data[spos+2]; //B
+	dImageData.data[dpos+3] = sImageData.data[spos+3]; //A
+}
+</script>
+</head>
+
+<body onload="init()" style="margin:0px;">
+	<div style="display:none">
+		<video id="sourcevid" autoplay loop>
+			<source src="BigBuckBunny_640x360.mp4" type="video/mp4">
+		</video>
+		<canvas id="sourcecopy" width="640" height="360"></canvas>
+	</div>
+	<div>
+	  <center>
+		<canvas id="output" width="1000" height="600" onmousedown="dropBomb(event, this)"></canvas>
+		<p id='note' style='font-size: 20pt; display:none;'><p>
+	  </center>
+	</div>
+	<div>
+		<video id="webcam" muted autoplay width="640" height="480" style="display:none"></video>
+		<canvas id="canvas-source" width="640" height="480" style="display:none"></canvas>
+		<center>
+			<canvas id="canvas-blended" width="640" height="480" style="width: 320px; height: 240px; position: absolute; left: 5px; top: 1px; z-index: -1;"></canvas>
+			<canvas id="canvas-grid" width="640" height="480" style="width: 320px; height: 240px; position: absolute; left: 5px; top: 1px; z-index: 1;"></canvas>
+		</cetner>
+	</div>
+</body>
+</html>
