@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>captureStream Example 06: Video encoding with content Hints</h2>
+<div id="videos">
+  <div class="video-container">
+      <h3>Source video file (high bitrate)</h3>
+      <video id="srcVideo" playsinline controls muted loop>
+          <source src="video/mixed-content.webm" type="video/webm"/>
+          <p>This browser does not support the video element.</p>
+      </video>
+  </div>
+  <div class="video-container">
+      <h3>"motion" video @ 50kbps</h3>
+      <video id="motionVideo" playsinline autoplay muted></video>
+  </div>
+  <div class="video-container">
+      <h3>"detail" video @ 50kbps</h3>
+      <video id="detailVideo" playsinline autoplay muted></video>
+  </div>
+</div>
+<p></p>
+Notice: WebRTC Samples <a href="https://webrtc.github.io/samples/src/content/capture/video-contenthint/">Original Source</a> </br>
+<p></p>
+- <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream/clone">MediaStream.clone()</a>
+</body>
+
+<style>
+body {
+    text-align: center;
+}
+
+video {
+  --width: calc(80%);
+  width: var(--width);
+  height: calc(var(--width) * 9 / 16);
+  margin: 1em;
+  object-fit: cover;
+}
+
+.video-container {
+  /* border-bottom: 1px solid grey;
+  font-style: italic;
+  margin: 10px; */
+  object-fit: cover;
+}
+
+#videos {
+  /* text-align: center; */
+  width: 30%;
+  object-fit: cover;
+}
+</style>
+
+<script>
+const srcVideo = document.getElementById('srcVideo');
+const motionVideo = document.getElementById('motionVideo');
+const detailVideo = document.getElementById('detailVideo');
+
+let srcStream;
+let motionStream;
+let detailStream;
+
+const offerOptions = {
+  offerToReceiveAudio: 0,
+  offerToReceiveVideo: 1
+};
+
+function maybeCreateStream() {
+  if (srcStream) {
+    return;
+  }
+  if (srcVideo.captureStream) {
+    srcStream = srcVideo.captureStream();
+    call();
+  } else {
+    console.log('captureStream() not supported');
+  }
+}
+
+// Video tag capture must be set up after video tracks are enumerated.
+srcVideo.oncanplay = maybeCreateStream;
+if (srcVideo.readyState >= 3) { // HAVE_FUTURE_DATA
+  // Video is already ready to play, call maybeCreateStream in case oncanplay
+  // fired before we registered the event handler.
+  maybeCreateStream();
+}
+
+srcVideo.play();
+
+function setVideoTrackContentHints(stream, hint) {
+  const tracks = stream.getVideoTracks();
+  tracks.forEach(track => {
+    if ('contentHint' in track) {
+      track.contentHint = hint;
+      if (track.contentHint !== hint) {
+        console.log('Invalid video track contentHint: \'' + hint + '\'');
+      }
+    } else {
+      console.log('MediaStreamTrack contentHint attribute not supported');
+    }
+  });
+}
+
+function call() {
+  // This creates multiple independent PeerConnections instead of multiple
+  // streams on a single PeerConnection object so that b=AS (the bitrate
+  // constraints) can be applied independently.
+  motionStream = srcStream.clone();
+  // TODO(pbos): Remove fluid when no clients use it, motion is the newer name.
+  //setVideoTrackContentHints(motionStream, 'fluid'); // not supported
+  setVideoTrackContentHints(motionStream, 'motion');
+  establishPC(motionVideo, motionStream);
+  detailStream = srcStream.clone();
+  // TODO(pbos): Remove detailed when no clients use it, detail is the newer name.
+  //setVideoTrackContentHints(detailStream, 'detailed');  // not supported
+  setVideoTrackContentHints(detailStream, 'detail');
+  establishPC(detailVideo, detailStream);
+}
+
+function establishPC(videoTag, stream) {
+  const pc1 = new RTCPeerConnection(null);
+  const pc2 = new RTCPeerConnection(null);
+  pc1.onicecandidate = e => {
+    onIceCandidate(pc1, pc2, e);
+  };
+  pc2.onicecandidate = e => {
+    onIceCandidate(pc2, pc1, e);
+  };
+  pc2.ontrack = event => {
+    if (videoTag.srcObject !== event.streams[0]) {
+      videoTag.srcObject = event.streams[0];
+    }
+  };
+
+  stream.getTracks().forEach(track => pc1.addTrack(track, stream));
+
+  pc1.createOffer(offerOptions)
+    .then(desc => {
+      pc1.setLocalDescription(desc)
+        .then(() => pc2.setRemoteDescription(desc))
+        .then(() => pc2.createAnswer())
+        .then(answerDesc => onCreateAnswerSuccess(pc1, pc2, answerDesc))
+        .catch(onSetSessionDescriptionError);
+    })
+    .catch(e => console.log('Failed to create session description: ' + e.toString()));
+}
+
+function onSetSessionDescriptionError(error) {
+  console.log('Failed to set session description: ' + error.toString());
+}
+
+function onCreateAnswerSuccess(pc1, pc2, desc) {
+  // Hard-code video bitrate to 50kbps.
+  desc.sdp = desc.sdp.replace(/a=mid:(.*)\r\n/g, 'a=mid:$1\r\nb=AS:' + 50 + '\r\n');
+  pc2.setLocalDescription(desc)
+    .then(() => pc1.setRemoteDescription(desc))
+    .catch(onSetSessionDescriptionError);
+}
+
+function onIceCandidate(pc, otherPc, event) {
+  otherPc.addIceCandidate(event.candidate);
+}
+</script>
+
+</html>
+
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>captureStream Example 01: Video to Video</h2>
+<video id="leftVideo" playsinline controls loop muted onclick="toggleSound();">
+    <source src="video/chrome.webm" type="video/webm"/>
+    <source src="video/chrome.mp4" type="video/mp4"/>
+    <p>This browser does not support the video element.</p>
+</video>
+<video id="rightVideo" playsinline autoplay></video>  
+<p></p>
+Notice: WebRTC Samples <a href="https://webrtc.github.io/samples/src/content/capture/video-video/">Original Source</a> does not work.
+</body>
+
+<style>
+body {
+    text-align: center;
+}
+
+canvas {
+    background-color: #ccc;
+    --width: calc(40%);
+    width: var(--width);
+    height: calc(var(--width) * 0.75);
+    margin: 1em;
+    vertical-align: top;
+}
+
+video {
+    --width: calc(40%);
+    width: var(--width);
+    height: calc(var(--width) * 0.75);
+    margin: 1em;
+    object-fit: cover;
+}
+</style>
+
+<script>
+const leftVideo = document.getElementById('leftVideo');
+const rightVideo = document.getElementById('rightVideo');
+
+var stream; // = new MediaStream();
+
+leftVideo.load();
+
+leftVideo.addEventListener('canplay', () => {
+  console.log('canplay');
+  //let stream;
+  const fps = 0;
+  if (leftVideo.captureStream) {
+    stream = leftVideo.captureStream(fps);
+  } else if (leftVideo.mozCaptureStream) {
+    stream = leftVideo.mozCaptureStream(fps);
+  } else {
+    console.error('Stream capture is not supported');
+    stream = null;
+  }
+  console.log(stream);
+  rightVideo.srcObject = stream;
+});
+
+leftVideo.addEventListener('play', () => {
+  console.log('play');
+  rightVideo.play();
+  tracking();
+});
+
+leftVideo.addEventListener('volumechange', () => {
+  console.log('volumechnage');
+  toggleSound();
+});
+
+function tracking() {
+  var atrack = stream.getAudioTracks()[0];
+  var vtrack = stream.getVideoTracks()[0];
+  //console.log(atrack, vtrack);
+}
+
+function toggleSound() {
+    console.log('toggleSound');
+    var atrack = stream.getAudioTracks()[0];
+    if (leftVideo.muted) {
+        atrack.enabled = false;
+        console.log('volume off');
+    } else {
+        atrack.enabled = true;
+        console.log('volume on');
+    }
+}
+
+</script>
+
+</html>
+
+

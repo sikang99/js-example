@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>captureStream Example 03: Canvas to a Peer connection</h2>
+<canvas id='source'></canvas>
+<canvas id='target'></canvas>
+<video playsinline autoplay muted></video>
+<p></p>
+Notice: WebRTC Samples <a href="https://webrtc.github.io/samples/src/content/capture/canvas-video/">Original Source</a> </br>
+<a href="https://developers.google.com/web/updates/2016/10/capture-stream">Capture a MediaStream From a Canvas, Video or Audio Element</a>
+</body>
+
+<style>
+body {
+    text-align: center;
+}
+#source {
+    background-color: #ccc;
+    --width: calc(30%);
+    width: var(--width);
+    height: calc(var(--width) * 0.75);
+    margin: 1em;
+    vertical-align: top;
+}
+#target {
+    background-color: #aaa;
+    --width: calc(30%);
+    width: var(--width);
+    height: calc(var(--width) * 0.75);
+    margin: 1em;
+    object-fit: cover;
+}
+video {
+    background-color: black;
+    --width: calc(30%);
+    width: var(--width);
+    height: calc(var(--width) * 0.75);
+    margin: 1em;
+    object-fit: cover;
+}
+</style>
+
+<!-- Teapot code -->
+<script src="webgl_teapot/webgl-utils.js"></script>
+<script src="webgl_teapot/webgl-debug.js"></script>
+<script src="webgl_teapot/matrix4x4.js"></script>
+<script src="webgl_teapot/cameracontroller.js"></script>
+<script src="webgl_teapot/teapot-streams.js"></script>
+<script src="webgl_teapot/demo.js"></script>
+
+<script>
+// Call main() in webgl_teapot/demo.js
+main();
+
+const sCanvas= document.getElementById('source');
+const dVideo = document.querySelector('video');
+const sStream = sCanvas.captureStream();
+dVideo.srcObject = sStream;
+
+const dCanvas = document.getElementById('target');
+const dContext = dCanvas.getContext('2d');
+// const dStream = dCanvas.captureStream(25);
+// dVideo.srcObject = dStream;
+
+dContext.canvas.width = sCanvas.width;
+dContext.canvas.height = sCanvas.height;
+
+// canvas.addEventListener('click', () => {
+//   console.log('click');s
+//   function draw() {
+//     context.drawImage(canvas, 0,0);
+//     requestAnimationFrame(draw);
+//   }
+//   requestAnimationFrame(draw);
+// }, true);
+
+// var clicked = false;
+
+// sCanvas.onmousedown = (e) => {
+//   console.log('mousedown');
+//   clicked = true;
+// };
+
+// sCanvas.onmouseup = (e) => {
+//   console.log('mouseup');
+//   clicked = false;
+// };
+
+// sCanvas.onmousemove = (e) => {
+//   if (!clicked) return;
+//   console.log('mousemove');
+//   context.clearRect(0,0, sCanvas.width, sCanvas.height);
+//   context.drawImage(sCanvas, 0,0);
+// };
+
+handle = new handleCanvas();
+// sCanvas.addEventListener('click', handle.click, false);
+sCanvas.addEventListener('mousedown', handle.mousedown, false);
+sCanvas.addEventListener('mousemove', handle.mousemove, false);
+sCanvas.addEventListener('mouseup', handle.mouseup, false);
+
+function handleCanvas() {
+  var clicked = false;
+
+  this.click = (e) => {
+    // dContext.drawImage(sCanvas, 0,0);
+    console.log('click', clicked);
+  }
+  this.mousedown = (e) => {
+    clicked = true;
+    // dContext.drawImage(sCanvas, 0,0);
+    console.log('mousedown', clicked);
+  };
+
+  this.mouseup = (e) => {
+    clicked = false;
+    console.log('mouseup', clicked);
+  };
+
+  this.mousemove = (e) => {
+    if (!clicked) {
+      // dContext.drawImage(sCanvas, 0,0);
+      return;
+    }
+    console.log('mousemove');
+    dContext.clearRect(0,0, sCanvas.width, sCanvas.height);
+    dContext.drawImage(sCanvas, 0,0);
+  };
+}
+
+setTimeout(() => {
+  console.log('timeout');
+  dContext.drawImage(sCanvas, 0,0);
+}, 1000)
+</script>
+</html>
+
+
