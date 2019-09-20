@@ -1,0 +1,57 @@
+<html>
+<head>
+    
+<style>
+body {
+  text-align: center;  
+  /* background-color: #222; */
+}
+.tooltip {
+  position: relative;
+  background-color: yellow;
+}
+.blur {
+  filter: blur(3px)
+}
+.grayscale {
+  filter: grayscale(1)
+}
+.saturate {
+  filter: saturate(5)
+}
+.sepia {
+  filter: sepia(1)
+}
+.multi {
+  filter: blur(2px) invert(1) opacity(0.3)
+}
+</style>
+</head>
+
+<body>
+<h2>Simplest possible examples of HTML, CSS and JavaScript</h2>
+<div class="filter" name="Balham High Road and a rainbow">
+<img class="none" src="balham.jpg" alt="No filter" />
+<img class="blur" src="balham.jpg" alt="Blur filter" />
+<img class="grayscale" src="balham.jpg" alt="Grayscale filter" />
+<img class="saturate" src="balham.jpg" alt="Saturate filter" />
+<img class="sepia" src="balham.jpg" alt="Sepia filter" />
+<img class="multi" src="balham.jpg" alt="Blur, invert and opacity filters" />
+</div>
+</body>
+
+<script>
+var filter = document.getElementsByClassName("filter")[0];
+var iname = filter.getAttribute('name');
+var images = document.getElementsByTagName("img");
+// console.log(images)
+for (var item of images) { // CAUTION: Don't use in images
+  // console.log(item)
+  // item.setAttribute('title', item.getAttribute('alt'));
+  item.title = item.alt + ":\n" + iname;
+}
+</script>
+
+</html>
+
+

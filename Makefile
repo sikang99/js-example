@@ -20,6 +20,9 @@ kill k:
 	pkill simplehttpserver
 
 clean:
+
+md:
+	md2html README.md > README.html
 #----------------------------------------------------------------------------------
 git g:
 	@echo "> make (git:g) [update|store]"

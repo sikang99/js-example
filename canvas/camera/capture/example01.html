@@ -2,12 +2,12 @@
 <html>
 <body>
 <h2>captureStream Example 01: Video to Video</h2>
-<video id="leftVideo" playsinline controls loop muted onclick="toggleSound();">
+<video id="leftVideo" playsinline controls loop autoplay muted onclick="toggleSound();">
     <source src="video/chrome.webm" type="video/webm"/>
     <source src="video/chrome.mp4" type="video/mp4"/>
     <p>This browser does not support the video element.</p>
 </video>
-<video id="rightVideo" playsinline autoplay></video>  
+<video id="rightVideo" playsinline autoplay muted></video>  
 <p></p>
 Notice: WebRTC Samples <a href="https://webrtc.github.io/samples/src/content/capture/video-video/">Original Source</a> does not work.
 </body>

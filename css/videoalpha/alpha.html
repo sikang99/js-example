@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<!--
+Copyright 2017 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html lang="en">
+<head>
+
+<script>
+//  philipwalton.com/articles/the-google-analytics-setup-i-use-on-every-site-i-build
+window.ga = window.ga || function() {
+  (ga.q = ga.q || []).push(arguments);
+};
+ga('create', 'UA-33848682-1', 'auto');
+ga('set', 'transport', 'beacon');
+ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+
+<meta charset="utf-8">
+<meta name="description" content="Simplest possible examples of HTML, CSS and JavaScript.">
+<meta name="author" content="//samdutton.com">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta itemprop="name" content="simpl.info: simplest possible examples of HTML, CSS and JavaScript">
+<meta itemprop="image" content="/images/icons/icon192.png">
+<meta id="theme-color" name="theme-color" content="#fff">
+
+<link rel="icon" href="/images/icons/icon192.png">
+
+<base target="_blank">
+
+
+<title>Video alpha channel</title>
+
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="css/main.css">
+
+<style>
+input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input {
+  border: none;
+  height: 18px;
+  position: relative;
+  top: 4px;
+  width: 18px;
+}
+p {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+}
+</style>
+
+</head>
+<body>
+
+  <video id="video1" autoplay src="video/dancer1.webm" loop muted playsinline></video>
+  <video id="video2" autoplay src="video/soccer1.webm" loop muted playsinline></video>
+  <video id="chrome" class="transparent" src="video/chrome.webm" loop muted playsinline></video>
+
+  <div id="container">
+
+    <h1><a href="../index.html" title="simpl.info home page">simpl.info</a> Video alpha channel</h1>
+
+    <p>Drag videos to show CSS filters; tap or double click to trigger CSS animation. Resize page to resize videos.</p>
+    <p>Tap or click background to swap between image and video.</p>
+    <p>Select video background colour: <input id="colorInput" type="color"> (<span id="clearSpan">clear</span>)</p>
+
+    <p class="strong">This demo works in current versions of Firefox and Chrome on desktop and (sort of) on mobile, but not Safari.</p>
+
+    <script src="js/main.js"></script>
+
+  </div>
+
+  <a id="viewSource" href="https://github.com/samdutton/simpl/blob/gh-pages/videoalpha" title="View source for this page on GitHub">View source on GitHub</a>
+
+</body>
+</html>

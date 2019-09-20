@@ -1,0 +1,114 @@
+<html>
+<head>
+    
+<style>
+body {
+  text-align: center;
+}
+#video {
+  width: 40%;
+}
+#canvas {
+  width: 40%;
+  margin: 1em;
+  filter: grayscale(1);
+}
+#zoom {
+  border: 1px black solid;
+  box-shadow: 5px 5px 10px #1e1e1e;
+}
+</style>
+</head>
+
+<body>
+<h2>Video clipping on canvas by JS, CSS filtering</h2>
+<video id='video'></video>
+</br>
+<canvas id='canvas'></canvas>
+<canvas id="zoom" width="400" height="200" style="position:absolute; top:0; left:0; display:none"></canvas>
+</br>
+<button id='slice'>Toggle slicer</button>
+<button id='magnet'>Toggle mangnifier</button>
+</div>
+</body>
+
+<script>
+var canvas = document.getElementById('canvas');
+var zoom = document.getElementById('zoom');
+
+var ctx = canvas.getContext("2d");
+var zoomCtx = zoom.getContext("2d");
+var video = document.getElementById("video");
+
+video.oncanplay = function() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  draw();
+}
+video.loop = video.autoplay = video.muted = video.controls = true;
+//video.src = "video/big_buck_bunny_240p_50mb.mp4";
+video.src = "video/TearsOfSteel.mp4";
+
+ctx.fillText("Loading video...", 20, 20);
+
+var slice = document.getElementById('slice');
+var checked = false;
+
+slice.onclick = function() {
+  checked = !checked;
+}
+
+function draw() {
+  if (checked) {
+    halfCopy();
+  } else {
+    scaleCopy();
+  }
+  requestAnimationFrame(draw);
+}
+
+function halfCopy() {
+  var vw = video.videoWidth /2; //>> 1; // half width
+  var vh = video.videoHeight;
+  var cw = canvas.width /2;
+  var ch = canvas.height;
+  ctx.drawImage(video, 0,  0, vw, vh, cw, 0, cw, ch); // draw left half to the right
+  ctx.drawImage(video, vw, 0, vw, vh, 0,  0, cw, ch);  // draw right half to the left
+}
+
+function scaleCopy() {
+  var vw = video.videoWidth;
+  var vh = video.videoHeight;
+  var cw = canvas.width;
+  var ch = canvas.height;
+  ctx.drawImage(video, 0, 0, vw, vh, 0, 0, cw, ch);
+}
+
+var magnet = document.getElementById('magnet');
+var magnified = false;
+
+magnet.onclick = function() {
+  magnified = !magnified;
+}
+
+canvas.onmousemove = function(e) {
+  if (!magnified) return;
+  cx = (e.x - canvas.offsetLeft) * (canvas.width / canvas.offsetWidth);
+  cy = (e.y - canvas.offsetTop) * (canvas.height / canvas.offsetHeight);
+  ctx.fillStyle = "white";
+  zoomCtx.fillRect(0,0, zoom.width, zoom.height);
+  zoomCtx.drawImage(canvas, cx, cy, 300, 150, 0,0, 400, 200);
+  console.log(cx, cy)
+  zoom.style.top = e.pageY + 10 + "px"
+  zoom.style.left = e.pageX + 10 + "px"
+  zoom.style.display = "block";
+}
+
+canvas.onmouseout = function() {
+  zoom.style.display = "none";
+}
+</script>
+
+</html>
+
+

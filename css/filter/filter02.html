@@ -1,0 +1,188 @@
+<html>
+<head>
+<svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg">
+  <filter id="greenish">
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="2" intercept="-0.5"/>
+      <feFuncG type="linear" slope="2" intercept="0"/>
+      <feFuncB type="linear" slope="2" intercept="-0.25"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="bluish">
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="2" intercept="-0.5"/>
+      <feFuncG type="linear" slope="2" intercept="-0.1"/>
+      <feFuncB type="linear" slope="2" intercept="0"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+    
+<style>
+body {
+  text-align: center;  
+  /* background-color: #222; */
+}
+#content { display: flex }
+aside {
+  float: left;
+  width: 25%;
+  margin: 1em;
+  /* background-color: bisque; */
+}
+aside div { 
+  padding:10px; 
+  border-bottom:1px solid #888; 
+  border-top:1px solid #bbb;
+  transition:background 0.3s ease;
+  background:#aaa;
+}
+aside div:first-child { padding-top:20px; }
+aside div:last-child { border-radius:0 0 4px 0; }
+aside div:hover { background:#ccc; }
+
+label { display:block; font:13px "Helvetica", sans-serif; text-align:left; color:#222; }
+strong { font-weight:bold; padding:0 3px; user-select:none; }
+code { display:inline; font:12px "Courier new"; color:#444; }
+
+input { appearance:none!important; background:#777;  width:100%; border-radius:3px; height:20px; }
+input::-webkit-slider-thumb {
+  appearance:none!important; width:32px; height:20px;  background:#111; border-radius:3px;
+}
+
+section {
+  float: left;
+  width: 55%;
+  margin: 1em;
+}
+
+video {
+  filter: drop-shadow(5px 5px 10px #555);
+  width: 100%;
+  margin: 5px;
+}
+
+/* #target {
+  filter: url('#greenish');
+  opacity: .9;
+  backdrop-filter: blur(2px);
+} */
+
+footer {
+  width: 100%
+}
+</style>
+</head>
+
+<body>
+<h2>CSS3 Filter Effects applied to HTML5 video</h2>
+<div id='content'>
+<aside>
+  <form>
+  <div>
+    <label><strong>Blur</strong><code>filter:blur(<span id="blur-val">0</span>px);</code></label>
+		<input id="blur" type="range" min="0" max="20" step="1" value="0" />
+  </div>
+  <div>
+    <label><strong>Saturation</strong><code>filter:saturate(<span id="saturate-val">1</span>);</code></label>
+    <input id="saturate" type="range" min="0" max="5" step="0.1" value="1"/>
+  </div>
+  <div>
+    <label><strong>Brightness</strong><code>filter:brightness(<span id="brightness-val">1</span>);</code></label>
+    <input id="brightness" type="range" min="0" max="1" step="0.05" value="1" />
+  </div>
+  <div>
+    <label><strong>Contrast</strong><code>filter:contrast(<span id="contrast-val">1</span>);</code></label>
+    <input id="contrast" type="range" min="0" max="5" step="0.05" value="1" />
+  </div>
+  <div>
+      <label><strong>Grayscale</strong><code>filter:grayscale(<span id="grayscale-val">0</span>);</code></label>
+      <input id="grayscale" type="range" min="0" max="1" step="0.05" value="0" />
+    </div>
+  <div>
+    <label><strong>Invert</strong><code>filter:invert(<span id="invert-val">0</span>);</code></label>
+    <input id="invert" type="range" min="0" max="1" step="0.05" value="0" />
+  </div>
+  <div>
+      <label><strong>Hue</strong><code>filter:hue-rotate(<span id="hue-val">0</span>deg);</code></label>
+      <input id="hue" type="range" min="0" max="360" step="1" value="0" />
+    </div>
+  <div>
+      <label><strong>Opacity</strong><code>filter:opacity(<span id="opacity-val">1</span>);</code></label>
+      <input id="opacity" type="range" min="0" max="1" step="0.05" value="1" />
+    </div>
+  <div>
+    <label><strong>Sepia</strong><code>filter:sepia(<span id="sepia-val">0</span>);</code></label>
+    <input id="sepia" type="range" min="0" max="1" step="0.05" value="0" />
+  </div>
+  <div>
+    <label><strong>Drop-Shadow</strong></label>
+  </div>
+  <div>
+    <label><strong>Gamma</strong></label>
+  </div>
+  <div>
+    <button type="reset"><strong>Reset to initial</strong></button>
+  </div>
+</form>
+</aside>
+
+<section>
+  <video id="video" preload="auto" controls loop autoplay muted>
+    <source src="video/TearsOfSteel.mp4" type="video/mp4" />
+    Your not cool and I won't let you watch this awesome video of cows.
+  </video>
+  <video id="target" controls autoplay muted></video>
+</section>
+</div>
+</br>
+<footer>
+Reference source: <a href="https://codepen.io/ygjack/pen/xrqQjR">CSS3 Filter Effects applied to HTML5 video</a>
+</footer>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+$("form").on('reset', function() {
+  setTimeout( () => {
+    $("input").trigger('change')
+  }, 20)
+});
+
+// Feel free to fork and improve on this if you'd like
+$("input").on('change', function() {
+	var blur = $("#blur").val();
+  var saturate = $("#saturate").val();
+  var hue = $("#hue").val();
+  var brightness = $("#brightness").val();
+  var contrast = $("#contrast").val();
+  var invert = $("#invert").val();
+  var opacity = $("#opacity").val();
+  var grayscale = $("#grayscale").val();
+  var sepia = $("#sepia").val();
+  
+  var filters = "blur(" + blur + "px) saturate(" + saturate + ") hue-rotate(" + hue + "deg) brightness(" + brightness + ") contrast(" + contrast + ") invert(" + invert + ") sepia(" + sepia + ") grayscale(" +grayscale + ") opacity(" + opacity +")";
+  
+  $("#video").css('filter', filters);
+  
+  $("#blur-val").text(blur);
+  $("#saturate-val").text(saturate);
+  $("#hue-val").text(hue);
+  $("#brightness-val").text(brightness);
+  $("#contrast-val").text(contrast);
+  $("#grayscale-val").text(grayscale);
+  $("#invert-val").text(invert);
+  $("#opacity-val").text(opacity);
+  $("#sepia-val").text(sepia);
+});
+
+$("#video").on('canplay', function() {
+  console.log('canplay');
+  var stream = $("#video").get(0).captureStream();
+  $("#target").get(0).srcObject = stream;
+});
+</script>
+
+</html>
+
+

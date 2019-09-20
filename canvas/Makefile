@@ -15,3 +15,5 @@ kill k:
 	pkill simplehttpserver
 
 
+md:
+	md2html README.md > README.html

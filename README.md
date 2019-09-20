@@ -10,7 +10,8 @@ Javascript programming
 - [enaqx/awesome-react](https://github.com/enaqx/awesome-react)
 - [33 Concepts Every JavaScript Developer Should Know](https://github.com/leonardomso/33-js-concepts)
 - 2018/11/13 [Front-end JavaScript Interviews in 2018–19](https://blog.webf.zone/front-end-javascript-interviews-in-2018-19-e17b0b10514)
-
+- [JavaScript Standard Style](https://standardjs.com/)
+    - [standard/standard](https://github.com/standard/standard) - JavaScript Style Guide, with linter & automatic code fixer
 
 ## My Sub Functions
 - [Audio](audio/README.md)
@@ -20,4 +21,5 @@ Javascript programming
 - [ES6](es6/README.md)
 - [Blob](blob/README.md)
 - [IndexedDB](idb/README.md)
+- [CSS](css/README.md)
 

@@ -12,4 +12,5 @@
 ### Information
 - [PaulJAdam's Modern Web Accessibility Demos](http://pauljadam.com/demos/)
 - [Media Capture and Streams](https://www.w3.org/TR/mediacapture-streams/), W3C Candidate Recommendation 02 July 2019]
-- [Idealized MediaStream Design in Chrome](http://www.chromium.org/developers/design-documents/idealized-mediastream-design)
+- [Idealized MediaStream Design in Chrome](http://www.chromium.org/developers/design-documents/idealized-mediastream-design), 2013
+- [WebRTC - MediaStream APIs](https://www.tutorialspoint.com/webrtc/webrtc_media_stream_apis.htm) - properties, event handlers, methods
