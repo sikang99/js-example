@@ -2,7 +2,11 @@
 
 ### History
 - 2019/04/25 [SVG Native: Open Sourcing SVG Native Viewer](https://medium.com/adobetech/svg-native-open-sourcing-svg-native-viewer-988125328a07)
+- 2019/04/22 [SVG Filter Resources and Demos](https://1stwebdesigner.com/svg-filter-resources-and-demos/)
+- 2019/03/22 [**Add SVG filters with CSS**](https://www.creativebloq.com/how-to/add-svg-filters-with-css)
+- 2019/02/08 [10 Amazing Examples of CSS, SVG & Canvas Masks In Action](https://speckyboy.com/css-svg-canvas-masks/)
 - 2017/03/07 [Add Bevel And Emboss Effects With The feConvolveMatrix Filter Primitive](https://vanseodesign.com/web-design/svg-filter-primitives-feconvolvematrix/)
+- 2016/08/01 [Editing Images in CSS: Filters](https://code.tutsplus.com/tutorials/editing-images-in-css-filters--cms-25948)
 - 2015/05/26 [The Art Of SVG Filters And Why It Is Awesome](https://www.smashingmagazine.com/2015/05/why-the-svg-filter-is-awesome/s)
 - 2013/07/01 [Alpha transparency in Chrome video](https://developers.google.com/web/updates/2013/07/Alpha-transparency-in-Chrome-video)
 - 2012/05/25 [Understanding CSS Filter Effects](https://www.html5rocks.com/en/tutorials/filters/understanding-css/)
@@ -16,6 +20,7 @@
 
 
 ### Information
+- [Everything You Need To Know About SVG](https://css-tricks.com/lodge/svg/)
 - [**SVG Tutorial**](https://www.tutorialspoint.com/svg/index.htm)
 - [**Image Effects with CSS**](https://bennettfeely.com/image-effects/)
 - [CSS3 Filter Effects applied to HTML5 video](https://codepen.io/ygjack/pen/xrqQjR)

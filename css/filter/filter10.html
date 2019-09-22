@@ -98,6 +98,7 @@ h2 {
   margin: 1em;
   filter: none;
   animation-duration: 3s;
+  clip-path: none;
 }
 #zoom {
   border: 1px black solid;
@@ -114,11 +115,14 @@ select {
   height: 25px;
   width: 140px;
 }
+.dayNight {
+  animation-name: dayNight;
+}
 .rotateOut {
   animation-name: rotateOut;
 }
 
-@keyframes day-night {
+@keyframes dayNight {
   0% {
     filter: hue-rotate(0deg) brightness(120%);
   }
@@ -165,6 +169,7 @@ select {
 <canvas id="zoom" width="400" height="200" style="position:absolute; top:0; left:0; display:none"></canvas>
 </br>
 <div id='control'>
+<button id='clip'>Toggle clipper</button>
 <button id='slice'>Toggle slicer</button>
 <button id='magnet'>Toggle mangnifier</button>
 <select id='filter'>
@@ -283,6 +288,18 @@ var filter = document.getElementById('filter');
 filter.onchange = function() {
   console.log(filter.options[filter.selectedIndex].text)
   canvas.style.filter = filter.options[filter.selectedIndex].value;
+}
+
+var clip = document.getElementById('clip');
+var clipped = false;
+
+clip.onclick = function() {
+  clipped = !clipped;
+  if (clipped) {
+    canvas.style.clipPath = 'circle(200px at center)';
+  } else {
+    canvas.style.clipPath = 'none';
+  }
 }
 
 </script>
