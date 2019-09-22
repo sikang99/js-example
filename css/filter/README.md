@@ -28,6 +28,12 @@
 - [simpl.info Video alpha channel](https://simpl.info/videoalpha/)
 - [CSS Filter Effects](http://html5-demos.appspot.com/static/css/filters/index.html)
 - [vivus](https://maxwellito.github.io/vivus/) - bringing your SVGs to life
+- [Free SVG icons for popular brands](https://simpleicons.org/)
+
+
+### Tools
+- [SVG Gradient Map Filter](https://yoksel.github.io/svg-gradient-map/#/)
+- [SVG Filters](https://yoksel.github.io/svg-filters/#/)
 
 
 ### Stackoverdflow

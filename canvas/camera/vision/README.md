@@ -18,9 +18,13 @@
 
 
 ### Open Source
+- Github Topics: [face-tracking](https://github.com/topics/face-tracking?l=javascript)
 - [lilyrae/opencvjs-circles](https://github.com/lilyrae/opencvjs-circles) 
 - [ustadudewhohacks/opencv4nodejs/](https://github.com/justadudewhohacks/opencv4nodejs/) - Nodejs bindings to OpenCV 3 and OpenCV 4
 - [auduno/headtrackr](https://github.com/auduno/headtrackr) - Javascript library for headtracking via webcam and WebRTC/getUserMedia
 - [auduno/clmtrackr](https://github.com/auduno/clmtrackr) - Javascript library for precise tracking of facial features via Constrained Local Models
 - [auduno/mosse](https://github.com/auduno/mosse) - Fast javascript correlation filters for tracking objects in video
+- [**Tastenkunst/brfv4_javascript_examples**](https://github.com/Tastenkunst/brfv4_javascript_examples) 
+    - [BRFv4 Demo](https://tastenkunst.github.io/brfv4_javascript_examples/)
+
 

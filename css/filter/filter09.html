@@ -2,7 +2,8 @@
 <head>
 
 <svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg">
-  <filter id="turbulence">
+  <filter id="turbulence"
+      x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
       <feTurbulence baseFrequency=".01" type="fractalNoise" numOctaves="3" seed="23" stitchTiles="stitch"/>
   </filter>
   <filter id="greenish">
@@ -12,15 +13,22 @@
       <feFuncB type="linear" slope="2" intercept="-0.25"/>
     </feComponentTransfer>
   </filter>
+  <filter id="gamma">
+    <feComponentTransfer color-interpolation-filters="sRGB">
+      <feFuncR type="gamma" exponent="1.5" amplitude="1.3" offset="0"></feFuncR>
+      <feFuncG type="gamma" exponent="1.5" amplitude="1.3" offset="0"></feFuncG>
+      <feFuncB type="gamma" exponent="1.5" amplitude="1.3" offset="0"></feFuncB>
+    </feComponentTransfer>
+  </filter>
   <filter id="compose"
     x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
     <feGaussianBlur stdDeviation="20 20" in="SourceGraphic" edgeMode="none" result="blur"/>
     <feBlend mode="difference" in="blur" in2="SourceGraphic" result="blend1"/>
     <feComposite k1="1.3" k2="10" k3="0" k4="-.5" in="blend1" in2="SourceAlpha" operator="arithmetic" result="composite1"/> 
   </filter>
-
   <filter id="morphology">
-      <feMorphology operator="erode" in="SourceGraphic" radius="2"/>
+    <feMorphology operator="erode" in="SourceGraphic" radius="2"/>
+    <!-- <feMorphology operator="dilate" in="SourceGraphic" radius="2"/> -->
   </filter>
   <filter id="emboss">
     <feConvolveMatrix order="5,5"
@@ -31,6 +39,23 @@
           0  0  3  0  0 
           0  0  0  0  0 
           0  0  0  0  0"/>
+  </filter>
+  <filter id="amaro"> <!-- Instagram effect filter -->
+    <!--- contrast -->
+    <feComponentTransfer color-interpolation-filters="sRGB">
+      <feFuncR type="linear" slope="0.9" intercept="0.049" />
+      <feFuncG type="linear" slope="0.9" intercept="0.049" />
+      <feFuncB type="linear" slope="0.9" intercept="0.049" />
+    </feComponentTransfer>
+    <!--- brightness -->
+    <feComponentTransfer color-interpolation-filters="sRGB">
+      <feFuncR type="linear" slope="1.1" />
+      <feFuncG type="linear" slope="1.1" />
+      <feFuncB type="linear" slope="1.1" />
+    </feComponentTransfer>
+    <!--- saturate -->
+      <feColorMatrix type="matrix" color-interpolation-filters="sRGB" 
+        values="1.394 -0.358 -0.036 0 0 -0.107 1.1575 -0.036 0 0 -0.107 -0.357 1.464 0 0 0 0 0 1 0" />
   </filter>
 </svg>
 
@@ -63,9 +88,9 @@ button {
   width: 120px;
 }
 select {
-  background-color: lightcyan;
+  background-color: lightpink;
   height: 25px;
-  width: 120px;
+  width: 140px;
 }
 </style>
 </head>
@@ -91,11 +116,13 @@ select {
   <option value="invert(1)">Invert</option>
   <option value="opacity(.5)">Opacity(.5)</option>
   <option value="sepia(1)">Sepia</option>
-  <option value="turbulence">Turbulence</option>
+  <option value="url(#turbulence)">Custom(turbulence)</option>
   <option value="url(#greenish)">Custom(greenish)</option>
-  <option value="url(#compose)">Custom(compose)</option>
+  <option value="url(#gamma)">Custom(gamma)</option>
   <option value="url(#morphology)">Custom(morphology)</option>
+  <option value="url(#compose)">Custom(compose)</option>
   <option value="url(#emboss)">Custom(emboss)</option>
+  <option value="url(#amaro)">Custom(amaro)</option>
 </select>
 </div>
 </body>
