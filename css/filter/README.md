@@ -41,6 +41,7 @@
 
 
 ### Open Source
+- [Apress/beginning-svg](https://github.com/Apress/beginning-svg) - Source Code for "Beginning SVG" by Alex Libby
 - [jorgeatgu/SVG-FILTERS](https://github.com/jorgeatgu/SVG-FILTERS) - Fildrop. A set of custom SVG Filters
 - [folkertdev/svg-filters](https://github.com/folkertdev/svg-filters) - Building and using SVG filters in Elm
 - [rafszul/SVG-Filters-on-HTML5-Video.markdown](https://gist.github.com/rafszul/a6f28a0e4b912dd7c18b) - SVG Filters on HTML5 Video

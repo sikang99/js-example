@@ -97,6 +97,7 @@ h2 {
   width: 40%;
   margin: 1em;
   filter: none;
+  animation-duration: 3s;
 }
 #zoom {
   border: 1px black solid;
@@ -113,6 +114,10 @@ select {
   height: 25px;
   width: 140px;
 }
+.rotateOut {
+  animation-name: rotateOut;
+}
+
 @keyframes day-night {
   0% {
     filter: hue-rotate(0deg) brightness(120%);
@@ -130,11 +135,30 @@ select {
     filter: hue-rotate(180deg) brightness(5%);
   }
 }
+@keyframes rotateOut {
+  0% {
+    animation-timing-function: ease-in;
+    opacity: 1;
+    transform: rotate(0) scale(1);
+    transform-origin: center center;
+  }
+  50% {
+    opacity: 0;
+    transform: rotate(-2000deg) scale(0);
+    transform-origin: center center;
+  }
+  100% {
+    animation-timing-function: ease-out;
+    opacity: 1;
+    transform: rotate(2000deg) scale(1);
+    transform-origin: center center;
+  }
+}
 </style>
 </head>
 
 <body>
-<h2>Video clipping on canvas by JS, CSS filtering</h2>
+<h2>Video clipping on canvas by JS, CSS filtering, Animation</h2>
 <video id='video'></video>
 </br>
 <canvas id='canvas'></canvas>
@@ -184,6 +208,15 @@ video.loop = video.autoplay = video.muted = video.controls = true;
 video.src = "video/TearsOfSteel.mp4";
 
 ctx.fillText("Loading video...", 20, 20);
+
+canvas.ondblclick = function() {
+  console.log('dbclock')
+  canvas.classList.remove('rotateOut');
+  setTimeout(function() {
+    canvas.classList.add('rotateOut');
+  }, 5);
+}
+
 
 // canvas processing such as half reversion
 var slice = document.getElementById('slice');
