@@ -1,0 +1,157 @@
+<html>
+<head>
+<title>SVG Filters on HTML5 Video</title>
+
+<svg id='image' version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+    <filter id="myblur">
+        <feGaussianBlur stdDeviation="0,1"/>
+    </filter>
+    <filter id="myconvolve">
+        <feConvolveMatrix filterRes="10 10" style="color-interpolation-filters:sRGB" order="3" kernelMatrix="0 -2 0   -2 5 -2   0 -2 0" preserveAlpha="true"/>
+    </filter>
+    <filter id="turbulence">
+        <feTurbulence baseFrequency=".01" type="fractalNoise" numOctaves="3" seed="23" stitchTiles="stitch"/>
+    </filter>
+    <filter id="blur">
+        <feGaussianBlur stdDeviation="2,0" result="outBlur"/>
+    </filter>
+    <filter id="inverse">
+        <feComponentTransfer>
+        <feFuncR type="table" tableValues="1 0"/>
+        <feFuncG type="table" tableValues="1 0"/>
+        <feFuncB type="table" tableValues="1 0"/>
+        </feComponentTransfer>
+    </filter>
+    <filter id="convolve">
+        <feConvolveMatrix order="3" kernelMatrix="1 -1  1  -1 -0.01 -1  1 -1 1" edgeMode="duplicate" result="convo"/>
+    </filter>
+    <filter id="convoblur">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+        <feConvolveMatrix order="3" kernelMatrix="1 -1  1  -1 -0.01 -1  1 -1 1" edgeMode="none" result="convo"/>
+        <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="convo"/>
+        </feMerge>
+    </filter>
+    <filter id="blackandwhite">
+        <feColorMatrix values ="0.3333 0.3333 0.3333 0 0
+                                0.3333 0.3333 0.3333 0 0
+                                0.3333 0.3333 0.3333 0 0
+                                0      0      0      1 0"/>
+    </filter>
+    <filter id="convolve2">
+        <feConvolveMatrix filterRes="100 100" style="color-interpolation-filters:sRGB" order="3" kernelMatrix="0 -1 0   -1 3 -1   0 -1 0" preserveAlpha="true"/>
+    </filter>
+    <filter id="offset" x="-10%" y="-20%" height="230%" width="140%" transform="translate(90,0)">
+        <feGaussianBlur stdDeviation="14"/>
+        <feOffset dx="0" dy="240" result="B"/>
+        <feMerge>
+            <feMergeNode in="B"/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+
+    <filter id="displacement" x="0%" y="0%" height="100%" width="100%">
+        <feDisplacementMap scale="100" in2="SourceGraphic" xChannelSelector="G"/>
+    </filter>
+    <filter id="bluefill" x="0%" y="0%" width="100%" height="100%">
+        <feFlood flood-color="blue" result="A"/>
+        <feColorMatrix type="matrix" in="SourceGraphic" result="B" 
+            values="
+                    1   0  0  0 0  
+                    0   1  0  0 0   
+                    0   0  1  0 0   
+                    1   1  1  0 0"/>
+        <feMerge>
+            <feMergeNode in="A"/>
+            <feMergeNode in="B"/>
+        </feMerge>
+    </filter>
+    <filter id="noir">
+        <feGaussianBlur stdDeviation="1.5"/>
+        <feComponentTransfer>
+            <feFuncR type="discrete" tableValues="0 .5 1 1"/>
+            <feFuncG type="discrete" tableValues="0 .5 1"/>
+            <feFuncB type="discrete" tableValues="0"/>
+        </feComponentTransfer>
+    </filter>
+    </defs>
+</svg>
+
+<style>
+body {
+    text-align: center;
+    margin: 1em;
+  }
+video {
+    width: 30%;
+}
+canvas {
+    width: 30%;
+    filter: 'none';
+}
+button {
+    background-color: lightpink;
+    border-radius: 10px;
+    font-size: 15px;
+    margin: 1rem;
+}
+</style>
+
+<script>
+window.onload = function() {
+    var video = document.querySelector('video');
+    var canvas = document.querySelector('canvas');
+    var context = canvas.getContext('2d');
+    var button = document.querySelector('button');
+    var current = document.querySelector('button span');
+    var filters = ['myblur','myconvolve','turbulence',
+                    'blur','inverse','convolve','convoblur','offset',
+                    'convolve2','blackandwhite','noir','bluefill','displacement'];
+    var i = 0;
+    
+    video.oncanplay = function() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        draw();
+    };
+    
+    function draw() {
+        context.drawImage(video, 0, 0);
+        requestAnimationFrame(draw);
+    };
+
+    button.addEventListener('click', function() {
+        console.log(i);
+        current.innerHTML = filters[i];
+        canvas.style.webkitFilter='url(#'+filters[i]+')';
+        canvas.style.mozFilter='url(#'+filters[i]+')';
+        canvas.style.filter='url(#'+filters[i]+')';
+    
+        i = (i+1) % filters.length;
+    }, false);
+    
+    };
+</script>
+</head>
+
+<body>
+<h2>SVG Filters on HTML5 Video</h2>
+<!-- <div id='display'> -->
+<video autoplay="true" id="vid" controls="controls" loop="loop" muted>
+    <!-- <source src="video/big_buck_bunny_240p_50mb.mp4" type="video/mp4"/> -->
+    <source src="video/octopus.ogv" type="video/ogg"/> 
+    <source src="video/octopus.mp4" type="video/mp4"/>
+</video>
+<canvas>
+</canvas>
+<!-- </div> -->
+</br>
+<button>Current filter: <span>none</span></button>
+</br>
+Reference: 
+<a href="https://www.paulirish.com/2010/svg-filters-on-html5-video/">SVG Filters on HTML5 Video</a>
+</body>
+
+</html>

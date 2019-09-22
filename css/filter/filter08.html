@@ -1,0 +1,167 @@
+<html>
+<head>
+
+<svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg">
+  <filter id="greenish">
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="2" intercept="-0.5"/>
+      <feFuncG type="linear" slope="2" intercept="0"/>
+      <feFuncB type="linear" slope="2" intercept="-0.25"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="bluish">
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="2" intercept="-0.5"/>
+      <feFuncG type="linear" slope="2" intercept="-0.1"/>
+      <feFuncB type="linear" slope="2" intercept="0"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+<style>
+body {
+  text-align: center;
+}
+#video {
+  width: 40%;
+}
+#canvas {
+  width: 40%;
+  margin: 1em;
+  filter: none;
+}
+#zoom {
+  border: 1px black solid;
+  box-shadow: 5px 5px 10px #1e1e1e;
+}
+button {
+  border-radius: 20px;
+  background-color: lightblue;
+  height: 25px;
+  width: 120px;
+}
+select {
+  background-color: lightgoldenrodyellow;
+  height: 25px;
+  width: 120px;
+}
+</style>
+</head>
+
+<body>
+<h2>Video clipping on canvas by JS, CSS filtering</h2>
+<video id='video'></video>
+</br>
+<canvas id='canvas'></canvas>
+<canvas id="zoom" width="400" height="200" style="position:absolute; top:0; left:0; display:none"></canvas>
+</br>
+<button id='slice'>Toggle slicer</button>
+<button id='magnet'>Toggle mangnifier</button>
+<select id='filter'>
+  <option selected value="none">None</option>
+  <option value="blur(5px)">Blur(5px)</option>
+  <option value="brightness(.5)">Brightness(.5)</option>
+  <option value="saturate(5)">Saturate(5)</option>
+  <option value="contrast(5)">Contrast(5)</option>
+  <option value="hue-rotate(180deg)">Hue(180deg)</option>
+  <option value="grayscale(1)">Grayscale</option>
+  <option value="invert(1)">Invert</option>
+  <option value="opacity(.5)">Opacity(.5)</option>
+  <option value="sepia(1)">Sepia</option>
+  <option value="url(#greenish)">Custom(greenish)</option>
+  <option value="url(#bluish)">Custom(bluish)</option>
+</select>
+</div>
+</body>
+
+<script>
+var canvas = document.getElementById('canvas');
+var zoom = document.getElementById('zoom');
+
+var ctx = canvas.getContext("2d");
+var zoomCtx = zoom.getContext("2d");
+var video = document.getElementById("video");
+
+video.oncanplay = function() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  draw();
+}
+video.loop = video.autoplay = video.muted = video.controls = true;
+//video.src = "video/big_buck_bunny_240p_50mb.mp4";
+video.src = "video/TearsOfSteel.mp4";
+
+ctx.fillText("Loading video...", 20, 20);
+
+// canvas processing such as half reversion
+var slice = document.getElementById('slice');
+var checked = false;
+
+slice.onclick = function() {
+  checked = !checked;
+}
+
+function draw() {
+  if (checked) {
+    halfCopy();
+  } else {
+    scaleCopy();
+  }
+  requestAnimationFrame(draw);
+}
+
+function halfCopy() {
+  var vw = video.videoWidth /2; //>> 1; // half width
+  var vh = video.videoHeight;
+  var cw = canvas.width /2;
+  var ch = canvas.height;
+  ctx.drawImage(video, 0,  0, vw, vh, cw, 0, cw, ch); // draw left half to the right
+  ctx.drawImage(video, vw, 0, vw, vh, 0,  0, cw, ch);  // draw right half to the left
+}
+
+function scaleCopy() {
+  var vw = video.videoWidth;
+  var vh = video.videoHeight;
+  var cw = canvas.width;
+  var ch = canvas.height;
+  ctx.drawImage(video, 0, 0, vw, vh, 0, 0, cw, ch);
+}
+
+var magnet = document.getElementById('magnet');
+var magnified = false;
+
+magnet.onclick = function() {
+  magnified = !magnified;
+}
+
+canvas.onmousemove = function(e) {
+  if (!magnified) return;
+  cx = (e.x - canvas.offsetLeft) * (canvas.width / canvas.offsetWidth);
+  cy = (e.y - canvas.offsetTop) * (canvas.height / canvas.offsetHeight);
+  // console.log(cx, cy)
+  ctx.fillStyle = "white";
+  zoomCtx.fillRect(0,0, zoom.width, zoom.height);
+  zoomCtx.drawImage(canvas, cx, cy, 300, 150, 0,0, 400, 200);
+  zoom.style.top = e.pageY + 10 + "px"
+  zoom.style.left = e.pageX + 10 + "px"
+  zoom.style.display = "block";
+}
+
+canvas.onmouseout = function() {
+  zoom.style.display = "none";
+}
+
+// CSS based image filtering
+var filter = document.getElementById('filter');
+// var filtered = false;
+
+filter.onchange = function() {
+  console.log(filter.options[filter.selectedIndex].text)
+  canvas.style.filter = filter.options[filter.selectedIndex].value;
+}
+
+</script>
+
+</html>
+
+
