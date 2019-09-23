@@ -178,9 +178,9 @@ select {
 <canvas id="zoom" width="400" height="200" style="position:absolute; top:0; left:0; display:none"></canvas>
 </br>
 <div id='control'>
-<button id='effect'>Toggle effector</button>
 <button id='clip'>Toggle clipper</button>
 <button id='slice'>Toggle slicer</button>
+<button id='effect'>Toggle effector</button>
 <button id='magnet'>Toggle mangnifier</button>
 <select id='filter'>
   <option selected value="none">None</option>
@@ -238,18 +238,32 @@ var effected = false;
 
 effect.onclick = function() {
   effected = !effected;
+  if (effected) {
+    magnified = true;
+    magnet.style.backgroundColor = "lightgray";
+    effect.style.backgroundColor = "lightgray";
+  } else {
+    effect.style.backgroundColor = "lightblue";
+  }
+  console.log("effect:", effected, magnified);
 }
 
 // canvas processing such as half reversion
 var slice = document.getElementById('slice');
-var checked = false;
+var sliced = false;
 
 slice.onclick = function() {
-  checked = !checked;
+  sliced = !sliced;
+  if (sliced) {
+    slice.style.backgroundColor = "lightgray";
+  } else {
+    slice.style.backgroundColor = "lightblue";
+  }
+  console.log("slice:", sliced);
 }
 
 function draw() {
-  if (checked) {
+  if (sliced) {
     halfCopy();
   } else {
     scaleCopy();
@@ -284,6 +298,12 @@ var magnified = false;
 
 magnet.onclick = function() {
   magnified = !magnified;
+  if (magnified) {
+    magnet.style.backgroundColor = "lightgray";
+  } else {
+    magnet.style.backgroundColor = "lightblue";
+  }
+  console.log("magnet:", magnified);
 }
 
 canvas.onmousemove = function(e) {
@@ -318,10 +338,13 @@ var clipped = false;
 clip.onclick = function() {
   clipped = !clipped;
   if (clipped) {
-    canvas.style.clipPath = 'circle(200px at center)';
+    canvas.style.clipPath = 'circle(150px at center)';
+    clip.style.backgroundColor = "lightgray";
   } else {
     canvas.style.clipPath = 'none';
+    clip.style.backgroundColor = "lightblue";
   }
+  console.log("clip:", clipped);
 }
 </script>
 

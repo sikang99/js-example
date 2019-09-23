@@ -229,6 +229,7 @@ var checked = false;
 
 slice.onclick = function() {
   checked = !checked;
+  console.log('slice:', checked);
 }
 
 function draw() {
@@ -262,6 +263,7 @@ var magnified = false;
 
 magnet.onclick = function() {
   magnified = !magnified;
+  console.log('magnet:', magnified);
 }
 
 canvas.onmousemove = function(e) {
@@ -296,12 +298,12 @@ var clipped = false;
 clip.onclick = function() {
   clipped = !clipped;
   if (clipped) {
-    canvas.style.clipPath = 'circle(200px at center)';
+    canvas.style.clipPath = 'circle(100px at center)';
   } else {
     canvas.style.clipPath = 'none';
   }
+  console.log('clip:', clipped);
 }
-
 </script>
 
 </html>

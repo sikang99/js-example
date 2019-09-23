@@ -11,10 +11,10 @@ edit e:
 build b:
 
 run r:
+	simplehttpserver -port=8080 &
 
 web w:
 	open http://localhost:8080
-	simplehttpserver
 
 kill k:
 	pkill simplehttpserver
