@@ -1,6 +1,7 @@
 ## js-example/css
 
 ### History
+- 2019/05/03 [A Practical Guide To SVG And Design Tools](https://www.smashingmagazine.com/2019/05/svg-design-tools-practical-guide/)
 - 2019/04/25 [SVG Native: Open Sourcing SVG Native Viewer](https://medium.com/adobetech/svg-native-open-sourcing-svg-native-viewer-988125328a07)
 - 2019/04/22 [SVG Filter Resources and Demos](https://1stwebdesigner.com/svg-filter-resources-and-demos/)
 - 2019/03/22 [**Add SVG filters with CSS**](https://www.creativebloq.com/how-to/add-svg-filters-with-css)
@@ -15,6 +16,7 @@
 
 ### Specification
 - [SVG Native](https://w3c.github.io/svgwg/specs/svg-native/index.html), Editor’s Draft, 15 April 2019
+- [Scalable Vector Graphics (SVG) 2](https://www.w3.org/TR/SVG2/), W3C Candidate Recommendation 04 October 2018
 - [Scalable Vector Graphics (SVG) Tiny 1.2 Specification](https://www.w3.org/TR/SVGTiny12/), W3C Recommendation 22 December 2008
 - [Scalable Vector Graphics (SVG) 1.1 (Second Edition)](https://www.w3.org/TR/SVG11/), W3C Recommendation 16 August 2011
 
