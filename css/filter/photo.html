@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>
+How to save image from canvas with CSS filters    
+</title>
+</head>
+
+<style>
+html body {
+    text-align: center;
+}
+div {
+    margin: 1rem;
+}
+img {
+    border-style: ridge; 
+}
+canvas {
+    border-style: ridge; 
+    filter: 'none';
+}
+select {
+    width: 120px;
+    height: 20px;
+    background-color: lightblue;
+}
+button {
+    width: 100px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: lightcoral;
+}
+</style>
+
+<body>
+<h2>How to save image from canvas with CSS filters</h2>
+<div class="display">
+    <img id="image" src="images/balham.jpg"/>
+    <canvas id="canvas"></canvas>
+</div>
+<div>
+<select id='draw'>
+    <option selected value="none">None</option>
+    <option value="blur(5px)">Blur(5px)</option>
+    <option value="brightness(.5)">Brightness(.5)</option>
+    <option value="saturate(5)">Saturate(5)</option>
+    <option value="contrast(5)">Contrast(5)</option>
+    <option value="hue-rotate(180deg)">Hue(180deg)</option>
+    <option value="grayscale(1)">Grayscale</option>
+    <option value="invert(1)">Invert</option>
+    <option value="opacity(.5)">Opacity(.5)</option>
+    <option value="sepia(1)">Sepia</option>
+</select>
+<button id="save">Save</button>
+</div>
+</body>
+
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+var img = document.getElementById('image');
+img.onload = function() {
+    console.log('load');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+}
+
+var drawSelect = document.getElementById('draw');
+
+drawSelect.onchange = function() {
+    console.log('save');
+    if (typeof ctx.filter === "undefined") {
+        console.log('ctx error');
+        return;
+    }
+    ctx.filter = drawSelect.options[drawSelect.selectedIndex].value;
+    ctx.drawImage(img, 0, 0);
+}
+
+var saveButton = document.getElementById('save');
+
+saveButton.onclick = function save() {
+    console.log('save');
+    var dURL = canvas.toDataURL("image/png");
+    var a = document.createElement("a");
+    a.download = 'photo.png';
+    a.href = dURL;
+    a.textContent = "click to download";
+    document.body.appendChild(a);
+    a.click();
+    a.parentNode.removeChild(a);
+}
+
+</script>
+</html>

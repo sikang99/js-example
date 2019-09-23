@@ -169,6 +169,7 @@ select {
 <canvas id="zoom" width="400" height="200" style="position:absolute; top:0; left:0; display:none"></canvas>
 </br>
 <div id='control'>
+<button id='effect'>Toggle effector</button>
 <button id='clip'>Toggle clipper</button>
 <button id='slice'>Toggle slicer</button>
 <button id='magnet'>Toggle mangnifier</button>
@@ -222,6 +223,12 @@ canvas.ondblclick = function() {
   }, 5);
 }
 
+var effect = document.getElementById('effect');
+var effected = false;
+
+effect.onclick = function() {
+  effected = !effected;
+}
 
 // canvas processing such as half reversion
 var slice = document.getElementById('slice');
@@ -254,6 +261,11 @@ function scaleCopy() {
   var vh = video.videoHeight;
   var cw = canvas.width;
   var ch = canvas.height;
+  if (effected) {
+    ctx.filter = filter.options[filter.selectedIndex].value;
+  } else {
+    ctx.filter = 'none';
+  }
   ctx.drawImage(video, 0, 0, vw, vh, 0, 0, cw, ch);
 }
 
@@ -281,7 +293,7 @@ canvas.onmouseout = function() {
   zoom.style.display = "none";
 }
 
-// CSS based image filtering
+// CSS based image filtering using default and custome filters
 var filter = document.getElementById('filter');
 // var filtered = false;
 
@@ -301,7 +313,6 @@ clip.onclick = function() {
     canvas.style.clipPath = 'none';
   }
 }
-
 </script>
 
 </html>
