@@ -4,6 +4,7 @@
 - 2019/05/03 [**A Practical Guide To SVG And Design Tools**](https://www.smashingmagazine.com/2019/05/svg-design-tools-practical-guide/)
 - 2019/04/30 [Canvas and WebGL Filtering 101](https://tech.shutterstock.com/2019/04/30/canvas-webgl-filtering-concepts)
 - 2019/04/25 [SVG Native: Open Sourcing SVG Native Viewer](https://medium.com/adobetech/svg-native-open-sourcing-svg-native-viewer-988125328a07)
+- 2019/04/24 [The CSS Handbook: a handy guide to CSS for developers](https://www.freecodecamp.org/news/the-css-handbook-a-handy-guide-to-css-for-developers-b56695917d11/)
 - 2019/04/22 [SVG Filter Resources and Demos](https://1stwebdesigner.com/svg-filter-resources-and-demos/)
 - 2019/03/22 [**Add SVG filters with CSS**](https://www.creativebloq.com/how-to/add-svg-filters-with-css)
 - 2019/03/01 [Hand drawn sketch effect in SVG with feDisplacementMap](https://lofi.codes/post/hand-drawn-sketch-effect-in-svg-with-fedisplacementmap/)
@@ -39,6 +40,8 @@
 - [vivus](https://maxwellito.github.io/vivus/) - bringing your SVGs to life
 - [Free SVG icons for popular brands](https://simpleicons.org/)
 - [clip-path](https://css-tricks.com/almanac/properties/c/clip-path/)
+- [WebKit CSS Feature Status](https://webkit.org/css-status/#)
+
 
 
 ### Tools

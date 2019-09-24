@@ -1,0 +1,76 @@
+html, body, label, input, button {
+    font-family: "Arial Rounded MT Bold", serif;
+  }
+  
+  @-ms-viewport{
+    width: device-width;
+  }
+  
+  .container{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    margin: 0 auto;
+    border: 2px solid coral;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+  }
+  
+  .sw-switcher {
+    display: flex;
+    width: 150px;
+    margin: 7px;
+  }
+  
+  .desc {
+    font-size: .9em;
+    text-align: center;
+    color: #4e9b9b;
+    width: 300px;
+    margin: 0 auto;
+    padding: 0 7px;
+  }
+  
+  label {
+    font-size: 1em;
+    margin: 20px 7px 0 0;
+    width: 105px;
+  }
+  
+  input[type="radio"] {
+    height: 50px;
+    width: 50px;
+    background-color: gainsboro;
+  }
+  
+  button {
+    background: coral;
+    color: white;
+    font-size: 1.3em;
+    margin: 1em;
+    padding: 0.7em 1em;
+    width: 296px;
+    border: 2px solid palevioletred;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button:hover:enabled {
+    background: tomato;
+    color: #333333;
+  }
+  
+  button:disabled {
+    opacity: .5;
+  }
+  
+  .timer {
+    font-size: 2em;
+    background-color: lightcoral;
+    -webkit-border-radius: 14px;
+    -moz-border-radius: 14px;
+    border-radius: 14px;
+    padding: 14px;
+    color: wheat;
+  }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Learn Canvas</title>
+<style>
+canvas {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #222;
+}
+input {
+    display: block;
+    margin: 20px auto;
+    width: 400px
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+<canvas id="my-canvas"></canvas>
+<input type="range" value="1.0" min="0.5" max="3.0" step="0.1">
+<canvas id="watermark-canvas" style="display: none;"></canvas>
+</div>
+
+<script type="text/javascript">
+window.onload = function () {
+    var canvas = document.querySelector("#my-canvas");
+    var watermarkCanvas = document.querySelector("#watermark-canvas");
+    var slider = document.querySelector("input");
+
+    var scale = slider.value;
+
+    var ctx = canvas.getContext('2d');
+    var watermarkCtx = watermarkCanvas.getContext("2d");
+
+    /* Add watermarking to the ontext object acquired by the second canvas*/
+    watermarkCanvas.width = 300;
+    watermarkCanvas.height = 100;
+    watermarkCtx.font = "bold 20px Arial";
+    watermarkCtx.lineWidth = "1";
+    watermarkCtx.fillStyle = "rgba(255 , 255 , 255, 0.5)";
+    watermarkCtx.fillText("=== yuanxin.me ===", 50, 50);
+    /****************************************/
+
+    var img = new Image()
+    img.src = "balham.jpg"
+
+    /* Act after loading the picture*/
+    img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
+        // Listen for MouseMove events on input Tags
+        // Note: Mosemove listens for changes in real-time values and consumes a lot of memory
+        slider.onmousemove = function () {
+            scale = slider.value;
+            drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
+        }
+    }
+    /******************/
+}
+/**
+*
+*@ Param {Object} canvas canvas object
+* @param {Object} ctx
+* @param {Object} img
+*@ Param {Number} scale scaling ratio
+*@ Param {Object} watermark Watermarking object
+*/
+function drawImageByScale(canvas, ctx, img, scale, watermark) {
+    // Scale the image in proportion
+    var width = img.width * scale;
+    var height = img.height * scale;
+    // (dx, dy): The starting coordinates for drawing img on a canvas
+    var dx = canvas.width / 2 - width / 2,
+    dy = canvas.height / 2 - height / 2
+    Ctx. clearRect (0, 0, canvas.width, canvas.height)// No1 clearing canvas
+    Ctx. drawImage (img, dx, dy, width, height)// No2 to redraw the image
+    if (watermark) {
+        // No3 judges whether there is a watermarking: yes, draw a watermarking
+        ctx.drawImage(watermark, canvas.width - watermark.width, canvas.height - watermark.height)
+    }
+}
+</script>
+</body>
+</html>
