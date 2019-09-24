@@ -271,6 +271,17 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
+// content display depending on source data processing
+function applyFilter() {
+  if (effected) {
+    canvas.style.filter = 'none';
+    ctx.filter = filter.options[filter.selectedIndex].value;
+  } else {
+    ctx.filter = 'none';
+    canvas.style.filter = filter.options[filter.selectedIndex].value;
+  }  
+}
+
 function halfCopy() {
   var vw = video.videoWidth /2; //>> 1; // half width
   var vh = video.videoHeight;
@@ -286,13 +297,14 @@ function scaleCopy() {
   var cw = canvas.width;
   var ch = canvas.height;
   // CAUTION: double effects of filtering by context and style
-  if (effected) {
-    canvas.style.filter = 'none';
-    ctx.filter = filter.options[filter.selectedIndex].value;
-  } else {
-    ctx.filter = 'none';
-    canvas.style.filter = filter.options[filter.selectedIndex].value;
-  }
+  // if (effected) {
+  //   canvas.style.filter = 'none';
+  //   ctx.filter = filter.options[filter.selectedIndex].value;
+  // } else {
+  //   ctx.filter = 'none';
+  //   canvas.style.filter = filter.options[filter.selectedIndex].value;
+  // }
+  applyFilter();
   ctx.drawImage(video, 0, 0, vw, vh, 0, 0, cw, ch);
 }
 
@@ -332,7 +344,7 @@ var filter = document.getElementById('filter');
 
 filter.onchange = function() {
   console.log(filter.options[filter.selectedIndex].text)
-  canvas.style.filter = filter.options[filter.selectedIndex].value;
+  applyFilter();
 }
 
 var clip = document.getElementById('clip');
