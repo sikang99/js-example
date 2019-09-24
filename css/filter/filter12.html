@@ -290,8 +290,8 @@ function scaleCopy() {
     canvas.style.filter = 'none';
     ctx.filter = filter.options[filter.selectedIndex].value;
   } else {
-    canvas.style.filter = filter.options[filter.selectedIndex].value;
     ctx.filter = 'none';
+    canvas.style.filter = filter.options[filter.selectedIndex].value;
   }
   ctx.drawImage(video, 0, 0, vw, vh, 0, 0, cw, ch);
 }
