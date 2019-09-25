@@ -1,0 +1,29 @@
+<html>
+<head>
+
+</head>
+
+<body>
+<video></video>    
+</body>
+
+
+<script>
+//get screen stream
+chrome.desktopCapture.chooseDesktopMedia(['screen'], null, (stream_id, opts) => {
+    let constraints = {video: mandatory {
+        chromeMediaSource: 'desktop',
+        chromeMediaSourceId: stream_id
+    }};
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        video_stream = stream;
+    });
+});
+
+//get mic stream
+navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+    audio_stream = stream;
+});
+</script>
+
+</html>

@@ -1,0 +1,21 @@
+<html>
+<head>
+
+</head>
+
+<body>
+<video></video>    
+</body>
+
+
+<script>
+//get screen stream
+chrome.desktopCapture.chooseDesktopMedia(['screen', 'audio'], onAccessApproved);
+
+function onAccessApproved(chromeMediaSourceId, opts) {
+    console.log("onAccessApproved")
+}
+
+</script>
+
+</html>

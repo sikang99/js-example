@@ -1,0 +1,60 @@
+<html>
+<head>
+
+</head>
+
+<body>
+<video></video>    
+</body>
+
+
+<script>
+chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'audio'], function (streamId) {
+    if (streamId) {
+        var obj = {
+            audio: {
+            mandatory: {
+                    chromeMediaSource: 'desktop',
+                    chromeMediaSourceId: streamId
+                }
+            },
+            video: {
+            optional: [],
+               mandatory: {
+                  chromeMediaSource: 'desktop',
+                  chromeMediaSourceId: streamId,
+                  maxWidth: 2560,
+                  maxHeight: 1440,
+                  maxFrameRate:30
+               }
+            }
+        };
+
+        countdownRun(function () {
+            navigator.mediaDevices.getUserMedia(obj).then(function(stream) {
+                $streamVideo = stream;
+                $timeStart = Date.now();
+                var audio = stream.getAudioTracks()[0];
+                var video = stream.getVideoTracks()[0];
+                console.log(stream);
+
+                if (micSound) {
+                    window.navigator.webkitGetUserMedia({audio: true}, function (s) {
+                        $streamAudio = s;
+                        audio = s.getAudioTracks()[0];
+                        captureUseNacl(audio, video);
+                    }, function (e) {
+                        chrome.tabs.create({url: 'mic.html'});
+                    })
+                } else {
+                    captureUseNacl(audio, video);
+                }
+            }).catch(function(err) {
+                console.log(err)
+            });
+        })
+    }
+});
+</script>
+
+</html>
