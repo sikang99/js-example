@@ -18,11 +18,20 @@
 - [getDisplayMedia demo](https://www.webrtc-experiment.com/getDisplayMedia/)
 - Code Examples: [AudioContext.createMediaStreamDestination](https://code-examples.net/ko/docs/dom/audiocontext/createmediastreamdestination)
 - [WebRTC samples Demo of getDisplayMedia and screen recording](https://webrtc.github.io/samples/src/content/getusermedia/getdisplaymedia/)
-- Chrome Web Store: [Desktop Capture Sample](https://chrome.google.com/webstore/detail/desktop-capture-sample/mhkidniocjdaiddjckopkigjmjbadfji)
+- Chrome Web Store: 
+    - [Desktop Capture Sample](https://chrome.google.com/webstore/detail/desktop-capture-sample/mhkidniocjdaiddjckopkigjmjbadfji)
+    - [WebRTC Desktop Sharing](https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg)
+- [5 Best Chrome Extensions to Record Screen](https://www.guidingtech.com/chrome-extensions-record-screen/)
+- [chrome.desktopCapture](https://developer.chrome.com/extensions/desktopCapture)
+- [WebRTC Standards & Implementation Q&A - getDisplayMedia 1.0](https://www.slideshare.net/AmirZ/webrtc-standards-implementation-qa-getdisplaymedia-10)
+
 
 
 ### Slides
 - [Audio capture support in getDisplayMedia()](https://docs.google.com/document/d/1crq58FoEJ_cDZoExOtrG7zHJjX_pQ5FqGB3JK_gNmhQ/edit#heading=h.3sxddzjr5f6q)
 
+
+### Stackoverflow
+- [chrome.desktopCapture - can't record both system audio and microphone?](https://stackoverflow.com/questions/51042895/chrome-desktopcapture-cant-record-both-system-audio-and-microphone)
 
 
