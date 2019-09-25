@@ -38,7 +38,7 @@ button {
 <input type="checkbox" id="micAudioToggle" />
 <label for="micAudioToggle">Capture Audio from Microphone</label>
 <p id="warning">
-Enable chrome://flags/#enable-experimental-web-platform-features
+Enable <a href="chrome://flags">chrome://flags</a>/#enable-experimental-web-platform-features
 </p>
 </body>
 
@@ -69,7 +69,7 @@ window.onload = () => {
         const destination = context.createMediaStreamDestination();
 // console.log(destination.stream.getAudioTracks())
 
-        var audioTrackCount = 0;
+        var audioRealTrackCount = 0;
 
         if (desktopStream && desktopStream.getAudioTracks().length > 0) {
             printStreamTracks('desktopStream:', desktopStream)
@@ -77,7 +77,7 @@ window.onload = () => {
             const desktopGain = context.createGain();
             desktopGain.gain.value = 0.8;
             source1.connect(desktopGain).connect(destination);
-            audioTrackCount++;
+            audioRealTrackCount++;
         }
 
         if (voiceStream && voiceStream.getAudioTracks().length > 0) {
@@ -86,11 +86,11 @@ window.onload = () => {
             const voiceGain = context.createGain();
             voiceGain.gain.value = 0.8;
             source2.connect(voiceGain).connect(destination);
-            audioTrackCount++;
+            audioRealTrackCount++;
         }
         
-        if (audioTrackCount === 0 && destination.stream.getAudioTracks().length === 1) {
-            console.log("remove an audio track without real data from stream");
+        if (audioRealTrackCount === 0 && destination.stream.getAudioTracks().length === 1) {
+            console.log("remove an audio track without real data from its stream");
             destination.stream.removeTrack(destination.stream.getAudioTracks()[0]);
         }
 
