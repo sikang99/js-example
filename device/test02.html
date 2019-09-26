@@ -1,0 +1,91 @@
+<html>
+<head>
+<style>
+html, body {
+    text-align: center;
+}
+textarea {
+    font-family: "Verdana";
+    width: 30%;
+    height: 30%;
+}
+video {
+    width: 30%;
+}
+ul {
+    text-align: left;
+}
+</style>
+</head>
+
+<body>
+<h2>MediaDevices.enumerateDevices()</h2>
+<textarea id='status'>Check devtool console too!</textarea>
+<ul id="constraintList"></ul>
+<p>
+Reference: <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices">enumerateDevices()</a>
+</p>
+</body>
+
+<script>
+window.onload = () => {
+var status = document.getElementById('status');
+
+if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+    console.log("enumerateDevices() not supported.");
+    return;
+}
+
+// var deviceList = [];
+
+// List cameras and microphones.
+navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+        console.log(devices);
+        defaultDevices(devices);
+    })
+    .catch(function(err) {
+        console.log(err.name + ": " + err.message);
+    });
+}
+
+function defaultDevices(devices) {
+    devices.forEach(device => {
+        if (device.deviceId === 'default') {
+            console.log(device);
+            document.getElementById('status').value += "\nDevice:" + device.label;
+        }
+    });
+}
+
+let constraintList = document.getElementById("constraintList");
+let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+
+for (let constraint in supportedConstraints) {
+  if (supportedConstraints.hasOwnProperty(constraint)) {
+    let elem = document.createElement("li");
+    
+    elem.innerHTML = "<code>" + constraint + "</code>";
+    constraintList.appendChild(elem);
+    constraintList.removeChild(elem);
+  }
+}
+
+var gumConstraints = { audio: true, video: { width: 1280, height: 720 } }; 
+
+navigator.mediaDevices.getUserMedia(gumConstraints)
+    .then(function(mediaStream) {
+        // var video = document.querySelector('video');
+        var video = document.createElement('video');
+        document.body.appendChild(video);
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+            video.play();
+        };
+    })
+    .catch(function(err) { console.log(err.name + ": " + err.message)});
+
+
+</script>
+
+</html>

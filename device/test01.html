@@ -1,0 +1,40 @@
+<html>
+<head>
+<style>
+html, body {
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+<h2>MediaDevices.enumerateDevices()</h2>
+<textarea id="status">Check devtool console!</textarea>
+<p>
+Reference: <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices">enumerateDevices()</a>
+</p>
+</body>
+
+<script>
+window.onload = () => {
+if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+    console.log("enumerateDevices() not supported.");
+    return;
+}
+
+// List cameras and microphones.
+navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+        devices.forEach(function(device) {
+            console.log(device.kind + ": " + device.label +
+                        " id = " + device.deviceId);
+        });
+        })
+    .catch(function(err) {
+        console.log(err.name + ": " + err.message);
+    });
+}
+
+</script>
+
+</html>

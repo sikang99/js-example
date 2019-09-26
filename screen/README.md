@@ -5,6 +5,7 @@
 - 2019/06/20 [Intro to Screen Capture API - Scanning QR codes in the browser](https://dev.to/al_khovansky/intro-to-screen-capture-api-scanning-qr-codes-bgi)
 - 2019/05/31 [WebRTC ハンズオン資料 ScreenCapture ＆ マルチストリーム編](https://qiita.com/massie_g/items/f852680b16c1b14cb9e8)
 - 2019/05/13 [Screen Recorder: recording microphone and the desktop audio at the same time](https://paul.kinlan.me/screen-recorderrecording-microphone-and-the-desktop-audio-at-the-same-time/)
+- 2018/06/14 [webrtcH4cKS: ~ Chrome Screensharing Blues – preparing for getDisplayMedia](https://webrtchacks.com/chrome-screensharing-getdisplaymedia/)
 
 
 ### Standards
@@ -34,4 +35,7 @@
 ### Stackoverflow
 - [chrome.desktopCapture - can't record both system audio and microphone?](https://stackoverflow.com/questions/51042895/chrome-desktopcapture-cant-record-both-system-audio-and-microphone)
 
+
+### Open Source
+- [otalk/getScreenMedia](https://github.com/otalk/getScreenMedia)
 
