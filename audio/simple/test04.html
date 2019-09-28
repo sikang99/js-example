@@ -1,0 +1,113 @@
+<html>
+<head>
+<style>
+html, body {
+    text-align: center;
+}
+div {
+    margin: 1rem;
+}
+</style>
+</head>
+
+<body>
+<h2>04: Audio Source from Video Stream</h2>
+<div>
+<video src="chrome.webm" id="video" controls muted></video>
+</div>
+<div>
+<button id='play'>Play</button>
+<button id='mute'>Mute</button>
+</div>
+
+<script>
+window.onload = () => {
+
+var video = document.getElementById('video');
+var playBtn = document.getElementById('play');
+var muteBtn = document.getElementById('mute');
+
+var audioCtx, aSource;
+var gainNode, filterNode;
+
+function GetVideoStream(video) {
+    video.play();
+    var stream = video.captureStream();
+    // var aTrack = stream.getAudioTracks()[0];
+    // console.log(aTrack)
+    console.log(stream);
+    return stream;
+}
+
+async function GetCameraStream(video) {
+    let gumConstraint = {video: true, audio: true};
+    stream = await navigator.mediaDevices.getUserMedia(gumConstraint);
+    console.log(stream);
+    return stream;
+}
+
+playBtn.onclick = () => {
+    var stream = GetVideoStream(video);
+
+    audioCtx = new AudioContext();
+    audioSrc = audioCtx.createMediaStreamSource(stream);
+    // var audioSrc = aContext.createMediaStreamTrackSource(aTrack); // only for Firefox
+    
+    filterNode = audioCtx.createBiquadFilter();
+    filterNode.type = "lowshelf";
+    filterNode.frequency.value = 3000;
+    filterNode.gain.value = 5;
+
+    gainNode = audioCtx.createGain();
+    gainNode.value = 1;
+
+    // make an audio processing graph
+    audioSrc.connect(filterNode);
+    filterNode.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    playBtn.disabled = true;
+}
+
+video.onended = () => {
+    console.log('onended')
+    audioCtx.close().then(function() {
+        playBtn.disabled = false;
+        ControlVolume('reset');
+    });
+}
+
+// muteBtn.onclick = () => {
+//     ControlVolume('toggle');
+// }
+
+muteBtn.addEventListener('click', () => {
+    ControlVolume('toggle');
+}, false);
+
+function ControlVolume(command) {
+    switch (command) {
+    case 'toggle':
+        if(muteBtn.innerHTML == "Mute") {
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            muteBtn.innerHTML = "Unmute";
+        } else {
+            gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+            muteBtn.innerHTML = "Mute";
+        }
+        break;
+    case 'reset':
+        gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        muteBtn.innerHTML = "Mute";
+        break;
+    }
+}
+
+
+
+}
+</script>
+
+</body>
+</html>
+

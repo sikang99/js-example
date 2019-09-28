@@ -1,0 +1,153 @@
+<html>
+<head>
+<style>
+html, body {
+    text-align: center;
+}
+div {
+    margin: 1rem;
+}
+</style>
+</head>
+
+<body>
+<h2>05: Audio Source from Video Stream</h2>
+<div>
+<video id="video"></video>
+</div>
+<div>
+<button id='play'>Play</button>
+<button id='mute'>Mute</button>
+</div>
+
+<script>
+var mediaStm;
+var audioCtx, aSource;
+var gainNode, filterNode;
+
+var video = document.getElementById('video');
+var playBtn = document.getElementById('play');
+var muteBtn = document.getElementById('mute');
+
+window.onload = () => {
+    playBtn.disabled = true;
+    muteBtn.disabled = true;
+
+    mediaStm = GetVideoStream(video);
+    //var mediaStm = GetCameraStream(video);
+}
+
+playBtn.addEventListener('click', function() {
+    console.log('click');
+    ControlPlay();
+}, false);
+
+video.addEventListener('canplay', function() {
+    console.log('canplay');
+    playBtn.disabled = false;
+}, false);
+
+video.addEventListener('play', function() {
+    console.log('play');
+    PlayStream(video);
+    muteBtn.disabled = false;
+}, false);
+
+video.addEventListener('ended', function() {
+    console.log('onended')
+    audioCtx.close().then(function() {
+        playBtn.disabled = false;
+        ControlVolume('reset');
+    });
+}, false);
+
+muteBtn.addEventListener('click', () => {
+    ControlVolume('toggle');
+}, false);
+
+
+//---------------------------------------------------------------------------------------
+async function PlayStream(video) {
+    console.log("PlayStream:")
+    audioCtx = new AudioContext();
+    audioSrc = audioCtx.createMediaStreamSource(mediaStm);
+    
+    filterNode = audioCtx.createBiquadFilter();
+    filterNode.type = "lowshelf";
+    filterNode.frequency.value = 3000;
+    filterNode.gain.value = 2;
+
+    gainNode = audioCtx.createGain();
+    gainNode.value = 1;
+
+    // make an audio processing graph
+    audioSrc.connect(gainNode);
+    // filterNode.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+}
+
+function ControlPlay() {
+    if (playBtn.innerHTML == "Play") {
+        video.play();
+        playBtn.innerHTML = "Pause";
+    } else {
+        video.pause();
+        playBtn.innerHTML = "Play";
+    }
+}
+
+function ControlVolume(command) {
+    console.log("ControlVolume:", command);
+    audioCtx.resume();
+    switch (command) {
+    case 'toggle':
+        if(muteBtn.innerHTML == "Mute") {
+            // gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.value = 0;
+            muteBtn.innerHTML = "Unmute";
+        } else {
+            // gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+            gainNode.gain.value = 1;
+            muteBtn.innerHTML = "Mute";
+        }
+        break;
+    case 'reset':
+        gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        muteBtn.innerHTML = "Mute";
+        break;
+    }
+}
+
+function PrintStreamTracks(stream) {
+    stream.getTracks().forEach(track => {
+        console.log(track);       
+    });
+}
+
+function GetVideoStream(video) {
+    console.log("GetVideoStream:")
+    video.src = "chrome.webm";
+    video.controls = true;
+    video.muted = true;
+    video.load();
+    var stream = video.captureStream();
+    return stream;
+}
+
+async function GetCameraStream(video) {
+    let gumConstraint = {video: true, audio: true};
+    stream = await navigator.mediaDevices.getUserMedia(gumConstraint).then(function(stream) {
+        //video.src = window.URL.createObjectURL(stream);
+        video.srcObject = stream;
+        video.play();
+        return stream;
+    });
+    // console.log(stream);
+    return stream
+}
+
+</script>
+
+</body>
+</html>
+

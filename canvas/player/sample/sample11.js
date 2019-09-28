@@ -5,13 +5,13 @@
     Overall Concept Credit: Wes Bos https://wesbos.com
 */
 
-const player = document.querySelector('.player');
-const video = player.querySelector('.player-video');
-const progress = player.querySelector('.progress');
-const progressFilled = player.querySelector('.filled-progress');
-const toggle = player.querySelector('.toggle-play');
-const skippers = player.querySelectorAll('[data-skip]');
-const ranges = player.querySelectorAll('.player-slider');
+const player = document.getElementById('player');
+const video = document.getElementById('player-video');
+const progress = document.getElementById('progress');
+const progressFilled = document.getElementById('filled-progress');
+const toggle = document.getElementById('toggle-play');
+const skippers = document.querySelectorAll('[data-skip]');
+const ranges = document.getElementById('player-slider');
 
 // Logic
 function togglePlay() {
@@ -48,7 +48,6 @@ function scrub(e) {
 }
 
 // Event listeners
-
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
 video.addEventListener('pause', updateButton);

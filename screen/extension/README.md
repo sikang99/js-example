@@ -1,6 +1,7 @@
 ## screen/extensions
 
 ### History
+- 2019/09/14 [The 8 Best Chrome Flags of 2019](https://www.lifewire.com/best-chrome-flags-4769157)
 - 2019/09/05 [Building a Chrome Extension in Five Steps](https://dzone.com/articles/building-a-chrome-extension-in-5-steps)
 - 2019/07/31 [Google’s Plans for Chrome Extensions Won’t Really Help Security](https://www.eff.org/ko/deeplinks/2019/07/googles-plans-chrome-extensions-wont-really-help-security)
 - 2019/07/23 [**Building a Chrome Extension from Scratch**](https://blog.thousandeyes.com/building-chrome-extension-from-scratch/)
