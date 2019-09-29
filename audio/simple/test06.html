@@ -7,11 +7,14 @@ html, body {
 div {
     margin: 1rem;
 }
+video {
+    width: 50%;
+}
 </style>
 </head>
 
 <body>
-<h2>05: Audio Source from Video Stream</h2>
+<h2>06: Audio Source from Video Stream</h2>
 <div>
 <video id="video"></video>
 </div>
@@ -22,7 +25,8 @@ div {
 
 <script>
 var mediaStm;
-var audioCtx, aSource;
+var mediaType = "camera";
+var audioCtx, audioSrc;
 var gainNode, filterNode;
 
 var video = document.getElementById('video');
@@ -30,45 +34,64 @@ var playBtn = document.getElementById('play');
 var muteBtn = document.getElementById('mute');
 
 window.onload = () => {
+    console.log("Event:", 'load');
     playBtn.disabled = true;
     muteBtn.disabled = true;
 
-    mediaStm = GetVideoStream(video);
-    //var mediaStm = GetCameraStream(video);
+    if (mediaType == "camera") {
+        mediaStm = GetCameraStream(video);
+    } else {
+        mediaStm = GetVideoStream(video);
+    }
+    // PrintStreamTracks(mediaStm);
 }
 
 playBtn.addEventListener('click', function() {
-    console.log('click');
-    ControlPlay();
+    console.log("Event:", 'click');
+    ControlPlay('toggle');
 }, false);
 
 video.addEventListener('canplay', function() {
-    console.log('canplay');
+    console.log("Event:", 'canplay');
     playBtn.disabled = false;
 }, false);
 
-video.addEventListener('play', function() {
-    console.log('play');
-    PlayStream(video);
+video.addEventListener('play', HandleVideoEvent);
+
+video.addEventListener('playing', function() {
+    console.log("Event:", 'playing');
+    PlayStream(mediaStm);
     muteBtn.disabled = false;
 }, false);
 
 video.addEventListener('ended', function() {
-    console.log('onended')
+    console.log("Event:", 'onended')
     audioCtx.close().then(function() {
         playBtn.disabled = false;
+        muteBtn.disabled = true;
+        ControlPlay('reset');
         ControlVolume('reset');
     });
 }, false);
 
 muteBtn.addEventListener('click', () => {
+    console.log("Event:", 'click')
     ControlVolume('toggle');
 }, false);
 
-
 //---------------------------------------------------------------------------------------
-async function PlayStream(video) {
-    console.log("PlayStream:")
+function HandleVideoEvent(event) {
+    switch (event.type) {
+        case 'canplay':
+        case 'playing':
+            break;
+        default:
+            console.log("HandleVideoEvent:", event.type);
+    }
+}
+
+function PlayStream(stream) {
+    console.log("PlayStream:", stream)
     audioCtx = new AudioContext();
     audioSrc = audioCtx.createMediaStreamSource(mediaStm);
     
@@ -86,28 +109,36 @@ async function PlayStream(video) {
     gainNode.connect(audioCtx.destination);
 }
 
-function ControlPlay() {
-    if (playBtn.innerHTML == "Play") {
-        video.play();
-        playBtn.innerHTML = "Pause";
-    } else {
-        video.pause();
+function ControlPlay(command) {
+    console.log("ControlPlay:", command);
+    switch (command) {
+    case 'toggle':
+        if (playBtn.innerHTML == "Play") {
+            video.play();
+            playBtn.innerHTML = "Pause";
+        } else {
+            video.pause();
+            playBtn.innerHTML = "Play";
+        }
+        break;
+    case 'reset':
         playBtn.innerHTML = "Play";
+        break;
     }
 }
 
 function ControlVolume(command) {
     console.log("ControlVolume:", command);
-    audioCtx.resume();
+    // audioCtx.resume();
     switch (command) {
     case 'toggle':
         if(muteBtn.innerHTML == "Mute") {
-            // gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-            gainNode.gain.value = 0;
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            // gainNode.gain.value = 0;
             muteBtn.innerHTML = "Unmute";
         } else {
-            // gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
-            gainNode.gain.value = 1;
+            gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+            // gainNode.gain.value = 1;
             muteBtn.innerHTML = "Mute";
         }
         break;
@@ -118,8 +149,9 @@ function ControlVolume(command) {
     }
 }
 
-function PrintStreamTracks(stream) {
-    stream.getTracks().forEach(track => {
+function PrintStfreamTracks(stream) {
+    console.log("PrintStreamTracks:", stream)
+    stream.getTracks().forEach(function(track) {
         console.log(track);       
     });
 }
@@ -137,12 +169,10 @@ function GetVideoStream(video) {
 async function GetCameraStream(video) {
     let gumConstraint = {video: true, audio: true};
     stream = await navigator.mediaDevices.getUserMedia(gumConstraint).then(function(stream) {
-        //video.src = window.URL.createObjectURL(stream);
         video.srcObject = stream;
-        video.play();
+        video.load();
         return stream;
     });
-    // console.log(stream);
     return stream
 }
 
