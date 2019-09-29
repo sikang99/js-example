@@ -7,9 +7,9 @@ html, body {
 div {
     margin: 1rem;
 }
-video {
-    width: 400px;
-    height: 300px;
+video, canvas {
+    width: 40%;
+    height: 40%;
 }
 button {
   border-radius: 20px;
@@ -26,9 +26,9 @@ select {
 </head>
 
 <body>
-<h2>08: Audio Source from Video Stream</h2>
+<h2>08: Audio Source from Video/Camera Stream</h2>
 <div id='display'>
-<video id='video' display:none></video>
+<video id='video'></video>
 <canvas id='canvas'></canvas>
 </div>
 <div id='control'>
@@ -47,6 +47,8 @@ var audioCtx, audioSrc;
 var gainNode, filterNode;
 
 var video = document.getElementById('video');
+var canvas = document.getElementById('canvas');
+
 var mediaSel = document.getElementById('type')
 var playBtn = document.getElementById('play');
 var muteBtn = document.getElementById('mute');
@@ -176,7 +178,7 @@ function GetVideoStream(video) {
 function GetCameraStream(video) {
     let gumConstraint = {video: true, audio: true};
     navigator.mediaDevices.getUserMedia(gumConstraint).then(function(stream) {
-        // video.srcObject = stream;
+        video.srcObject = stream;
         mediaStm = stream;
     });
 }
