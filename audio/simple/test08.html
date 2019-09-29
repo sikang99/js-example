@@ -102,7 +102,7 @@ function HandleVideoEvent(event) {
             muteBtn.disabled = false;
             if (typeof mediaStm != MediaStream) {
                 setTimeout(PlayVideoStream(mediaStm), 100);
-                console.log("unready")
+                console.log("not ready")
             } else {
                 PlayVideoStream(mediaStm);
                 console.log("ready")
@@ -186,6 +186,15 @@ function GetCameraStream(video) {
 function PlayVideoStream(stream) {
     // console.log("PlayVideoStream:", stream)
     PrintStreamTracks(stream);
+
+    // for testing to make a new duplicate MediaStream
+    var newStream = stream.clone();
+    console.log("newStream:", newStream);
+
+    if (stream.getAudioTracks().length < 1) {
+        console.log("No audio tracks in the stream");
+        return;
+    }
 
     audioCtx = new AudioContext();
     audioSrc = audioCtx.createMediaStreamSource(mediaStm);
