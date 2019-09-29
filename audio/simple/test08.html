@@ -8,8 +8,8 @@ div {
     margin: 1rem;
 }
 video {
-    width: 300px;
-    height: 200px;
+    width: 400px;
+    height: 300px;
 }
 button {
   border-radius: 20px;
@@ -26,9 +26,10 @@ select {
 </head>
 
 <body>
-<h2>07: Audio Source from Video Stream</h2>
+<h2>08: Audio Source from Video Stream</h2>
 <div id='display'>
-<video id="video"></video>
+<video id='video' display:none></video>
+<canvas id='canvas'></canvas>
 </div>
 <div id='control'>
 <select id='type'>
@@ -53,7 +54,7 @@ var muteBtn = document.getElementById('mute');
 window.onload = () => {
     // console.log("Event:", 'load');
     playBtn.disabled = false;
-    muteBtn.disabled =false;
+    muteBtn.disabled = true;
     mediaType = mediaSel.options[mediaSel.selectedIndex].value;
 }
 
@@ -65,16 +66,6 @@ mediaSel.onchange = () => {
 playBtn.addEventListener('click', HandleButtonEvent);
 muteBtn.addEventListener('click', HandleButtonEvent);
 
-// playBtn.addEventListener('click', () => {
-//     console.log("Event:", 'click');
-//     ControlPlay('toggle');
-// }, false);
-
-// muteBtn.addEventListener('click', () => {
-//     console.log("Event:", 'click')
-//     ControlVolume('toggle');
-// }, false);
-
 video.addEventListener('canplay', HandleVideoEvent);
 video.addEventListener('play', HandleVideoEvent);
 video.addEventListener('playing', HandleVideoEvent);
@@ -84,14 +75,13 @@ video.addEventListener('ended', HandleVideoEvent);
 function HandleButtonEvent(event) {
     console.log("HandleButtonEvent:", event.target)
     if (event.target == playBtn) {
-        console.log('play');
+        // console.log('play');
         ControlPlay('toggle');
     } else {
-        console.log('mute');
+        // console.log('mute');
         ControlVolume('toggle');
     }
 }
-
 
 function HandleVideoEvent(event) {
     console.log("HandleVideoEvent:", event.type);
@@ -102,7 +92,7 @@ function HandleVideoEvent(event) {
         case 'play':
             if (mediaType == "camera") {
                 GetCameraStream(video);
-    }        else {
+            } else {
                 GetVideoStream(video);
             }
             break;
