@@ -1,0 +1,232 @@
+<html>
+<head>
+<style>
+html, body {
+    text-align: center;
+}
+div {
+    margin: 1rem;
+}
+video, canvas {
+    width: 40%;
+    height: 40%;
+}
+button {
+  border-radius: 20px;
+  background-color: lightblue;
+  height: 25px;
+  width: 100px;
+}
+select {
+  background-color: lightpink;
+  height: 25px;
+  width: 100px;
+}
+</style>
+</head>
+
+<body>
+<h2>08: Audio Source from Video/Camera Stream</h2>
+<div id='display'>
+<video id='video'></video>
+<canvas id='canvas'></canvas>
+</div>
+<div id='control'>
+<select id='type'>
+    <option selected value="video">Video</option>
+    <option value="camera">Camera</option>
+    <option value="desktop">Desktop</option>
+</select>
+<button id='play'>Play</button>
+<button id='mute'>Mute</button>
+</div>
+
+<script>
+var mediaStm;
+var mediaType;
+var audioCtx, audioSrc;
+var gainNode, filterNode;
+
+var video = document.getElementById('video');
+var canvas = document.getElementById('canvas');
+
+var mediaSel = document.getElementById('type')
+var playBtn = document.getElementById('play');
+var muteBtn = document.getElementById('mute');
+
+window.onload = () => {
+    // console.log("Event:", 'load');
+    playBtn.disabled = false;
+    muteBtn.disabled = true;
+    mediaType = mediaSel.options[mediaSel.selectedIndex].value;
+}
+
+mediaSel.onchange = () => {
+  mediaType = mediaSel.options[mediaSel.selectedIndex].value;
+  console.log(mediaType)
+}
+
+playBtn.addEventListener('click', HandleButtonEvent);
+muteBtn.addEventListener('click', HandleButtonEvent);
+
+video.addEventListener('canplay', HandleVideoEvent);
+video.addEventListener('play', HandleVideoEvent);
+video.addEventListener('playing', HandleVideoEvent);
+video.addEventListener('ended', HandleVideoEvent);
+
+//---------------------------------------------------------------------------------------
+function HandleButtonEvent(event) {
+    console.log("HandleButtonEvent:", event.target)
+    if (event.target == playBtn) {
+        // console.log('play');
+        ControlPlay('toggle');
+    } else {
+        // console.log('mute');
+        ControlVolume('toggle');
+    }
+}
+
+function HandleVideoEvent(event) {
+    console.log("HandleVideoEvent:", event.type);
+    switch (event.type) {
+        case 'canplay':
+            playBtn.disabled = false;
+            break;
+        case 'play':
+            if (mediaType == "video") {
+                GetVideoStream(video);
+            } else if (mediaType == "camera") {
+                GetCameraStream(video);
+            } else if (mediaType == "desktop") {
+                GetDesktopStream(video);
+            } else {
+                console.log("Not supported stream type");
+            }
+            break;
+        case 'playing':
+            muteBtn.disabled = false;
+            if (typeof mediaStm != MediaStream) {
+                setTimeout(PlayVideoStream(mediaStm), 100);
+                console.log("not ready")
+            } else {
+                PlayVideoStream(mediaStm);
+                console.log("ready")
+            }
+            break;
+        case 'ended':
+            audioCtx.close().then(function() {
+                playBtn.disabled = false;
+                muteBtn.disabled = true;
+                ControlPlay('reset');
+                ControlVolume('reset');
+            });
+            break;
+    }
+}
+
+function ControlPlay(command) {
+    console.log("ControlPlay:", command);
+    switch (command) {
+    case 'toggle':
+        if (playBtn.innerHTML == "Play") {
+            video.play();
+            playBtn.innerHTML = "Pause";
+        } else {
+            video.pause();
+            playBtn.innerHTML = "Play";
+        }
+        break;
+    case 'reset':
+        playBtn.innerHTML = "Play";
+        break;
+    }
+}
+
+function ControlVolume(command) {
+    console.log("ControlVolume:", command);
+    // audioCtx.resume();
+    switch (command) {
+    case 'toggle':
+        if(muteBtn.innerHTML == "Mute") {
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            // gainNode.gain.value = 0;
+            muteBtn.innerHTML = "Unmute";
+        } else {
+            gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+            // gainNode.gain.value = 1;
+            muteBtn.innerHTML = "Mute";
+        }
+        break;
+    case 'reset':
+        gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        muteBtn.innerHTML = "Mute";
+        break;
+    }
+}
+
+function PrintStreamTracks(stream) {
+    console.log("PrintStreamTracks:", stream)
+    stream.getTracks().forEach(function(track) {
+        console.log(track);       
+    });
+}
+
+function GetVideoStream(video) {
+    console.log("GetVideoStream:")
+    video.src = "chrome.webm";
+    video.controls = true;
+    video.muted = true;
+    video.play();
+    mediaStm = video.captureStream();
+}
+
+function GetCameraStream(video) {
+    let gumConstraint = {video: true, audio: true};
+    navigator.mediaDevices.getUserMedia(gumConstraint).then(function(stream) {
+        video.srcObject = stream;
+        mediaStm = stream;
+    });
+}
+
+function GetDesktopStream() {
+    let gdmConstraint = {video: true, audio: false};
+    navigator.mediaDevices.getDisplayMedia(gdmConstraint).then(function(stream) {
+        video.srcObject = stream;
+        mediaStm = stream;
+    });
+}
+
+function PlayVideoStream(stream) {
+    // console.log("PlayVideoStream:", stream)
+    PrintStreamTracks(stream);
+
+    // for testing to make a new duplicate MediaStream
+    var newStream = stream.clone();
+    console.log("newStream:", newStream);
+
+    if (stream.getAudioTracks().length < 1) {
+        console.log("No audio tracks in the stream");
+        return;
+    }
+
+    audioCtx = new AudioContext();
+    audioSrc = audioCtx.createMediaStreamSource(mediaStm);
+    
+    filterNode = audioCtx.createBiquadFilter();
+    filterNode.type = "lowshelf";
+    filterNode.frequency.value = 3000;
+    filterNode.gain.value = 2;
+
+    gainNode = audioCtx.createGain();
+    gainNode.value = 1;
+
+    // make an audio processing graph
+    audioSrc.connect(gainNode);
+    // filterNode.connect(gainNode);
+    // gainNode.connect(audioCtx.destination);
+}
+</script>
+
+</body>
+</html>
+
