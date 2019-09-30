@@ -42,20 +42,27 @@ select {
     <option value="camera">Camera</option>
     <option value="desktop">Desktop</option>
 </select>
+<select id='filter'>
+    <option value="analyser" selected>Analyser</option>
+    <option value="biquad">Biquad</option>
+    <option value="IIR">IIR</option>
+</select>
 <button id='play'>Play</button>
 <button id='mute'>Mute</button>
+
 </div>
 
 <script>
 var mediaStm, media, mediaType;
 var audioCtx, audioSrc;
-var gainNode, filterNode;
+var gainNode, filterNode, filterType;
 var readyEvent;
 
 var display = document.getElementById('display');
 var control = document.getElementById('control');
 
 var mediaSel = document.getElementById('type')
+var filterSel = document.getElementById('filter')
 var playBtn = document.getElementById('play');
 var muteBtn = document.getElementById('mute');
 
@@ -64,9 +71,11 @@ window.onload = () => {
     playBtn.disabled = false;
     muteBtn.disabled = true;
     mediaType = mediaSel.options[mediaSel.selectedIndex].value;
+    filterType = filterSel.options[filterSel.selectedIndex].value;
 }
 
-mediaSel.addEventListener('change', HandleSelectEvent, false);
+mediaSel.addEventListener('change', HandleMediaSelectEvent, false);
+filterSel.addEventListener('change', HandleFilterSelectEvent, false);
 playBtn.addEventListener('click', HandleButtonEvent, false);
 muteBtn.addEventListener('click', HandleButtonEvent, false);
 
@@ -94,9 +103,14 @@ function SetEventHandlers(media) {
     media.addEventListener('stream-ready', HandleMediaEvent, false);    
 }
 
-function HandleSelectEvent(event) {
+function HandleMediaSelectEvent(event) {
     mediaType = mediaSel.options[mediaSel.selectedIndex].value;
     console.log("Select:", mediaType)
+}
+
+function HandleFilterSelectEvent(event) {
+    filterType = filterSel.options[filterSel.selectedIndex].value;
+    console.log("Select:", filterType)
 }
 
 function HandleButtonEvent(event) {
@@ -114,29 +128,29 @@ function HandleButtonEvent(event) {
 function HandleMediaEvent(event) {
     console.log("HandleMediaEvent:", event.type);
     switch (event.type) {
-        case 'playing':
-            media.dispatchEvent(readyEvent);
-            break;
-        case 'play':
-            GetMediaStreamByType(mediaType);
-            break;
-        case 'ended':
-            // audioCtx.close().then(function() {
-            //     playBtn.disabled = false;
-            //     muteBtn.disabled = true;
-            //     ControlPlay('reset');
-            //     ControlVolume('reset');
-            // });
-            audioCtx = null;
-            mediaStm = null;
-            display.removeChild(media);
-            ControlPlay('reset');
-            ControlVolume('reset');
-            break;
-        case 'stream-ready':
-            muteBtn.disabled = false;
-            PlayMediaStream(mediaStm);
-            break;
+    case 'playing':
+        media.dispatchEvent(readyEvent);
+        break;
+    case 'play':
+        GetMediaStreamByType(mediaType);
+        break;
+    case 'ended':
+        // audioCtx.close().then(function() {
+        //     playBtn.disabled = false;
+        //     muteBtn.disabled = true;
+        //     ControlPlay('reset');
+        //     ControlVolume('reset');
+        // });
+        audioCtx = null;
+        mediaStm = null;
+        display.removeChild(media);
+        ControlPlay('reset');
+        ControlVolume('reset');
+        break;
+    case 'stream-ready':
+        muteBtn.disabled = false;
+        PlayMediaStream(mediaStm);
+        break;
     }
 }
 
@@ -269,17 +283,32 @@ function PlayMediaStream(stream) {
     audioCtx = new AudioContext();
     audioSrc = audioCtx.createMediaStreamSource(mediaStm);
     
-    filterNode = audioCtx.createBiquadFilter();
-    filterNode.type = "lowshelf";
-    filterNode.frequency.value = 3000;
-    filterNode.gain.value = 2;
+    switch (filterType) {
+    case 'biquad':
+        filterNode = audioCtx.createBiquadFilter();
+        filterNode.type = "lowshelf";
+        filterNode.frequency.value = 5000;
+        filterNode.gain.value = 1;
+        break;
+    case 'IIR':
+        let feedForward = [0.00020298, 0.0004059599, 0.00020298];
+        let feedBackward = [1.0126964558, -1.9991880801, 0.9873035442];
+        filterNode = audioCtx.createIIRFilter(feedForward, feedBackward);
+        break;
+    case 'analyser':
+        filterNode = audioCtx.createAnalyser();
+        filterNode.minDecibels = -150;
+        break;
+    default:
+        console.log("Not supported filter")
+    }
 
     gainNode = audioCtx.createGain();
     gainNode.value = 1;
 
-    // make an audio processing graph
-    audioSrc.connect(gainNode);
-    // filterNode.connect(gainNode);
+    // make a audio processing graph
+    audioSrc.connect(filterNode);
+    filterNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 }
 </script>

@@ -22,7 +22,7 @@ console.log(elem.classList);
 // Run function on `madeBlue` event
 elem.addEventListener('madeBlue', function (elem) {
     console.log("madeBlue Event");
-    this.classList.add('color-changed');
+    this.classList.add('color-changed'); // elem.classList.add() error!
 }, false);
 
 makeBlue(elem);
