@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+
+<body>
+<div class='not-blue'></div>
+</body>
+
+<script>
+window.onload = () => {
+
+var makeBlue = function (elem, callback) {
+    elem.classList.add('blue');
+    if (callback && typeof callback === 'function') {
+        callback(elem);
+    }
+};
+
+// example
+var elem = document.querySelector('.not-blue');
+console.log(elem.classList);
+makeBlue(elem, function (elem) {
+    elem.classList.add('color-changed');
+});
+console.log(elem.classList);
+
+}
+</script>
+
+</html>

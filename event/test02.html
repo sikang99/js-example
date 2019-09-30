@@ -1,0 +1,31 @@
+
+<body>
+<div class='not-blue'></div> 
+</body>
+
+<script>
+// window.onload = () => {
+//     makeBlue(elem);
+// }
+
+var makeBlue = function (elem) {
+    elem.classList.add('blue');
+    // Create a new event
+    var event = new CustomEvent('madeBlue');
+    // Dispatch the event
+    elem.dispatchEvent(event);
+};
+
+var elem = document.querySelector('.not-blue');
+console.log(elem.classList);
+
+// Run function on `madeBlue` event
+elem.addEventListener('madeBlue', function (elem) {
+    console.log("madeBlue Event");
+    this.classList.add('color-changed');
+}, false);
+
+makeBlue(elem);
+console.log(elem.classList);
+
+</script>
