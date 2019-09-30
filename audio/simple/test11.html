@@ -141,11 +141,11 @@ function HandleMediaEvent(event) {
         //     ControlPlay('reset');
         //     ControlVolume('reset');
         // });
-        audioCtx = null;
-        mediaStm = null;
-        display.removeChild(media);
         ControlPlay('reset');
         ControlVolume('reset');
+        display.removeChild(media);
+        audioCtx = null;
+        mediaStm = null;
         break;
     case 'stream-ready':
         muteBtn.disabled = false;
@@ -174,7 +174,7 @@ function ControlPlay(command) {
 
 function ControlVolume(command) {
     console.log("ControlVolume:", command);
-    // audioCtx.resume();
+    if (mediaStm == null) return;
     switch (command) {
     case 'toggle':
         if(muteBtn.innerHTML == "Mute") {
@@ -242,10 +242,30 @@ function GetVideoStream() {
     mediaStm = media.captureStream();
 }
 
+var baseConstraints = {
+    video: true, audio: true
+}
+
+var noiseConstraints = {
+    video: true,
+    audio: {
+        optional: [
+            {echoCancellation: true},
+            {mozAutoGainControl: true},
+            {mozNoiseSuppression: true},
+            {googEchoCancellation: true},
+            {googAutoGainControl: true},
+            {googNoiseSuppression: true},
+            {googHighpassFilter: true}
+        ],
+    optional: []
+    }
+};
+
 function GetCameraStream(media) {
     console.log("GetCameraStream:")
-    let gumConstraint = {video: true, audio: true};
-    navigator.mediaDevices.getUserMedia(gumConstraint).then(function(stream) {
+    let gumConstraints = {video: true, audio: true};
+    navigator.mediaDevices.getUserMedia(noiseConstraints).then(function(stream) {
         media.srcObject = stream;
         mediaStm = stream;
     });
@@ -253,8 +273,8 @@ function GetCameraStream(media) {
 
 function GetDesktopStream(media) {
     console.log("GetDesktopStream:")
-    let gdmConstraint = {video: true, audio: true};
-    navigator.mediaDevices.getDisplayMedia(gdmConstraint).then(function(stream) {
+    let gdmConstraints = {video: true, audio: true};
+    navigator.mediaDevices.getDisplayMedia(gdmConstraints).then(function(stream) {
         media.srcObject = stream;
         mediaStm = stream;
     });

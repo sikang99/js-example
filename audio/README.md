@@ -13,10 +13,11 @@ Web Audio, Audio Worklet
 - 2019/02/07 [Making Reverb with the Web Audio API](http://blog.gskinner.com/archives/2019/02/reverb-web-audio-api.html)
 - 2019/00/00
 - 2018/12/27 [Implementing AudioWorklets with React](https://hackernoon.com/implementing-audioworklets-with-react-8a80a470474)
-- 2018/06/12 [Algorithmic Reverb and Web Audio API](https://itnext.io/algorithmic-reverb-and-web-audio-api-e1ccec94621a)
+- 2018/07/12 [Algorithmic Reverb and Web Audio API](https://itnext.io/algorithmic-reverb-and-web-audio-api-e1ccec94621a)
     - [Convolution Reverb and Web Audio API](https://itnext.io/convolution-reverb-and-web-audio-api-8ee65108f4ae)
 - 2018/06/01 [Audio Worklet Design Pattern](https://developers.google.com/web/updates/2018/06/audio-worklet-design-pattern)
 - 2017/12/01 [Enter Audio Worklet](https://developers.google.com/web/updates/2017/12/audio-worklet) - M64, M66(default)
+- 2017/03/16 [How to create a Volume Meter (measure the sound level) in the Browser with JavaScript](https://ourcodeworld.com/articles/read/413/how-to-create-a-volume-meter-measure-the-sound-level-in-the-browser-with-javascript)
 - 2016/01/01 [Record Audio and Video with MediaRecorder](https://developers.google.com/web/updates/2016/01/mediarecorder)
 
 
@@ -33,6 +34,7 @@ Web Audio, Audio Worklet
 - [Audio DSP Playground](https://arthurcarabott.com/audio-dsp-playground/)
 - [wavesurfer.js](https://wavesurfer-js.org/) - Web Audio + Canvas
 - [Creating the WebAssembly version of Superpowered Audio](https://superpowered.com/web-assembly-audio-javascript-web-audio)
+- [How to constrain the audio sources in Google Chrome?](https://support.twilio.com/hc/en-us/articles/223180868-How-to-constrain-the-audio-sources-in-Google-Chrome-)
 
 
 ### Papers
