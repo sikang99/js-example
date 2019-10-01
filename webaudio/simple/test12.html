@@ -345,7 +345,7 @@ function PlayMediaStream(stream) {
 const GetBiquadFilter = (audioContext, type, from, to) => {
     console.log("GetBiquadFilter:", type, from, to);
     const filter = audioContext.createBiquadFilter()
-    filter.gain.value = 1;
+
     // type: lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass, etc)
     filter.type = type;
     switch (filter.type) {
@@ -353,6 +353,7 @@ const GetBiquadFilter = (audioContext, type, from, to) => {
             var geometricMean = Math.sqrt(from * to);
             filter.frequency.value = geometricMean;
             filter.Q.value = geometricMean / (to - from);
+            filter.gain.value = (to - from);
             break;
         case 'highpass':
             filter.frequency.value = from;
