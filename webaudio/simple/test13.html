@@ -59,6 +59,7 @@ button {
 
 </div>
 
+
 <script>
 var mediaStm, media, mediaType;
 var audioCtx, audioSrc;
@@ -259,12 +260,14 @@ var noiseConstraints = {
     audio: {
         optional: [
             {echoCancellation: true},
-            {mozAutoGainControl: true},
-            {mozNoiseSuppression: true},
-            {googEchoCancellation: true},
-            {googAutoGainControl: true},
-            {googNoiseSuppression: true},
-            {googHighpassFilter: true}
+            {NoiseSuppression: true},
+            {AutoGainControl: true},
+            // {mozAutoGainControl: false},
+            // {mozNoiseSuppression: false},
+            // {googEchoCancellation: false},
+            // {googAutoGainControl: false},
+            // {googNoiseSuppression: false},
+            // {googHighpassFilter: false}
         ],
     optional: []
     }

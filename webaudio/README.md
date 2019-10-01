@@ -19,6 +19,7 @@ Web Audio, Audio Worklet
 - 2018/05/17 [When "Yanny vs Laurel" Meets Web Audio API](https://blog.haochuan.io/when-yanny-vs-laurel-meets-web-audio-api/)
 - 2017/12/01 [Enter Audio Worklet](https://developers.google.com/web/updates/2017/12/audio-worklet) - M64, M66(default)
 - 2017/03/16 [How to create a Volume Meter (measure the sound level) in the Browser with JavaScript](https://ourcodeworld.com/articles/read/413/how-to-create-a-volume-meter-measure-the-sound-level-in-the-browser-with-javascript)
+- 2017/11/08 [**Supported Audio Constraints in getUserMedia()**](https://blog.addpipe.com/audio-constraints-getusermedia/)
 - 2016/01/01 [Record Audio and Video with MediaRecorder](https://developers.google.com/web/updates/2016/01/mediarecorder)
 
 
