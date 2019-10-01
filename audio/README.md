@@ -36,6 +36,7 @@ Web Audio, Audio Worklet
 - [Creating the WebAssembly version of Superpowered Audio](https://superpowered.com/web-assembly-audio-javascript-web-audio)
 - [How to constrain the audio sources in Google Chrome?](https://support.twilio.com/hc/en-us/articles/223180868-How-to-constrain-the-audio-sources-in-Google-Chrome-)
 - [**Custom Audio Effects in JavaScript with the Web Audio API**](https://noisehack.com/custom-audio-effects-javascript-web-audio-api/)
+- [**Web audio: Filter Playground**](http://www.smartjava.org/examples/webaudio-filters/#)
 
 
 ### Papers

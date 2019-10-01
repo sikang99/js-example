@@ -21,30 +21,37 @@ button {
   border-radius: 20px;
   background-color: lightblue;
   height: 25px;
-  width: 100px;
+  width: 80px;
 }
-select {
+#type {
   background-color: lightpink;
   height: 25px;
-  width: 100px;
+  width: 80px;
+}
+#filter {
+  background-color: lightpink;
+  height: 25px;
+  width: 130px;
 }
 </style>
 </head>
 
 <body>
-<h2>11: Audio Processing for Various Source Streams</h2>
+<h2>12: Audio Processing for Various Source Streams</h2>
 <div id='display'>
 </div>
 <div id='control'>
 <select id='type'>
-    <option selected value="audio">Audio</option>
+    <option value="audio" selected>Audio</option>
     <option value="video">Video</option>
     <option value="camera">Camera</option>
     <option value="desktop">Desktop</option>
 </select>
 <select id='filter'>
-    <option value="analyser" selected>Analyser</option>
-    <option value="biquad">Biquad</option>
+    <option value="analyser">Analyser</option>
+    <option value="bandpass" selected>Biquad(bandpass)</option>
+    <option value="highpass">Biquad(highpass)</option>
+    <option value="lowpass">Biquad(lowpass)</option>
     <option value="IIR">IIR</option>
 </select>
 <button id='play'>Play</button>
@@ -305,11 +312,14 @@ function PlayMediaStream(stream) {
     audioSrc = audioCtx.createMediaStreamSource(mediaStm);
     
     switch (filterType) {
-    case 'biquad':
-        filterNode = audioCtx.createBiquadFilter();
-        filterNode.type = "lowshelf";
-        filterNode.frequency.value = 5000;
-        filterNode.gain.value = 1;
+    case 'highpass':
+        filterNode = GetBiquadFilter(audioCtx, 'highpass', 300, 8000); // voice: 50-4000Hz
+        break;
+    case 'lowpass':
+        filterNode = GetBiquadFilter(audioCtx, 'lowpass', 0, 3400); // telephone: 300~3400Hz
+        break;
+    case 'bandpass':
+        filterNode = GetBiquadFilter(audioCtx, 'bandpass', 300, 3400);
         break;
     case 'IIR':
         let feedForward = [0.00020298, 0.0004059599, 0.00020298];
@@ -325,26 +335,41 @@ function PlayMediaStream(stream) {
     }
 
     gainNode = audioCtx.createGain();
-    gainNode.value = 1;
+    gainNode.value = 2;
 
     // make a audio processing graph
-    audioSrc.connect(filterNode);
-    filterNode.connect(gainNode);
+    InsertAudioFilter(audioSrc, filterNode, gainNode);
     gainNode.connect(audioCtx.destination);
 }
 
-const getFilter = (audioContext, type, frequency) => {
-    // let's create a filter node
+const GetBiquadFilter = (audioContext, type, from, to) => {
+    console.log("GetBiquadFilter:", type, from, to);
     const filter = audioContext.createBiquadFilter()
-    // then we assign the given type ('lowpass', 'highpass', etc)
-    filter.type = type
-    // let's set the frequency
-    filter.frequency.value = frequency
-    return filter
+    filter.gain.value = 1;
+    // type: lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass, etc)
+    filter.type = type;
+    switch (filter.type) {
+        case 'bandpass':
+            var geometricMean = Math.sqrt(from * to);
+            filter.frequency.value = geometricMean;
+            filter.Q.value = geometricMean / (to - from);
+            break;
+        case 'highpass':
+            filter.frequency.value = from;
+            break;
+        case 'bandpass':
+            filter.frequency.value = to;
+            break;
+        default:
+            console.log(filter.type, "is not known.");
+    }
+    return filter;
 }
 
-
-
+const InsertAudioFilter = (from, filter, to) => {
+    from.connect(filter);
+    filter.connect(to);
+}
 </script>
 
 </body>
