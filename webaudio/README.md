@@ -64,3 +64,7 @@ Web Audio, Audio Worklet
 - [bbc/waveform-data.js/](https://github.com/bbc/waveform-data.js) - Audio Waveform Data Manipulation API – resample, offset and segment waveform data in JavaScript
 
 
+### Chromium
+- [media_stream_audio_processor_options.cc](https://chromium.googlesource.com/chromium/chromium/+/trunk/content/renderer/media/media_stream_audio_processor_options.cc)
+
+
