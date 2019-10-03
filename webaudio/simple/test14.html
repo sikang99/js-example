@@ -32,11 +32,15 @@ button {
   height: 25px;
   width: 130px;
 }
+#results {
+    width: 80%;
+    text-align: left;
+}
 </style>
 </head>
 
 <body>
-<h2>13: Audio Processing for Various Source Streams</h2>
+<h2>14: Audio Processing for Various Source Streams</h2>
 <div id='display'>
 </div>
 <div id='control'>
@@ -51,18 +55,25 @@ button {
     <option value="bandpass" selected>Biquad(bandpass)</option>
     <option value="highpass">Biquad(highpass)</option>
     <option value="lowpass">Biquad(lowpass)</option>
-    <option value="IIR">IIR</option>
+    <option value="allpass">Biquad(allpass)</option>
+    <option value="highshelf">Biquad(highshelf)</option>
+    <option value="lowshelf">Biquad(lowshelf)</option>
+    <option value="notch">Biquad(notch)</option>
+    <option value="peaking">Biquad(peaking)</option>
 </select>
 <button id='play'>Play</button>
-<button id='mute'>Mute</button>
-
+<button id='input'>Mute(In)</button>
+<button id='output'>Mute(Out)</button>
+</div>
+<div id='text'>
+<ul id='results'></ul>
 </div>
 
 
 <script>
 var mediaStm, media, mediaType;
 var audioCtx, audioSrc;
-var gainNode, effectNode, effectType;
+var effectType;
 var readyEvent;
 
 var display = document.getElementById('display');
@@ -71,12 +82,13 @@ var control = document.getElementById('control');
 var mediaSel = document.getElementById('type')
 var effectSel = document.getElementById('effect')
 var playBtn = document.getElementById('play');
-var muteBtn = document.getElementById('mute');
+var inBtn = document.getElementById('input');
+var outBtn = document.getElementById('output');
 
 //---------------------------------------------------------------------------------------
 window.onload = () => {
     playBtn.disabled = false;
-    muteBtn.disabled = true;
+    inBtn.disabled = outBtn.disabled = true;
     mediaType = mediaSel.options[mediaSel.selectedIndex].value;
     effectType = effectSel.options[effectSel.selectedIndex].value;
 }
@@ -84,7 +96,8 @@ window.onload = () => {
 mediaSel.addEventListener('change', HandleMediaSelectEvent, false);
 effectSel.addEventListener('change', HandleEffectSelectEvent, false);
 playBtn.addEventListener('click', HandleButtonEvent, false);
-muteBtn.addEventListener('click', HandleButtonEvent, false);
+inBtn.addEventListener('click', HandleButtonEvent, false);
+outBtn.addEventListener('click', HandleButtonEvent, false);
 
 //---------------------------------------------------------------------------------------
 function PrepareMediaElementByType() {
@@ -145,7 +158,7 @@ function HandleMediaEvent(event) {
     case 'ended':
         audioCtx.close().then(function() {
             playBtn.disabled = false;
-            muteBtn.disabled = true;
+            inBtn.disabled = outBtn.disabled = true;
             ControlPlay('reset');
             ControlVolume('reset');
         });
@@ -154,7 +167,7 @@ function HandleMediaEvent(event) {
         display.removeChild(media);
         break;
     case 'stream-ready':
-        muteBtn.disabled = false;
+        outBtn.disabled = false;
         PlayMediaStream(mediaStm);
         break;
     }
@@ -183,19 +196,19 @@ function ControlVolume(command) {
     if (mediaStm == null) return;
     switch (command) {
     case 'toggle':
-        if(muteBtn.innerHTML == "Mute") {
-            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        if(outBtn.innerHTML == "Mute(Out)") {
+            outputGain.gain.setValueAtTime(0, audioCtx.currentTime);
             // gainNode.gain.value = 0;
-            muteBtn.innerHTML = "Unmute";
+            outBtn.innerHTML = "Unmute(Out)";
         } else {
-            gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+            outputGain.gain.setValueAtTime(1, audioCtx.currentTime);
             // gainNode.gain.value = 1;
-            muteBtn.innerHTML = "Mute";
+            outBtn.innerHTML = "Mute(Out)";
         }
         break;
     case 'reset':
         // gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
-        muteBtn.innerHTML = "Mute";
+        outBtn.innerHTML = "Mute(Out)";
         break;
     }
 }
@@ -307,7 +320,7 @@ function PlayMediaStream(stream) {
     // console.log("newStream:", newStream);
 
     if (stream.getAudioTracks().length < 1) {
-        muteBtn.disabled = true;
+        inBtn.disabled = outBtn.disabled = true;
         console.log("No audio tracks in the stream");
         return;
     }
@@ -316,111 +329,172 @@ function PlayMediaStream(stream) {
 
     // setup a base audio graph with source and destination
     audioSrc = audioCtx.createMediaStreamSource(mediaStm);
-    ConnectNode(audioSrc, audioCtx.destination);
+    // ConnectNode(audioSrc, audioCtx.destination);
 
     // build an audio graph with nodes
-    gainNode = GetGainNode(audioCtx);
-    if (gainNode) InsertAudioNode(audioSrc, gainNode, audioCtx.destination);
-
+    inputGain = GetGainNode(audioCtx, 1);
+    outputGain = GetGainNode(audioCtx, 2);
     effectNode = GetEffectNode(audioCtx, effectType);
-    if (effectNode) InsertAudioNode(audioSrc, effectNode, gainNode);
-
     compNode = GetCompressorNode(audioCtx);
-    if (compNode) InsertAudioNode(audioSrc, compNode, effectNode);
-
     analNode = GetAnalyserNode(audioCtx);
-    if (analNode) InsertAudioNode(effectNode, analNode, gainNode);
+    ConnectAudioNodes(audioSrc, inputGain, compNode, effectNode, analNode, outputGain, audioCtx.destination);
 
-    srcNode = GetSourceNode(audioCtx);
-    if (srcNode) ConnectAudioNodes(srcNode, compNode, gainNode);
+    // srcNode = GetBufferSourceNode(audioCtx);
+    srcNode = GetElementSourceNode(audioCtx, media);
+    panNode = GetPannerNode(audioCtx, -1);
+    delNode = GetDelayNode(audioCtx, 0.01);
+    iirNode = GetIirFilterNode(audioCtx);
+    ConnectAudioNodes(srcNode, panNode, iirNode, delNode, outputGain);
+    InsertAudioNode(srcNode, inputGain, panNode);
 }
 
 //---------------------------------------------------------------------------------------
-const GetGainNode = (audioCtx) => {
-    const gain = audioCtx.createGain();
-    gain.value = 10;    
-    return gain;
+const GetGainNode = (audioCtx, gain) => {
+    const node = audioCtx.createGain();
+    node.gain.setValueAtTime(gain, audioCtx.currentTime); 
+    return node;
 }
 
-const GetEffectNode = (audioCtx, type) => {
-    var effect;
-    switch (type) {
-    case 'highpass':
-        effect = GetBiquadEffect(audioCtx, type, 300, 8000); // voice: 50-4000Hz
-        break;
-    case 'lowpass':
-        effect = GetBiquadEffect(audioCtx, type, 0, 3400); // telephone: 300~3400Hz
-        break;
-    case 'bandpass':
-        effect = GetBiquadEffect(audioCtx, type, 300, 3400);
-        break;
-    case 'notch':
-        effect = GetBiquadEffect(audioCtx, type, 3400);
-        break;
-    case 'IIR':
-        let feedForward = [0.00020298, 0.0004059599, 0.00020298];
-        let feedBackward = [1.0126964558, -1.9991880801, 0.9873035442];
-        effect = audioCtx.createIIReffect(feedForward, feedBackward);
-        break;
-    default:
-        console.log("Not supported effect type", type)
-    }
-    console.log(effect);
-    return effect;
+const GetPannerNode = (audioCtx, pan) => {
+    const node = audioCtx.createStereoPanner();
+    node.pan.setValueAtTime(pan, audioCtx.currentTime); // -1: left, 1: right  
+    return node;
 }
 
-const GetSourceNode = (audioCtx, buffer) => {
-    const source = audioCtx.createBufferSource()
-    source.buffer = buffer;
-    source.looping = true;
-    return source;
+const GetDelayNode = (audioCtx, time) => {
+    const node = audioCtx.createDelay();
+    node.delayTime.setValueAtTime(time, audioCtx.currentTime);  
+    return node;
+}
+
+const GetElementSourceNode = (audioCtx, elem) => {
+    const node = audioCtx.createMediaElementSource(elem)
+    return node;
+}
+
+const GetOcillatorNode = (audioCtx) => {
+    const node = audioCtx.createOscillator()
+    return node;
+}
+
+const GetBufferSourceNode = (audioCtx, buffer) => {
+    const node = audioCtx.createBufferSource()
+    node.buffer = buffer;
+    node.looping = true;
+    return node;
 }
 
 const GetCompressorNode = (audioCtx) => {
-    const comp = audioCtx.createDynamicsCompressor();
-    comp.threshold = -24;
-    comp.attack =  0.003;
-    comp.release = 0.25;
-    comp.ratio = 12;
-    comp.knee = 30;
-    return comp;
+    const node = audioCtx.createDynamicsCompressor();
+    node.threshold = -24;
+    node.attack =  0.003;
+    node.release = 0.25;
+    node.ratio = 12;
+    node.knee = 30;
+    return node;
 }
 
 const GetAnalyserNode = (audioCtx) => {
-    const anal = audioCtx.createAnalyser();
-    anal.fftSize = 2048;
-    anal.maxDecibels = -25;
-    anal.minDecibels = -60;
-    anal.smoothingTimeConstant = 0.5;
-    return anal;
+    const node = audioCtx.createAnalyser();
+    node.fftSize = 2048;
+    node.maxDecibels = -25;
+    node.minDecibels = -60;
+    node.smoothingTimeConstant = 0.5;
+    return node;
+}
+
+const GetIirFilterNode = (audioCtx) => {
+    // let feedForward = [0.00020298, 0.0004059599, 0.00020298];
+    // let feedBackward = [1.0126964558, -1.9991880801, 0.9873035442];
+    // const node = audioCtx.createIIRFilter(feedForward, feedBackward);
+
+    const node = audioCtx.createIIRFilter(
+        [0.1, 0.2, 0.3, 0.4, 0.5],
+        [0.5, 0.4, 0.3, 0.2, 0.1]);
+    const frequencyArray = new Float32Array(5);
+    frequencyArray[0] = 100;
+    frequencyArray[1] = 500;
+    frequencyArray[2] = 1000;
+    frequencyArray[3] = 5000;
+    frequencyArray[4] = 10000;
+    const magnitudeResponseOutput = new Float32Array(5);
+    const phaseResponseOutput = new Float32Array(5);
+    node.getFrequencyResponse(
+        frequencyArray,
+        magnitudeResponseOutput,
+        phaseResponseOutput    
+    )
+    // console.log(magnitudeResponseOutput, phaseResponseOutput);
+    let results = '';
+    for(let i = 0; i < frequencyArray.length; i++) {
+        results += '<li>'
+                + 'Magnitude Response: ' + magnitudeResponseOutput[i] + ', '
+                + 'Phase Response: ' + phaseResponseOutput[i] 
+                + '</li>';
+    }
+    document.querySelector('#results').innerHTML = results;
+    return node;
+}
+
+const GetEffectNode = (audioCtx, type) => {
+    var node;
+    switch (type) {
+    case 'highpass':
+    case 'highshelf':
+        node = GetBiquadEffect(audioCtx, type, 300, 10000); // voice: 50-4000Hz
+        break;
+    case 'lowpass':
+    case 'lowshelf':
+        node = GetBiquadEffect(audioCtx, type, 0, 3400); // telephone: 300~3400Hz
+        break;
+    case 'bandpass':
+        node = GetBiquadEffect(audioCtx, type, 300, 3000);
+        break;
+    case 'allpass':
+    case 'peaking':
+    case 'notch':
+        node = GetBiquadEffect(audioCtx, type, 1000);
+        break;
+    default:
+        console.log("Not supported effect type:", type)
+    }
+    console.log(node);
+    return node;
 }
 
 const GetBiquadEffect = (audioCtx, type, low, high) => {
     console.log("GetBiquadEffect:", type, low, high);
-    const effect = audioCtx.createBiquadFilter()
-
+    const node = audioCtx.createBiquadFilter()
     // type: lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass, etc)
-    effect.type = type;
-    switch (effect.type) {
+    node.type = type;
+    switch (node.type) {
         case 'bandpass':
             var geometricMean = Math.sqrt(low * high);
-            effect.frequency.value = geometricMean;
-            effect.Q.value = geometricMean / (high - low);
-            effect.gain.value = (high - low);
-            effect.detune = 0;
+            node.frequency.value = geometricMean;
+            node.Q.value = geometricMean / (high - low);
+            node.gain.value = (high - low);
+            node.detune = 0;
             break;
         case 'highpass':
-            effect.frequency.value = low;
+        case 'highshelf':
+            node.frequency.value = low;
             break;
-        case 'bandpass':
-            effect.frequency.value = high;
+        case 'lowpass':
+        case 'lowshelf':
+            node.frequency.value = high;
+            break;
+        case 'allpass':
+        case 'peaking':
+        case 'notch':
+            node.frequency.value = low;
             break;
         default:
-            console.log(effect.type, "is not known.");
+            console.log(node.type, "is not known.");
     }
-    return effect;
+    return node;
 }
 
+//---------------------------------------------------------------------------------------
 const ConnectNode = (from, to) => {
     from.connect(to);
     return to;
@@ -432,19 +506,21 @@ const DisconnectNode = (from, to) => {
 }
 
 const InsertAudioNode = (from, mid, to) => {
-    from.disconnect(to);
-    from.connect(mid);
-    mid.connect(to);
+    if (from.connect(mid).connect(to)) {
+        from.disconnect(to);
+    }
     return to;
 }
 
 const ConnectAudioNodes = (...args) => {
     for (var i = 1; i < args.length; i++) {
-        args[i-1].connect(args[i]);
+        if (args[i-1].connect(args[i]) == undefined) {
+            console.log("ConnectAudioNodes: connect error on", args[i]);
+            return;
+        }
     }
     return args[i];
 }
-
 </script>
 
 </body>
