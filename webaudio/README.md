@@ -66,5 +66,6 @@ Web Audio, Audio Worklet
 
 ### Chromium
 - [media_stream_audio_processor_options.cc](https://chromium.googlesource.com/chromium/chromium/+/trunk/content/renderer/media/media_stream_audio_processor_options.cc)
+- [heliosdesign/helios-audio-mixer](https://github.com/heliosdesign/helios-audio-mixer)
 
 

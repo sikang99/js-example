@@ -20,7 +20,7 @@ button {
   border-radius: 20px;
   background-color: lightblue;
   height: 25px;
-  width: 80px;
+  width: 60px;
 }
 #type {
   background-color: lightpink;
@@ -62,8 +62,8 @@ button {
     <option value="peaking">Biquad(peaking)</option>
 </select>
 <button id='play'>Play</button>
-<button id='input'>Mute(In)</button>
-<button id='output'>Mute(Out)</button>
+In: <button id='input'>Off</button>
+Out: <button id='output'>Off</button>
 </div>
 <div id='text'>
 <ul id='results'></ul>
@@ -136,12 +136,15 @@ function HandleEffectSelectEvent(event) {
 function HandleButtonEvent(event) {
     console.log("HandleButtonEvent:", event.target)
     if (event.target == playBtn) {
-        // console.log('play');
         if (mediaStm == null) PrepareMediaElementByType();
         ControlPlay('toggle');
     } else {
-        // console.log('mute');
-        ControlVolume('toggle');
+        if (event.target == inBtn) {
+            ControlVolume('toggle', event.target, inputGain);
+        } else {
+            ControlVolume('toggle', event.target, outputGain);
+        }
+        
     }
 }
 
@@ -160,14 +163,15 @@ function HandleMediaEvent(event) {
             playBtn.disabled = false;
             inBtn.disabled = outBtn.disabled = true;
             ControlPlay('reset');
-            ControlVolume('reset');
+            ControlVolume('reset', inBtn, inputGain);
+            ControlVolume('reset', outBtn, outputGain);
         });
         audioCtx = null;
         mediaStm = null;
         display.removeChild(media);
         break;
     case 'stream-ready':
-        outBtn.disabled = false;
+        inBtn.disabled = outBtn.disabled = false;
         PlayMediaStream(mediaStm);
         break;
     }
@@ -191,24 +195,21 @@ function ControlPlay(command) {
     }
 }
 
-function ControlVolume(command) {
+function ControlVolume(command, btn, node) {
     console.log("ControlVolume:", command);
     if (mediaStm == null) return;
     switch (command) {
     case 'toggle':
-        if(outBtn.innerHTML == "Mute(Out)") {
-            outputGain.gain.setValueAtTime(0, audioCtx.currentTime);
-            // gainNode.gain.value = 0;
-            outBtn.innerHTML = "Unmute(Out)";
+        if(btn.innerHTML == "Off") {
+            node.gain.setValueAtTime(0, audioCtx.currentTime);
+            btn.innerHTML = "On";
         } else {
-            outputGain.gain.setValueAtTime(1, audioCtx.currentTime);
-            // gainNode.gain.value = 1;
-            outBtn.innerHTML = "Mute(Out)";
+            node.gain.setValueAtTime(1, audioCtx.currentTime);
+            btn.innerHTML = "Off";
         }
         break;
     case 'reset':
-        // gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
-        outBtn.innerHTML = "Mute(Out)";
+        btn.innerHTML = "On";
         break;
     }
 }
@@ -333,7 +334,7 @@ function PlayMediaStream(stream) {
 
     // build an audio graph with nodes
     inputGain = GetGainNode(audioCtx, 1);
-    outputGain = GetGainNode(audioCtx, 2);
+    outputGain = GetGainNode(audioCtx, 1);
     effectNode = GetEffectNode(audioCtx, effectType);
     compNode = GetCompressorNode(audioCtx);
     analNode = GetAnalyserNode(audioCtx);
@@ -344,8 +345,25 @@ function PlayMediaStream(stream) {
     panNode = GetPannerNode(audioCtx, -1);
     delNode = GetDelayNode(audioCtx, 0.01);
     iirNode = GetIirFilterNode(audioCtx);
+    oscilNode = GetOcillatorSourceNode(audioCtx, 'sine', 700, 100)
     ConnectAudioNodes(srcNode, panNode, iirNode, delNode, outputGain);
-    InsertAudioNode(srcNode, inputGain, panNode);
+    ConnectNode(oscilNode, outputGain);
+    oscilNode.start();
+
+    FetchPlayConnect(audioCtx, 'techno.wav', outputGain);
+}
+
+//---------------------------------------------------------------------------------------
+const FetchPlayConnect = (audioCtx, fname, to) => {
+    fetch(fname)
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+            audioCtx.decodeAudioData(buffer, decoded => {
+                buffNode = GetBufferSourceNode(audioCtx, decoded);
+                buffNode.start();
+                ConnectNode(buffNode, to);
+            });
+        })
 }
 
 //---------------------------------------------------------------------------------------
@@ -372,15 +390,21 @@ const GetElementSourceNode = (audioCtx, elem) => {
     return node;
 }
 
-const GetOcillatorNode = (audioCtx) => {
-    const node = audioCtx.createOscillator()
+const GetOcillatorSourceNode = (audioCtx, type, freq, detune) => {
+    // sine (plain tone sound), square (more shrill), sawtooth (very buzzy/distorted), triangle (slightly buzzy)
+    const node = audioCtx.createOscillator();
+    node.type = type;
+    node.frequency = freq;
+    node.detune.setValueAtTime(detune, audioCtx.currentTime); // -100 ~ 100
+    // node.start();
     return node;
 }
 
-const GetBufferSourceNode = (audioCtx, buffer) => {
+const GetBufferSourceNode = (audioCtx, buff) => {
     const node = audioCtx.createBufferSource()
-    node.buffer = buffer;
+    node.buffer = buff;
     node.looping = true;
+    // node.start()
     return node;
 }
 
