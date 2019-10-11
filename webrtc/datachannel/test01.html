@@ -1,0 +1,254 @@
+<html>
+<head>
+<meta charset="utf-8">
+</head>    
+
+<style>
+body {
+    margin: 2em;
+}
+button {
+    background-color: lightsalmon;
+    margin: 0 1em 1em 0;
+    width: 90px;
+    height: 25px;
+    border-radius: 10%;
+}
+button:disabled {
+    background-color: rgba(239, 243, 247, 0.945);
+}
+div#buttons {
+    margin: 0 0 1em 0;
+}
+div#send {
+    margin: 0 20px 1em 0;
+}
+div#sendReceive {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    padding: 0 0 10px 0;
+}
+div#sendReceive > div {
+    display: inline-block;
+    width: calc(40% - 20px);
+}
+form {
+    margin: 0 0 1em 0;
+    white-space: nowrap;
+}
+form span {
+    font-weight: 300;
+    margin: 0 1em 0 0;
+    white-space: normal;
+}
+textarea {
+    color: #444;
+    font-size: 0.9em;
+    font-weight: 300;
+    height: 7.0em;
+    padding: 5px;
+    width: calc(100% - 10px);
+}
+</style>
+
+<body>
+<h2>DataChannel Test 01</h2>
+<div id="container">
+    <div id="buttons">
+        <button id="startButton">Start</button>
+        <button id="sendButton" disabled>Send</button>
+        <button id="stopButton" disabled>Stop</button>
+    </div>
+    <div id="sendReceive">
+        <div id="send">
+            <h3>Send</h3>
+            <textarea id="dataChannelSend" disabled
+                placeholder="Press Start, enter some text, then press Send."></textarea>
+        </div>
+        <div id="receive">
+            <h3>Receive</h3>
+            <textarea id="dataChannelReceive" disabled></textarea>
+        </div>
+    </div> 
+</div>   
+</body>
+
+
+<script>
+let localConnection;
+let remoteConnection;
+let sendChannel;
+let receiveChannel;
+const dataChannelSend = document.querySelector('textarea#dataChannelSend');
+const dataChannelReceive = document.querySelector('textarea#dataChannelReceive');
+const startButton = document.querySelector('button#startButton');
+const sendButton = document.querySelector('button#sendButton');
+const stopButton = document.querySelector('button#stopButton');
+
+startButton.onclick = createConnection;
+sendButton.onclick = sendMessage;
+stopButton.onclick = closeDataChannels;
+
+function enableStart() {
+    startButton.disabled = false;
+}
+
+function disableStart() {
+    startButton.disabled = true;
+}
+
+function enableSend() {
+    sendButton.disabled = false;
+    stopButton.disabled = false;
+    dataChannelSend.disabled = false;   
+}
+
+function disableSend() {
+    sendButton.disabled = true;
+    stopButton.disabled = true;
+    dataChannelSend.value = '';
+    dataChannelReceive.value = '';
+    dataChannelSend.disabled = true;
+}
+
+function createConnection() {
+    dataChannelSend.placeholder = '';
+    const servers = null;
+    window.localConnection = localConnection = new RTCPeerConnection(servers);
+    console.log('CreatePeerConnection for local');
+
+    sendChannel = localConnection.createDataChannel('sendDataChannel');
+    console.log('CreatDataChannel: send');
+
+    localConnection.onicecandidate = e => {
+        onIceCandidate(localConnection, e);
+    };
+    sendChannel.onopen = onSendChannelStateChange;
+    sendChannel.onclose = onSendChannelStateChange;
+    // localConnection.ondatachannel = sendChannelCallbacks;    // CAUTION: don't use this
+
+    window.remoteConnection = remoteConnection = new RTCPeerConnection(servers);
+    console.log('CreatePeerConnection for remote');
+
+    remoteConnection.onicecandidate = e => {
+        onIceCandidate(remoteConnection, e);
+    };
+    remoteConnection.ondatachannel = receiveChannelCallbacks;
+
+    localConnection.createOffer().then(
+        gotDescriptionLocal,
+        onCreateSessionDescriptionError
+    );
+    startButton.disabled = true;
+    stopButton.disabled = false;
+}
+
+function onCreateSessionDescriptionError(error) {
+  console.log('CreateSessionDescription error: ' + error.toString());
+}
+
+function sendMessage() {
+    const data = dataChannelSend.value;
+    sendChannel.send(data);
+    console.log('SendMessage: ' + data);
+}
+
+function closeDataChannels() {
+    console.log('CloseDataChannels');
+    sendChannel.close();
+    console.log('CloseDataChannel: ' + sendChannel.label);
+    receiveChannel.close();
+    console.log('CloseDataChannel: ' + receiveChannel.label);
+    localConnection.close();
+    remoteConnection.close();
+    localConnection = null;
+    remoteConnection = null;
+    console.log('ClosePeerConnections');
+    disableSend();
+    enableStart();
+}
+
+function gotDescriptionLocal(desc) {
+    localConnection.setLocalDescription(desc);
+    console.log(`Offer from localConnection\n${desc.sdp}`);
+    remoteConnection.setRemoteDescription(desc);
+    remoteConnection.createAnswer().then(
+        gotDescriptionRemote,
+        onCreateSessionDescriptionError
+    );
+}
+
+function gotDescriptionRemote(desc) {
+    remoteConnection.setLocalDescription(desc);
+    console.log(`Answer from remoteConnection\n${desc.sdp}`);
+    localConnection.setRemoteDescription(desc);
+}
+
+function getOtherPc(pc) {
+    return (pc === localConnection) ? remoteConnection : localConnection;
+}
+
+function getPcName(pc) {
+    return (pc === localConnection) ? 'localPeerConnection' : 'remotePeerConnection';
+}
+
+function onIceCandidate(pc, event) {
+  getOtherPc(pc)
+    .addIceCandidate(event.candidate)
+    .then(
+      () => onAddIceCandidateSuccess(pc),
+      err => onAddIceCandidateError(pc, err)
+    );
+  console.log(`${getPcName(pc)} ICE candidate: ${event.candidate ? event.candidate.candidate : '(null)'}`);
+}
+
+function onAddIceCandidateSuccess() {
+    console.log('AddIceCandidate success.');
+}
+
+function onAddIceCandidateError(error) {
+    console.log(`AddIceCandidate error: ${error.toString()}`);
+}
+
+function sendChannelCallbacks(event) {
+    console.log('SendChannelCallbacks');
+    sendChannel = event.channel;
+    sendChannel.onopen = onSendChannelStateChange;
+    sendChannel.onclose = onSendChannelStateChange;
+}
+
+function receiveChannelCallbacks(event) {
+    console.log('ReceiveChannelCallbacks');
+    receiveChannel = event.channel;
+    receiveChannel.onmessage = onReceiveMessageCallback;
+    receiveChannel.onopen = onReceiveChannelStateChange;
+    receiveChannel.onclose = onReceiveChannelStateChange;
+}
+
+function onReceiveMessageCallback(event) {
+    console.log('ReceiveMessagecallback:', event.data);
+    dataChannelReceive.value = event.data;
+}
+
+function onSendChannelStateChange() {
+    const readyState = sendChannel.readyState;
+    console.log(`SendChannelStateChange: ${readyState}`);
+    if (readyState === 'open') {
+        dataChannelSend.disabled = false;
+        dataChannelSend.focus();
+        sendButton.disabled = false;
+        stopButton.disabled = false;
+    } else {
+        dataChannelSend.disabled = true;
+        sendButton.disabled = true;
+        stopButton.disabled = true;
+    }
+}
+
+function onReceiveChannelStateChange() {
+    const readyState = receiveChannel.readyState;
+    console.log(`ReceiveChannelStateChange: ${readyState}`);
+}
+</script>
+
+</html>
