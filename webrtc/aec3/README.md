@@ -1,5 +1,8 @@
+## webrtc/aec3
+Echo Cancellation, Noise Suppression
 
-
+- AGC (Automatic Gain Control)
+- AEC (Acoustic Echo Cancellation)
 
 
 ### History
@@ -10,13 +13,16 @@
 
 ### Information
 - [chromimum aec3](https://chromium.googlesource.com/external/webrtc/+/3c1e558449309be965815e1bf/webrtc/modules/audio_processing/aec3)
-
-### Stackoverflow
-- [WebRtc Acoustic Echo Cancellation3 (AEC3) giving Flat MicOutPut after Echo Cancellation](https://stackoverflow.com/questions/54717086/webrtc-acoustic-echo-cancellation3-aec3-giving-flat-micoutput-after-echo-cance)
-
+- [MediaTrackSettings.echoCancellation](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSettings/echoCancellation)
 
 ```
 chrome://flags/#force-enable-system-aec
 ```
 
+
+### Stackoverflow
+- [WebRtc Acoustic Echo Cancellation3 (AEC3) giving Flat MicOutPut after Echo Cancellation](https://stackoverflow.com/questions/54717086/webrtc-acoustic-echo-cancellation3-aec3-giving-flat-micoutput-after-echo-cance)
+
+### Open source
+- [jagger2048/WebRtc_noise_suppression](https://github.com/jagger2048/WebRtc_noise_suppression)
 
