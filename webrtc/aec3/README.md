@@ -1,8 +1,9 @@
 ## webrtc/aec3
-Echo Cancellation, Noise Suppression
+Gain Control, Echo Cancellation, Noise Suppression
 
 - AGC (Automatic Gain Control)
 - AEC (Acoustic Echo Cancellation)
+- ANC (Active Noise Control) - noise cancellation, ANR (Active Noise Reduction)
 
 
 ### History
