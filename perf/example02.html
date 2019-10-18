@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head></head>
+<body>
+<img id="image0" src="https://www.w3.org/Icons/w3c_main.png" />
+<script>
+// Know when the entry types we would like to use are not supported.
+function detectSupport(entryTypes) {
+    for (const entryType of entryTypes) {
+        if (!PerformanceObserver.supportedEntryTypes.includes(entryType)) {
+            // Indicate to client-side analytics that |entryType| is not supported.
+        }
+    }
+}
+detectSupport(["resource", "mark", "measure"]);
+const userTimingObserver = new PerformanceObserver(list => {
+    list
+    .getEntries()
+    // Get the values we are interested in
+    .map(({ name, entryType, startTime, duration }) => {
+        const obj = {
+            "Duration": duration,
+            "Entry Type": entryType,
+            "Name": name,
+            "Start Time": startTime,
+        };
+        return JSON.stringify(obj, null, 2);
+    })
+    // Display them to the console.
+    .forEach(console.log);
+    // Disconnect after processing the events.
+    userTimingObserver.disconnect();
+});
+// Subscribe to new events for User-Timing.
+userTimingObserver.observe({entryTypes: ["mark", "measure"]});
+const resourceObserver = new PerformanceObserver(list => {
+    list
+        .getEntries()
+        // Get the values we are interested in
+        .map(({ name, startTime, fetchStart, responseStart, responseEnd }) => {
+            const obj = {
+                "Name": name,
+                "Start Time": startTime,
+                "Fetch Start": fetchStart,
+                "Response Start": responseStart,
+                "Response End": responseEnd,
+            };
+            return JSON.stringify(obj, null, 2);
+        })
+        // Display them to the console.
+        .forEach(console.log);
+    // Disconnect after processing the events.
+    resourceObserver.disconnect();
+});
+// Retrieve buffered events and subscribe to newer events for Resource Timing.
+resourceObserver.observe({type: "resource", buffered: true});
+</script>
+</body>
+</html>
