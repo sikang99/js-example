@@ -15,19 +15,19 @@ function detectSupport(entryTypes) {
 detectSupport(["resource", "mark", "measure"]);
 const userTimingObserver = new PerformanceObserver(list => {
     list
-    .getEntries()
-    // Get the values we are interested in
-    .map(({ name, entryType, startTime, duration }) => {
-        const obj = {
-            "Duration": duration,
-            "Entry Type": entryType,
-            "Name": name,
-            "Start Time": startTime,
-        };
-        return JSON.stringify(obj, null, 2);
-    })
-    // Display them to the console.
-    .forEach(console.log);
+        .getEntries()
+        // Get the values we are interested in
+        .map(({ name, entryType, startTime, duration }) => {
+            const obj = {
+                "Duration": duration,
+                "Entry Type": entryType,
+                "Name": name,
+                "Start Time": startTime,
+            };
+            return JSON.stringify(obj, null, 2);
+        })
+        // Display them to the console.
+        .forEach(console.log);
     // Disconnect after processing the events.
     userTimingObserver.disconnect();
 });
