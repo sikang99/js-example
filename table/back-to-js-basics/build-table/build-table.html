@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Build a table</title>
+</head>
+<body>
+<table>
+    <!-- here goes our data! -->
+</table>
+</body>
+<script src="build-table.js"></script>
+<script>
+let mountains = [
+  { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
+  { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
+  { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
+  { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
+  { name: "Monte Amiata", height: 1738, place: "Siena" }
+];
+
+let table = document.querySelector("table");
+let data = Object.keys(mountains[0]);
+
+generateTableHead(table, data);
+generateTable(table, mountains);
+
+</script>
+</html>
