@@ -19,11 +19,13 @@ fetch('https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demo
             if (ctx) {
                 // transfer the ImageBitmap to it
                 ctx.transferFromImageBitmap(img);
+                console.log("context: bitmaprenderer")
             }
             else {
                 // in case someone supports createImageBitmap only
                 // twice in memory...
                 canvas.getContext('2d').drawImage(img,0,0);
+                console.log("context: 2d")
             }
             // get it back as a Blob
             canvas.toBlob(res);
