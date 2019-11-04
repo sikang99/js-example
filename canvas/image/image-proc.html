@@ -16,11 +16,11 @@ function createCanvas(h, w) {
 
 function imgLoaded(img) {
   return new Promise(
-  function (resolve, reject) {
-    img.addEventListener("load", function () {
-                              resolve(img);
-                        });
-    });
+    function (resolve, reject) {
+      img.addEventListener("load", function () {
+                                resolve(img);
+                          });
+      });
 }
           
 function augmentImageData(o) {
@@ -45,12 +45,13 @@ async function draw() {
   var ctx = document.body.appendChild(
             createCanvas(400, 400)).getContext("2d");
   var img = new Image();
-  var url = new URL("jeep.jpg", "http://server/Filter/");
+  var url="dog.jpg"
   img.src = url;
   await imgLoaded(img);
-  ctx.drawImage(img, 0, 0, 400, 300);
-  var ImDat = ctx.getImageData(0, 0, 400, 300);
+  ctx.drawImage(img, 0, 0, 300, 500);
+  var ImDat = ctx.getImageData(0, 0, 300, 500);
   augmentImageData(ImDat);
+
   for (var x = 0; x < 400; x++) {
     for (var y = 0; y < 300; y++) {
       var c1 = ImDat.getPixel(x, y);

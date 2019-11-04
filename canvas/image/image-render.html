@@ -1,0 +1,34 @@
+<html>
+
+<body>
+PNG: <img id="result">    
+</body>
+
+<script>
+var img = new Image();
+img.crossOrigin = 'anonymous';
+img.src = "https://upload.wikimedia.org/wikipedia/commons/a/a4/Fiore_con_petali_arancioni_SVG.svg";
+img.onload = _ => {
+  createImageBitmap(img)
+    .then(bitmap => {
+      const canvas = Object.assign(document.createElement('canvas'), {
+        width: bitmap.width,
+        height: bitmap.height
+      });
+      const ctx = canvas.getContext('bitmaprenderer');
+      ctx.transferFromImageBitmap(bitmap);
+      return new Promise((res, rej) => {
+        canvas.toBlob(blob => {
+          if (!blob) rej('error');
+          res(blob);
+        });
+      });
+    })
+    .then(blob => {
+      console.log(blob);
+      result.src = URL.createObjectURL(blob);
+    })
+    .catch(e => console.error(e.message));
+};
+</script>
+</html>
