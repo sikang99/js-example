@@ -2,6 +2,7 @@
 
 
 ### History
+- 2019/10/07 [**JavaScript Canvas - Image Processing**](https://www.i-programmer.info/programming/javascript/13149-javascript-canvas-image-processing.html)
 - 2019/08/02 [Real-Time ChromaKey for WebView in UWP](https://daron.blog/real-time-chromakey-for-webview-in-uwp/)
 - 2019/06/19 [Canvas Text-to-Particle Effect](https://developpaper.com/canvas-text-to-particle-effect/)
 - 2019/05/11 [OffscreenCanvas - Render your graphics off the main thread](https://yashints.dev/blog/2019/05/11/offscreen-canvas)
