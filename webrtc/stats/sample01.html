@@ -1,0 +1,57 @@
+<html>
+
+<script>
+pc = new RTCPeerConnection(pc_config, pc_constraints);
+pc.onaddstream = onRemoteStreamAdded;
+
+var onRemoteStreamAdded = function(event) {
+        attachMediaStream(remoteVideo, event.stream);
+        remoteStream = event.stream;
+
+        getStats(pc);
+    };
+
+function getStats(peer) {
+    myGetStats(peer, function (results) {
+        for (var i = 0; i < results.length; ++i) {
+            var res = results[i];
+            console.log(res);
+        }
+
+        setTimeout(function () {
+            getStats(peer);
+        }, 1000);
+    });
+}
+
+function myGetStats(peer, callback) {
+    if (!!navigator.mozGetUserMedia) {
+        peer.getStats(
+            function (res) {
+                var items = [];
+                res.forEach(function (result) {
+                    items.push(result);
+                });
+                callback(items);
+            },
+            callback
+        );
+    } else {
+        peer.getStats(function (res) {
+            var items = [];
+            res.result().forEach(function (result) {
+                var item = {};
+                result.names().forEach(function (name) {
+                    item[name] = result.stat(name);
+                });
+                item.id = result.id;
+                item.type = result.type;
+                item.timestamp = result.timestamp;
+                items.push(item);
+            });
+            callback(items);
+        });
+    }
+};
+</script>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<button>load media</button>
+<br>
+<div id="loading" style="display:none;">loading media...</div>
+
+<script>
+var mediaBlobs = [];
+var mediaTypes = [];
+var mediaLoaded = [];
+var button = document.querySelector("button");
+var loading = document.getElementById("loading");
+var curr = void 0;
+
+var loadMedia = () => {
+    loading.style.display = "block";
+    button.setAttribute("disabled", "disabled");
+    return Promise.all([
+    // `RETURN` by smiling cynic are licensed under a Creative Commons Attribution 3.0 Unported License
+    fetch("https://ia600305.us.archive.org/30/items/return_201605/return.mp3")
+    , fetch("http://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4")
+    ])
+    .then(responses => responses.map(media => ({
+        [media.headers.get("Content-Type").split("/")[0]]: media.blob()
+    })))
+    .then(data => {
+        for (var currentMedia = 0; currentMedia < data.length; currentMedia++) {
+        (function(i) {
+            var type = Object.keys(data[i])[0];
+            mediaTypes.push(type);
+            console.log(data[i]);
+            var mediaElement = document.createElement(type);
+            mediaElement.id = type;
+            var label = document.createElement("label");
+            mediaElement.setAttribute("controls", "controls");
+            mediaElement.oncanplaythrough = () => {
+                mediaLoaded.push(true);
+                if (mediaLoaded.length === data.length 
+                    && mediaLoaded.every(Boolean)) {
+                    loading.style.display = "none";
+                    for (var track = 0; track < mediaTypes.length; track++) {
+                        document.getElementById(mediaTypes[track]).play();
+                        console.log(document.getElementById(mediaTypes[track]));
+                    }
+                }
+            }
+            var seek = (e) => {
+                if (!curr || new Date().getTime() - curr > 20) {
+                    document.getElementById(
+                    mediaTypes.filter(id => id !== e.target.id)[0]
+                    ).currentTime = e.target.currentTime;
+                    curr = new Date().getTime();
+                }
+            }
+            mediaElement.onseeked = seek;
+            mediaElement.onended = () => {
+                for (var track = 0; track < mediaTypes.length; track++) {
+                    document.getElementById(mediaTypes[track]).pause()
+                }
+            }
+            mediaElement.ontimeupdate = (e) => {
+                e.target.previousElementSibling
+                .innerHTML = `${mediaTypes[i]} currentTime: ${Math.round(e.target.currentTime)}<br>`;
+            }
+            data[i][type].then(blob => {
+                mediaBlobs.push(URL.createObjectURL(blob));
+                mediaElement.src = mediaBlobs[mediaBlobs.length - 1];
+                document.body.appendChild(mediaElement);
+                document.body.insertBefore(label, mediaElement);
+            })
+        }(currentMedia));
+        }
+    })
+};
+
+button.addEventListener("click", loadMedia);
+</script>
+</body>
+</html>
