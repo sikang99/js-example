@@ -17,6 +17,8 @@
 ### Open Source
 - [feross/simple-peer](https://github.com/feross/simple-peer) - 📡 Simple WebRTC video/voice and data channels
 - [ricea/websocketstream-explainer](https://github.com/ricea/websocketstream-explainer) - Explainer for the WebSocketStream JavaScript API
+- [feross/simple-peer](https://github.com/feross/simple-peer) - Simple WebRTC video/voice and data channels
+
 
 
 ### Stackoverflow

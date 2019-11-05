@@ -8,6 +8,8 @@ MediaStream, MediaStreamTrack, MediaSource, MediaSession, MediaRecorder
 ### Information
 - [Identifiers for WebRTC's Statistics API](https://w3c.github.io/webrtc-stats/), W3C Editor's Draft 30 October 2019]
 - [javascript – WebRTC를 사용하여 비디오와 데이터 동기화](https://codeday.me/ko/qa/20190513/539017.html)
+- [비디오와 오디오 동기화 (자바 스크립트없이 가능)](https://codeday.me/ko/qa/20190716/1073697.html)
+
 
 ### Open Source
 
