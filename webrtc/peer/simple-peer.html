@@ -12,11 +12,13 @@
     <button type="submit">submit</button>
 </form>
 <pre id="outgoing"></pre>
+
 <script src="simplepeer.min.js"></script>
+
 <script>
 const p = new SimplePeer({
-initiator: location.hash === '#1',
-trickle: false
+    initiator: location.hash === '#1',
+    trickle: false
 })
 
 p.on('error', err => console.log('error', err))
@@ -33,7 +35,7 @@ document.querySelector('form').addEventListener('submit', ev => {
 
 p.on('connect', () => {
     console.log('CONNECT')
-p.send('whatever' + Math.random())
+    p.send('whatever' + Math.random())
 })
 
 p.on('data', data => {

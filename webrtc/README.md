@@ -15,15 +15,13 @@
 
 
 ### Open Source
-- [feross/simple-peer](https://github.com/feross/simple-peer) - 📡 Simple WebRTC video/voice and data channels
 - [ricea/websocketstream-explainer](https://github.com/ricea/websocketstream-explainer) - Explainer for the WebSocketStream JavaScript API
-- [feross/simple-peer](https://github.com/feross/simple-peer) - Simple WebRTC video/voice and data channels
+- [**feross/simple-peer**](https://github.com/feross/simple-peer) - Simple WebRTC video/voice and data channels
 
 
 
 ### Stackoverflow
 - [WebRTC video/audio streams out of sync (MediaStream -> MediaRecorder -> MediaSource -> Video Element)](https://stackoverflow.com/questions/52134781/webrtc-video-audio-streams-out-of-sync-mediastream-mediarecorder-mediasou)
-
-- [sync](https://jsfiddle.net/nthyfgvs/)
+- [sync example](https://jsfiddle.net/nthyfgvs/)
 
 
