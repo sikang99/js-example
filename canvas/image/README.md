@@ -11,7 +11,7 @@
 ### Stackoverflow
 - [Is 'bitmaprenderer' not a valid value for off-screen canvas rendering context in Chrome?](https://stackoverflow.com/questions/56367196/is-bitmaprenderer-not-a-valid-value-for-off-screen-canvas-rendering-context-in)
 - [Convert ImageBitmap to Blob](https://stackoverflow.com/questions/52959839/convert-imagebitmap-to-blob)
-- [Add ImageBitmapRenderingContext.getImageData()](https://discourse.wicg.io/t/add-imagebitmaprenderingcontext-getimagedata/1826)
+- [Add ImageBitmapRenderingContext.getImageData()](https://discourse.wicg.io/t/add-imagebitmaprenderingcontext-getimagedata/1826) - I also want to add
 
 
 
