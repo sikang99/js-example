@@ -15,4 +15,5 @@
 
 
 
-
+### Open Source
+- [disintegration/imaging](https://github.com/disintegration/imaging) Imaging is a simple image processing package for Go
