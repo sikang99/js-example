@@ -11,8 +11,11 @@
 ### Information
 - [Native File System](https://wicg.github.io/native-file-system/), Draft Community Group Report, 1 November 2019]
 - [FileSystem](https://developer.mozilla.org/en-US/docs/Web/API/FileSystem)
+- [Data Storage](https://www.w3.org/2019/04/web-roadmaps/mobile/storage.html), April 2019]
 
 
 ### Open Source
 - [WICG/native-file-system](https://github.com/WICG/native-file-system)
+- [web-platform-tests/wpt/native-filesystem](https://github.com/web-platform-tests/wpt/tree/master/native-file-system)
+
 
