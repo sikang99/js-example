@@ -7,6 +7,7 @@ Web Audio, Audio Worklet
 
 
 ### History
+- 2019/09/06 [How to Create a Webcam Audio Visualizer with Three.js](https://tympanus.net/codrops/2019/09/06/how-to-create-a-webcam-audio-visualizer-with-three-js/)
 - 2019/07/23 [Audio/Video synchronization with the Web Audio API](https://blog.paul.cx/post/audio-video-synchronization-with-the-web-audio-api/)
 - 2019/05/16 [**Audio rendering in web**](http://www.secmem.org/blog/2019/05/16/audio-rendering-in-web/)
 - 2019/05/13 [**Screen Recorder: recording microphone and the desktop audio at the same time**](https://paul.kinlan.me/screen-recorderrecording-microphone-and-the-desktop-audio-at-the-same-time/)
