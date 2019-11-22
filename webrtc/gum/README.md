@@ -2,6 +2,7 @@
 
 
 ### History
+- 2019/08/26 [Accessing Webcam With Javascript getUserMedia()](https://webmobtuts.com/javascript/accessing-webcam-with-javascript-getusermedia/)
 - 2019/08/04 [How to use getUserMedia()](https://flaviocopes.com/getusermedia/)
 - 2019/04/30 [getUserMedia() Video Constraints](http://tcmhack.in/getusermedia-video-constraints/)
 - 2019/04/17 [javascript – Android 기기에서 후면 카메라 선택 – jsartoolkit5](https://codeday.me/ko/qa/20190417/353050.html)
@@ -12,6 +13,7 @@
 
 
 ### Information
+- [HTML Media Capture](https://www.w3.org/TR/html-media-capture/), W3C Recommendation 01 February 2018
 - Can I Use: [getUserMedia/Stream API](https://caniuse.com/#feat=stream)
 - [WebRTC samples](https://webrtc.github.io/samples/)
 - [MediaDevices.getUserMedia()](https://developer.mozilla.org/ko/docs/Web/API/MediaDevices/getUserMedia)
