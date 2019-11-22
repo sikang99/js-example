@@ -2,6 +2,7 @@
 
 
 ### History
+- 2019/01/30 [What is the best technology for live streaming from a webcam?](https://www.quora.com/What-is-the-best-technology-for-live-streaming-from-a-webcam)
 - 2019/01/21 [Review: Logitech’s Brio 4K Webcam Pro](https://www.mgraves.org/2019/01/review-logitechs-brio-4k-webcam-pro/)
 
 
@@ -10,7 +11,7 @@
 
 
 ### Information
-
+- [Capture Pocket: the handheld, stabilized 4K camera](https://www.kickstarter.com/projects/chrisforever/capture-pocket-handheld-4k-camera-with-stabilizers)
 
 ### Open Source
 
