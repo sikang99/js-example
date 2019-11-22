@@ -2,6 +2,7 @@
 
 
 ### History
+- 2019/08/04 [How to use getUserMedia()](https://flaviocopes.com/getusermedia/)
 - 2019/04/17 [javascript – Android 기기에서 후면 카메라 선택 – jsartoolkit5](https://codeday.me/ko/qa/20190417/353050.html)
 - 2017/11/16 [**Common getUserMedia() Errorsi**](https://blog.addpipe.com/common-getusermedia-errors/)
 - 2016/06/16 [Errors in WebRTC getUserMedia API calls](https://www.callstats.io/blog/2016/06/16/errors-in-webrtc-getusermedia-api-calls)
