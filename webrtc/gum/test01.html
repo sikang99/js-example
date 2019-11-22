@@ -1,0 +1,38 @@
+<html>
+<head>
+
+</head>
+<body>
+
+</body>
+
+<script>
+function enableCam() {
+    video = document.getElementById('video');
+    // Get access to the camera!
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        var constraints;
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+            constraints = {video: {width: {
+                exact: 256
+            },
+            height: {
+                exact: 192
+            }, facingMode: "user"}};
+        } else {
+            constraints = {video: {width: {
+                exact: 256
+            },
+            height: {
+                exact: 192
+            }, facingMode: "environment"}};
+        }
+
+        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+            readFile(video,stream);//This method plays the video and save the image
+        });
+    }
+}
+</script>
+</html>

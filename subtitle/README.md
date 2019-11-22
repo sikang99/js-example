@@ -12,8 +12,11 @@
     - WebVTT support in browsers
     - Converting SRT files to WebVTT files
 - [WebVTT: The Web Video Text Tracks Format](https://www.w3.org/TR/webvtt1/), W3C Candidate Recommendation 4 April 2019
+- [Web Video Text Tracks Format (WebVTT)](https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API)
 - [HTML5 영상에 캡션과 자막 붙이기](https://developer.mozilla.org/ko/docs/Web/Guide/Audio_and_video_delivery/Adding_captions_and_subtitles_to_HTML5_video)
 - [Substital: Add Subtitles to Videos](https://chrome.google.com/webstore/detail/substital-add-subtitles-t/kkkbiiikppgjdiebcabomlbidfodipjg)
+- [Amara (subtitling) - Wikipedia](https://en.wikipedia.org/wiki/Amara_(subtitling))
+- [AllPlayer.org](https://www.allplayer.org/en/)
 
 
 ### Open Source

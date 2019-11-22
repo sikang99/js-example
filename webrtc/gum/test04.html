@@ -1,0 +1,45 @@
+<html>
+<head>
+
+</head>
+
+<body>
+<canvas id="canvas" width=320 height=240></canvas>
+</body>
+
+<script>
+var videoElement = document.querySelector('canvas');
+
+function successCallback(stream) {
+    window.stream = stream; // make stream available to console
+    videoElement.src = window.URL.createObjectURL(stream);
+    videoElement.play();
+}
+
+function errorCallback(error) {
+    console.log('navigator.getUserMedia error: ', error);
+}
+
+navigator.mediaDevices.enumerateDevices().then(
+    function(devices) {
+        for (var i = 0; i < devices.length; i++) {
+            if (devices[i].kind == 'videoinput' && devices[i].label.indexOf('back') !== -1) {
+                if (window.stream) {
+                    videoElement.src = null;
+                    window.stream.stop();
+                }
+                var constraints = {
+                    video: {
+                        optional: [{
+                            sourceId: devices[i].deviceId
+                        }]
+                    }
+                };
+                navigator.getUserMedia(constraints, successCallback, errorCallback);
+            }
+        }
+    }
+); 
+</script>
+
+</html>
