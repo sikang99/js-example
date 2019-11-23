@@ -1,0 +1,26 @@
+<html>
+<head>
+</head>
+
+<body>
+<h2>Sample 05: new console.print()</h2>    
+<pre id="print"></pre>
+</body>
+
+<script>
+(function () {
+    var logger = document.getElementById('print');
+    console.print = function () {
+      for (var i = 0; i < arguments.length; i++) {
+        if (typeof arguments[i] == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
+        } else {
+            logger.innerHTML += arguments[i] + '<br />';
+        }
+      }
+    }
+})();
+
+console.print('How', true, new Date());
+</script>
+</html>

@@ -1,0 +1,17 @@
+<html>
+<head>
+</head>
+
+<body>
+<h2>Sample 04: Standard type of text print</h2>    
+<div id="output"></div>
+</body>
+
+<script>
+var output = document.getElementById("output");
+output.innerHTML += "hello world" + "</br>";
+
+var myObj = {foo: "bar"};
+output.innerHTML += JSON.stringify(myObj) + "</br>";
+</script>
+</html>

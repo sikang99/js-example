@@ -7,11 +7,16 @@
 <video id="player" width=320 height=240 controls autoplay></video>
 <button id="capture">Capture</button>
 <canvas id="canvas" width=320 height=240></canvas>
+<div id="log"></div>
 </body>
 
 <script>
+!function(o){console.old=console.log,console.log=function(){var n,e,t="";for(e=0;e<arguments.length;e++)t+='<span class="log-'+typeof(n=arguments[e])+'">',"object"==typeof n&&"object"==typeof JSON&&"function"==typeof JSON.stringify?t+=JSON.stringify(n):t+=n,t+="</span>&nbsp;";o.innerHTML+=t+"<br>",console.old.apply(void 0,arguments)}}(document.body);
+</script>
+
+<script>
 const supported = 'mediaDevices' in navigator;
-console.log(supported)
+console.log("mediaDevices support:", supported)
 
 const player = document.getElementById('player');
 const canvas = document.getElementById('canvas');
@@ -30,7 +35,6 @@ const constraints = {
 
 captureButton.addEventListener('click', () => {
     context.drawImage(player, 0, 0, canvas.width, canvas.height);
-
     // Stop all video streams.
     player.srcObject.getVideoTracks().forEach(track => track.stop());
 });
@@ -42,15 +46,15 @@ navigator.mediaDevices.getUserMedia(constraints)
     // log to console first 
     console.log(err); /* handle the error */
     if (err.name == "NotFoundError" || err.name == "DevicesNotFoundError") {
-        // required track is missing 
+        alert("required track is missing")
     } else if (err.name == "NotReadableError" || err.name == "TrackStartError") {
-        // webcam or mic are already in use 
+        alert(" webcam or mic are already in use ")
     } else if (err.name == "OverconstrainedError" || err.name == "ConstraintNotSatisfiedError") {
-        // constraints can not be satisfied by avb. devices 
+        alert("constraints can not be satisfied by avb. devices")
     } else if (err.name == "NotAllowedError" || err.name == "PermissionDeniedError") {
-        // permission denied in browser 
+        alert("permission denied in browser")
     } else if (err.name == "TypeError" || err.name == "TypeError") {
-        // empty constraints object 
+        alert("empty constraints object")
     } else {
         //other errors 
     }
