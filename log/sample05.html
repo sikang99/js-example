@@ -9,18 +9,21 @@
 
 <script>
 (function () {
-    var logger = document.getElementById('print');
+    var print = document.getElementById('print');
     console.print = function () {
       for (var i = 0; i < arguments.length; i++) {
         if (typeof arguments[i] == 'object') {
-            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
+            print.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
         } else {
-            logger.innerHTML += arguments[i] + '<br />';
+            print.innerHTML += arguments[i] + '<br />';
         }
       }
     }
 })();
 
-console.print('How', true, new Date());
+console.print('New:', true, new Date());
+console.log('Before:', true, new Date());
+console.log = console.print
+console.log('After:', true, new Date());
 </script>
 </html>
