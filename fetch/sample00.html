@@ -1,0 +1,25 @@
+<html>
+<head>
+
+</head>
+<body>
+<h2>Sample 00: Checking that the fetch was successful</h2>
+<img>
+</body>
+
+<script>
+var myImage = document.querySelector('img');
+
+try {
+  const response = fetch('flowers.jpg');
+  if (!response.ok) {
+    throw new Error('Network response was not ok.');
+  }
+  const myBlob = response.blob();
+  const objectURL = URL.createObjectURL(myBlob);
+  myImage.src = objectURL;
+} catch (error) {
+  console.log('There has been a problem with your fetch operation: ', error.message);
+}
+</script>    
+</html>
