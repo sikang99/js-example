@@ -1,13 +1,30 @@
 <html>
 <head>
-<title>Test 04</title>
+<title>Test 04: enumerateDevices</title>
 </head>
 
 <body>
+<h2>Test 04: enumerateDevices</h2>
 <canvas id="canvas" width=320 height=240></canvas>
+<div id="log"></div>
 </body>
 
 <script>
+(function () {
+    if (!console) {
+        console = {};
+    }
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function (message) {
+        if (typeof message == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : String(message)) + '<br />';
+        } else {
+            logger.innerHTML += message + '<br />';
+        }
+    }
+})();
+
 var videoElement = document.querySelector('canvas');
 
 function successCallback(stream) {
@@ -22,7 +39,8 @@ function errorCallback(error) {
 
 navigator.mediaDevices.enumerateDevices().then(
     function(devices) {
-        for (var i = 0; i < devices.length; i++) {
+        console.log(devices)
+        for (var i = 0; i < devices.length; i++) {    
             if (devices[i].kind == 'videoinput' && devices[i].label.indexOf('back') !== -1) {
                 if (window.stream) {
                     videoElement.src = null;
@@ -36,6 +54,7 @@ navigator.mediaDevices.enumerateDevices().then(
                     }
                 };
                 navigator.getUserMedia(constraints, successCallback, errorCallback);
+                console.log(devices[i])
             }
         }
     }
