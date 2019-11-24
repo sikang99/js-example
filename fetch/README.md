@@ -17,3 +17,4 @@
 ### Open Source
 - [github/fetch](https://github.com/github/fetch) - A window.fetch JavaScript polyfill
 - [AnthumChris/fetch-progress-indicators](https://github.com/AnthumChris/fetch-progress-indicators) - Progress indicators/bars using Streams, Service Workers, and Fetch APIs
+- [axios/axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js

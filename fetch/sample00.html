@@ -5,9 +5,26 @@
 <body>
 <h2>Sample 00: Checking that the fetch was successful</h2>
 <img>
+<!-- <pre id="print"></pre> -->
 </body>
 
 <script>
+(function () {
+  // var print = document.getElementById('print');
+  var print = document.createElement("pre");
+  document.body.appendChild(print);
+  console.print = function () {
+    for (var i = 0; i < arguments.length; i++) {
+      if (typeof arguments[i] == 'object') {
+          print.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
+      } else {
+          print.innerHTML += arguments[i] + '<br />';
+      }
+    }
+  }
+})();
+
+// -- start from here
 var myImage = document.querySelector('img');
 
 try {
@@ -19,7 +36,7 @@ try {
   const objectURL = URL.createObjectURL(myBlob);
   myImage.src = objectURL;
 } catch (error) {
-  console.log('There has been a problem with your fetch operation: ', error.message);
+  console.print('There has been a problem with your fetch operation: ', error.message);
 }
 </script>    
 </html>

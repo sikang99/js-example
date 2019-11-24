@@ -17,7 +17,7 @@
 ### Open Source
 - [ricea/websocketstream-explainer](https://github.com/ricea/websocketstream-explainer) - Explainer for the WebSocketStream JavaScript API
 - [**feross/simple-peer**](https://github.com/feross/simple-peer) - Simple WebRTC video/voice and data channels
-
+- [blenderskool/blaze](https://github.com/blenderskool/blaze) - File sharing progressive web app built using WebRTC and WebSockets
 
 
 ### Stackoverflow
