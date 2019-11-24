@@ -12,7 +12,10 @@
 - [Fetch & Streams API Progress Indicator Examples](https://fetch-progress.anthum.com/)
 - [Request()](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request)
 - [Using Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
-
+- [Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API) 
+    - [Using readable streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams)
+    - [Using writable streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_writable_streams)
+    
 
 ### Open Source
 - [github/fetch](https://github.com/github/fetch) - A window.fetch JavaScript polyfill
