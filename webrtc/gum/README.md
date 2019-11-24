@@ -20,6 +20,7 @@
 - [Capturing an Image from the User](https://developers.google.com/web/fundamentals/media/capturing-images/)
 - [**Promise-based getUserMedia**](https://www.chromestatus.com/features/5755699816562688)
 - [WebRTC getUserMedia camera resolution finder](https://webrtchacks.github.io/WebRTC-Camera-Resolution/)
+- [**WebRTC Samples**](https://webrtc.github.io/samples/)
 
 
 ### stackoverflow
