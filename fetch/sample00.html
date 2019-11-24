@@ -5,26 +5,26 @@
 <body>
 <h2>Sample 00: Checking that the fetch was successful</h2>
 <img>
-<!-- <pre id="print"></pre> -->
+<!-- <pre id="log"></pre> -->
 </body>
 
 <script>
 (function () {
-  // var print = document.getElementById('print');
-  var print = document.createElement("pre");
-  document.body.appendChild(print);
-  console.print = function () {
+  // var log = document.getElementById('log');
+  var log = document.createElement("log");
+  document.body.appendChild(log);
+  console.log = function () {
     for (var i = 0; i < arguments.length; i++) {
       if (typeof arguments[i] == 'object') {
-          print.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
+          log.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
       } else {
-          print.innerHTML += arguments[i] + '<br />';
+          log.innerHTML += arguments[i] + '<br />';
       }
     }
   }
 })();
 
-// -- start from here
+// -- start coding from here
 var myImage = document.querySelector('img');
 
 try {
@@ -36,7 +36,7 @@ try {
   const objectURL = URL.createObjectURL(myBlob);
   myImage.src = objectURL;
 } catch (error) {
-  console.print('There has been a problem with your fetch operation: ', error.message);
+  console.log('There has been a problem with your fetch operation: ', error.message);
 }
 </script>    
 </html>
