@@ -9,6 +9,18 @@ fetch(<url>, options)
 .then(json => console.log(json))
 .catch(err => console.error(err));
 ```
+```
+async function callAPI(url, options)
+{
+    const resp = await fetch(url, options), body = await resp.json();
+
+    if (!resp.ok || body.error) {
+        throw new APIError(body.error || `Unknown error occurred (HTTP ${resp.status})!`);
+    }
+
+    return body;
+}
+```
 
 ### History
 - 2019/10/30 [How to upload a file using Fetch](https://flaviocopes.com/how-to-upload-files-fetch/)
@@ -32,6 +44,7 @@ fetch(<url>, options)
     - [Using readable streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams)
     - [Using writable streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_writable_streams)
 - [Ftech API Demo](https://demo-107.codingthesmartway.com/)    
+- [Using Fetch](https://css-tricks.com/using-fetch/)
 
 
 ### Open Source
