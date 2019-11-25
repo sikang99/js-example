@@ -30,6 +30,7 @@ async function callAPI(url, options)
 - 2019/03/04 [How to upload files with Fetch to Node.js (without using FormData)](https://medium.com/@CWMma/how-to-upload-files-with-fetch-to-node-js-without-using-formdata-687e35ba1ab6)
 - 2019/01/27 [Using Fetch API to Get and Post](https://dev.to/dev_amaz/using-fetch-api-to-get-and-post--1g7d)
 - 2019/01/07 [**You may not need Axios**](https://danlevy.net/you-may-not-need-axios/)
+- 2018/03/14 [Understanding the Fetch API](https://www.freecodecamp.org/news/understanding-the-fetch-api-a7d4c08c2a7/)
 - 2016/01/04 [HTTP/REST API File Uploads](https://phil.tech/api/2016/01/04/http-rest-api-file-uploads/)
 
 
