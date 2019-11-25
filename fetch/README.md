@@ -1,8 +1,17 @@
 ## js-example/fetch
 
+### Usage Patterns
+```
+fetch(<url>, options)
+.then(res => res.json())
+.then(json => console.log(json))
+.catch(err => console.error(err));
+```
 
 ### History
 - 2019/10/30 [How to upload a file using Fetch](https://flaviocopes.com/how-to-upload-files-fetch/)
+- 2019/08/15 [**How to upload files on the server using Fetch API**](https://attacomsian.com/blog/uploading-files-using-fetch-api)
+- 2019/05/12 [Introduction to JavaScript Fetch API](https://attacomsian.com/blog/javascript-fetch-api)
 - 2019/03/04 [How to upload files with Fetch to Node.js (without using FormData)](https://medium.com/@CWMma/how-to-upload-files-with-fetch-to-node-js-without-using-formdata-687e35ba1ab6)
 - 2019/01/27 [Using Fetch API to Get and Post](https://dev.to/dev_amaz/using-fetch-api-to-get-and-post--1g7d)
 - 2019/01/07 [**You may not need Axios**](https://danlevy.net/you-may-not-need-axios/)
