@@ -1,11 +1,13 @@
 ## js-example/webrtc/gum
-
+getUserMedia
 
 ### History
 - 2019/08/26 [Accessing Webcam With Javascript getUserMedia()](https://webmobtuts.com/javascript/accessing-webcam-with-javascript-getusermedia/)
 - 2019/08/04 [How to use getUserMedia()](https://flaviocopes.com/getusermedia/)
+- 2019/05/09 [getUserMedia() Camera & Microphone Initialization Times](https://blog.addpipe.com/camera-microphone-initialization-times/)
 - 2019/04/30 [getUserMedia() Video Constraints](http://tcmhack.in/getusermedia-video-constraints/)
 - 2019/04/17 [javascript – Android 기기에서 후면 카메라 선택 – jsartoolkit5](https://codeday.me/ko/qa/20190417/353050.html)
+- 2019/03/04 [getUserMedia() Logs To The Rescue](https://blog.addpipe.com/getusermedia-recorder-logs/)
 - 2018/12/19 [Play a stream on the web with HTML5 Cam API](https://medium.com/@ylerjen/play-your-stream-on-the-web-with-html5-cam-api-a8e20ee493b8)
 - 2017/11/16 [**Common getUserMedia() Errorsi**](https://blog.addpipe.com/common-getusermedia-errors/)
 - 2016/06/16 [Errors in WebRTC getUserMedia API calls](https://www.callstats.io/blog/2016/06/16/errors-in-webrtc-getusermedia-api-calls)
