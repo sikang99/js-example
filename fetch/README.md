@@ -1,4 +1,6 @@
 ## js-example/fetch
+Fetch is a promise-based modern replacement of XHR for making HTTP requests in the browser and massively used in PWA Service Workers.
+
 
 ### Usage Patterns
 ```
