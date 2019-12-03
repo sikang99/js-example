@@ -29,6 +29,7 @@ getUserMedia
 - [Front camera error with getUsermedia() Error: “Notreadableerror: could not start video source”](https://stackoverflow.com/questions/58641309/front-camera-error-with-getusermedia-error-notreadableerror-could-not-start)
 - [WebRTC getUserMedia promise api support in Chrome](https://stackoverflow.com/questions/34199436/webrtc-getusermedia-promise-api-support-in-chrome)
 - [Javascript: console.log to html](https://stackoverflow.com/questions/20256760/javascript-console-log-to-html)
+- [Javascript navigator.mediaDevices.getUserMedia moves source to front](https://stackoverflow.com/questions/56204917/javascript-navigator-mediadevices-getusermedia-moves-source-to-front)
 
 
 ### Open Source
